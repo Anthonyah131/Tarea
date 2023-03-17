@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.MantToursViewController">
+   <center>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <TextField fx:id="txtNombre" promptText="Nombre del tour" />
+                        <TextField fx:id="txtPrecio" promptText="Precio" />
+                        <TextField fx:id="txtCuposTotales" promptText="Cupos Totales" />
+                        <TextField fx:id="txtDisponibles" editable="false" promptText="Cupos Disponibles" />
+                        <JFXTextArea fx:id="jfxTxaItinerario" promptText="Itinerario" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <JFXComboBox fx:id="jfxCbxEmpresa" promptText="Empresa" />
+                        <JFXComboBox fx:id="jfxCbxCategoria" promptText="Categoría" />
+                        <DatePicker fx:id="dpFechaSalida" promptText="Fecha salida" />
+                        <DatePicker fx:id="dpFechaRegreso" promptText="Fecha Regreso" />
+                        <TextField fx:id="txtDuracion" promptText="Duración tour" />
+                        <JFXButton fx:id="jfxBtnClientes" onAction="#onActionJfxBtnClientes" text="Clientes" />
+                        <ImageView fx:id="imgFotos" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <JFXButton fx:id="jfxBtnBuscarFotos" onAction="#onActionBtnBuscarFotos" text="Buscar Fotos" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <JFXButton fx:id="jfxBtnBuscar" onAction="#onActionJfxBtnBuscar" text="Buscar" />
+                  <JFXButton fx:id="btnNuevo" onAction="#onActionBtnNuevo" text="Nuevo" />
+                  <JFXButton fx:id="jfxBtnGuardar" onAction="#onActionBtnGuardar" text="Guardar" />
+                  <JFXButton fx:id="jfxBtnEliminar" onAction="#onActionJfxBtnEliminar" text="Eliminar" />
+                  <JFXButton fx:id="jfxBtnCancelar" onAction="#onActionJfxBtnCancelar" text="Cancelar" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.MantEmpresaViewController">
+   <center>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="txtNombre" promptText="Nombre" />
+            <TextField fx:id="txtCedulaJuridica" promptText="Cédula jurídica" />
+            <TextField fx:id="txtTelefono" promptText="Teléfono" />
+            <TextField fx:id="txtEmail" promptText="Email" />
+            <DatePicker fx:id="dpEmpresa" />
+            <ImageView fx:id="imgLogo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <JFXButton fx:id="jfxBtnBuscarLogo" onAction="#onActionJfxBtnBuscarLogo" text="Buscar Logo" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <JFXButton fx:id="jfxBtnBuscar" onAction="#onActionJfxBtnBuscar" text="Buscar" />
+                  <JFXButton fx:id="btnNuevo" onAction="#onActionBtnNuevo" text="Nuevo" />
+                  <JFXButton fx:id="jfxBtnGuardar" onAction="#onActionBtnGuardar" text="Guardar" />
+                  <JFXButton fx:id="jfxBtnEliminar" onAction="#onActionJfxBtnEliminar" text="Eliminar" />
+                  <JFXButton fx:id="jfxBtnCancelar" onAction="#onActionJfxBtnCancelar" text="Cancelar" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

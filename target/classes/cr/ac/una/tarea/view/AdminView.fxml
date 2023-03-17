@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="rootAdmin" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.AdminViewController">
+   <top>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="imgLogo" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+            <JFXButton fx:id="jfxBtnSalir" onAction="#onActionJfxBtnSalir" text="Salir" />
+         </children>
+      </HBox>
+   </top>
+   <left>
+      <SplitPane fx:id="splitPane" dividerPositions="0.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <items>
+            <VBox fx:id="vBoxIzq" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <JFXButton fx:id="jfxBtnMenu1" onAction="#OnActionJfxBtnMenuOcultar" text="Menu" />
+                  <JFXButton fx:id="jfxBtnCategorias" onAction="#OnActionJfxBtnCategorias" text="Mantenimiento Categorias" />
+                  <JFXButton fx:id="jfxBtnTours" onAction="#OnActionJfxBtnTours" text="Mantenimiento Tours" />
+                  <JFXButton fx:id="jfxBtnClientes" onAction="#OnActionJfxBtnClientes" text="Mantenimiento Clientes" />
+                  <JFXButton fx:id="jfxBtnEmpresa" onAction="#OnActionJfxBtnEmpresa" text="Mantenimiento Empresa" />
+               </children>
+            </VBox>
+            <VBox fx:id="vBoxDer" prefHeight="298.0" prefWidth="74.0">
+               <children>
+                  <JFXButton fx:id="jfxBtnMenu" onAction="#OnActionJfxBtnMenuMostrar" text="Menu" />
+               </children>
+            </VBox>
+         </items>
+      </SplitPane>
+   </left>
+</BorderPane>
