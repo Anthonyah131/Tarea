@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
@@ -8,27 +9,42 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.MantEmpresaViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.MantEmpresaViewController">
    <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="txtNombre" promptText="Nombre" />
-            <TextField fx:id="txtCedulaJuridica" promptText="Cédula jurídica" />
-            <TextField fx:id="txtTelefono" promptText="Teléfono" />
-            <TextField fx:id="txtEmail" promptText="Email" />
-            <DatePicker fx:id="dpEmpresa" />
-            <ImageView fx:id="imgLogo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-            <JFXButton fx:id="jfxBtnBuscarLogo" onAction="#onActionJfxBtnBuscarLogo" text="Buscar Logo" />
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <JFXButton fx:id="jfxBtnBuscar" onAction="#onActionJfxBtnBuscar" text="Buscar" />
-                  <JFXButton fx:id="btnNuevo" onAction="#onActionBtnNuevo" text="Nuevo" />
-                  <JFXButton fx:id="jfxBtnGuardar" onAction="#onActionBtnGuardar" text="Guardar" />
-                  <JFXButton fx:id="jfxBtnEliminar" onAction="#onActionJfxBtnEliminar" text="Eliminar" />
-                  <JFXButton fx:id="jfxBtnCancelar" onAction="#onActionJfxBtnCancelar" text="Cancelar" />
+                  <VBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <TextField fx:id="txtNombre" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Nombre" styleClass="txtMantView" />
+                        <TextField fx:id="txtCedulaJuridica" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Cédula jurídica" styleClass="txtMantView" />
+                        <TextField fx:id="txtTelefono" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Teléfono" styleClass="txtMantView" />
+                        <TextField fx:id="txtEmail" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Email" styleClass="txtMantView" />
+                        <DatePicker fx:id="dpEmpresa" styleClass="datepicker" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <ImageView fx:id="imgLogo" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <JFXButton fx:id="jfxBtnBuscarLogo" onAction="#onActionJfxBtnBuscarLogo" text="Buscar Logo" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="75.0" prefWidth="200.0" spacing="5.0">
+               <children>
+                  <JFXButton fx:id="jfxBtnBuscar" onAction="#onActionJfxBtnBuscar" styleClass="botonMantView" text="Buscar" />
+                  <JFXButton fx:id="btnNuevo" onAction="#onActionBtnNuevo" styleClass="botonMantView" text="Nuevo" />
+                  <JFXButton fx:id="jfxBtnGuardar" onAction="#onActionBtnGuardar" styleClass="botonMantView" text="Guardar" />
+                  <JFXButton fx:id="jfxBtnEliminar" onAction="#onActionJfxBtnEliminar" styleClass="botonMantView" text="Eliminar" />
+                  <JFXButton fx:id="jfxBtnCancelar" onAction="#onActionJfxBtnCancelar" styleClass="botonMantView" text="Cancelar" />
                </children>
             </HBox>
          </children>
+         <BorderPane.margin>
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+         </BorderPane.margin>
       </VBox>
    </center>
 </BorderPane>

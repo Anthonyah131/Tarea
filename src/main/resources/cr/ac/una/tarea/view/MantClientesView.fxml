@@ -1,33 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.MantClientesViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.MantClientesViewController">
    <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="txtId" promptText="Id" />
-            <TextField fx:id="txtNombre" promptText="Nombre" />
-            <TextField fx:id="txtApellidos" promptText="Apellidos" />
-            <TextField fx:id="txtCedula" promptText="Cédula" />
-            <TextField fx:id="txtTelefono" promptText="Teléfono" />
-            <TextField fx:id="txtCorreo" promptText="Correo" />
-            <DatePicker fx:id="dpCliente" />
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <TextField fx:id="txtId" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Id" styleClass="txtMantView" />
+            <TextField fx:id="txtNombre" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Nombre" styleClass="txtMantView" />
+            <TextField fx:id="txtApellidos" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Apellidos" styleClass="txtMantView" />
+            <TextField fx:id="txtCedula" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Cédula" styleClass="txtMantView" />
+            <TextField fx:id="txtTelefono" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Teléfono" styleClass="txtMantView" />
+            <TextField fx:id="txtCorreo" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Correo" styleClass="txtMantView" />
+            <DatePicker fx:id="dpCliente" styleClass="datepicker" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                <children>
-                  <JFXButton fx:id="jfxBtnBuscar" onAction="#onActionJfxBtnBuscar" text="Buscar" />
-                  <JFXButton fx:id="btnNuevo" onAction="#onActionBtnNuevo" text="Nuevo" />
-                  <JFXButton fx:id="jfxBtnGuardar" onAction="#onActionBtnGuardar" text="Guardar" />
-                  <JFXButton fx:id="jfxBtnEliminar" onAction="#onActionJfxBtnEliminar" text="Eliminar" />
-                  <JFXButton fx:id="jfxBtnCancelar" onAction="#onActionJfxBtnCancelar" text="Cancelar" />
+                  <JFXButton fx:id="jfxBtnBuscar" onAction="#onActionJfxBtnBuscar" styleClass="botonMantView" text="Buscar" />
+                  <JFXButton fx:id="btnNuevo" onAction="#onActionBtnNuevo" styleClass="botonMantView" text="Nuevo" />
+                  <JFXButton fx:id="jfxBtnGuardar" onAction="#onActionBtnGuardar" styleClass="botonMantView" text="Guardar" />
+                  <JFXButton fx:id="jfxBtnEliminar" onAction="#onActionJfxBtnEliminar" styleClass="botonMantView" text="Eliminar" />
+                  <JFXButton fx:id="jfxBtnCancelar" onAction="#onActionJfxBtnCancelar" styleClass="botonMantView" text="Cancelar" />
                </children>
             </HBox>
          </children>
+         <BorderPane.margin>
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+         </BorderPane.margin>
       </VBox>
    </center>
 </BorderPane>

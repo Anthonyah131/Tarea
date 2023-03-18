@@ -2,17 +2,22 @@
  * Empty Stylesheet file.
  */
 
-.colorFondo {
-    -fx-background-color: linear-gradient(to right, #d1bd95 50%, #8c686b 80%, #391b4a 100%);
+BorderPane {
+    -fx-background-color: #ede6db;
 }
+
+JFXButton {
+    -fx-text-fill: #8c686b;
+    -fx-border-radius: 25px;
+    -fx-background-color: #dbdea6;
+}
+
+ /* InicioView */
 
 .boton {
     -fx-min-width: 100px;
     -fx-max-width: 200px;
     -fx-font-size: 18px;
-    -fx-text-fill: #8c686b;
-    -fx-border-radius: 25px;
-    -fx-background-color: #dbdea6;
 }
 
 #imgLogo {
@@ -20,9 +25,78 @@
     -fx-fit-height: auto;
 }
 
+/* AdminView */
+
+.botonAdminView {
+    -fx-min-width: 100%;
+    -fx-max-width: 200px;
+    -fx-font-size: 12px;
+}
+
 .splitPane, VBox {
     -fx-background-color: #8c686b;
 }
+
+.border10 {
+    -fx-background-radius: 10px;
+}
+
+/* MantViews */
+
+.botonMantView {
+    -fx-max-width: 200px;
+    -fx-font-size: 18px;
+}
+.txtMantView {
+    -fx-background-color: transparent;
+    -fx-border-color: #dbdea6;
+    -fx-border-width: 0 0 2 0;
+    -fx-text-fill: #dbdea6;
+}
+
+.date-picker {
+    -fx-background-color: transparent;
+    -fx-text-fill: #dbdea6;
+    -fx-font-size: 12px;
+}
+
+.date-picker .arrow {
+    -fx-background-color: #8C686B;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: #dbdea6;
+}
+
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: #dbdea6;
+    -fx-border-width: 0 0 2px 0;
+    -fx-border-radius: 0;
+    -fx-text-fill: #ede6db;
+    -fx-font-size: 12px;
+}
+
+.date-picker .text-field:focused {
+    -fx-border-color: #dbdea6;
+}
+
+.jfx-combo-box {
+    -jfx-focus-color: transparent;
+    -jfx-unfocus-color: transparent;
+    -jfx-label-float: true;
+    -jfx-highlight-color: #dbdea6;
+}
+
+.jfx-combo-box .list-cell {
+    -fx-background-color: #dbdea6;
+    -fx-text-fill: black;
+}
+
+.jfx-combo-box .arrow-button {
+    -fx-background-color: #dbdea6;
+}
+
 
 /*.color1 { #d1f7ba }
 .color2 { #dbdea6 }

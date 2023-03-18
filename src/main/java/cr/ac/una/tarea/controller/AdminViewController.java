@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -50,6 +51,10 @@ public class AdminViewController extends Controller implements Initializable {
     private VBox vBoxIzq;
     @FXML
     private VBox vBoxDer;
+    @FXML
+    private ImageView imgMenu1;
+    @FXML
+    private ImageView imgMenu;
 
     /**
      * Initializes the controller class.
@@ -69,6 +74,9 @@ public class AdminViewController extends Controller implements Initializable {
         });
         vBoxIzq.setVisible(false);
         vBoxDer.setVisible(true);
+        Image menuBoton = new Image("cr/ac/una/tarea/resources/MenuIcon.png");
+        imgMenu1.setImage(menuBoton);
+        imgMenu.setImage(menuBoton);
     }
 
     @Override
@@ -102,7 +110,7 @@ public class AdminViewController extends Controller implements Initializable {
     @FXML
     private void OnActionJfxBtnMenuOcultar(ActionEvent event) {
         splitPane.setDividerPosition(0, 0.0);
-        splitPane.setPrefWidth(100);
+        splitPane.setPrefWidth(50);
         vBoxIzq.setVisible(false);
         vBoxDer.setVisible(true);
     }
@@ -110,7 +118,7 @@ public class AdminViewController extends Controller implements Initializable {
     @FXML
     private void OnActionJfxBtnMenuMostrar(ActionEvent event) {
         splitPane.setDividerPosition(0, 1.0);
-        splitPane.setPrefWidth(200);
+        splitPane.setPrefWidth(250);
         vBoxIzq.setVisible(true);
         vBoxDer.setVisible(false);
     }

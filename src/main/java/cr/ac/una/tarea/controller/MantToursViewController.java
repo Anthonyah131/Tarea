@@ -7,12 +7,16 @@ package cr.ac.una.tarea.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
+import cr.ac.una.tarea.model.Tour;
+import cr.ac.una.tarea.util.AppContext;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
@@ -32,7 +36,7 @@ public class MantToursViewController extends Controller implements Initializable
     @FXML
     private TextField txtDisponibles;
     @FXML
-    private JFXTextArea jfxTxaItinerario;
+    private TextArea jfxTxaItinerario;
     @FXML
     private JFXComboBox<?> jfxCbxEmpresa;
     @FXML
@@ -60,13 +64,15 @@ public class MantToursViewController extends Controller implements Initializable
     @FXML
     private JFXButton jfxBtnCancelar;
 
+    ArrayList<Tour> tours = new ArrayList<>();
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        tours = (ArrayList<Tour>) AppContext.getInstance().get("ToursLista");
+    }
 
     @Override
     public void initialize() {
@@ -82,6 +88,9 @@ public class MantToursViewController extends Controller implements Initializable
 
     @FXML
     private void onActionJfxBtnBuscar(ActionEvent event) {
+        for (Tour obj : tours) {
+            System.out.println(obj.getNombre());
+        }
     }
 
     @FXML
@@ -99,5 +108,5 @@ public class MantToursViewController extends Controller implements Initializable
     @FXML
     private void onActionJfxBtnCancelar(ActionEvent event) {
     }
-    
+
 }

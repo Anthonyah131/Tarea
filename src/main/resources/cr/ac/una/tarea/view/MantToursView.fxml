@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
@@ -10,46 +11,61 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.MantToursViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.MantToursViewController">
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                  <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <TextField fx:id="txtNombre" promptText="Nombre del tour" />
-                        <TextField fx:id="txtPrecio" promptText="Precio" />
-                        <TextField fx:id="txtCuposTotales" promptText="Cupos Totales" />
-                        <TextField fx:id="txtDisponibles" editable="false" promptText="Cupos Disponibles" />
-                        <JFXTextArea fx:id="jfxTxaItinerario" promptText="Itinerario" />
+                        <TextField fx:id="txtNombre" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Nombre del tour" styleClass="txtMantView" />
+                        <TextField fx:id="txtPrecio" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Precio" styleClass="txtMantView" />
+                        <TextField fx:id="txtCuposTotales" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Cupos Totales" styleClass="txtMantView" />
+                        <TextField fx:id="txtDisponibles" editable="false" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Cupos Disponibles" styleClass="txtMantView" />
+                        <JFXTextArea fx:id="jfxTxaItinerario" maxHeight="200.0" prefColumnCount="10" styleClass="txtMantView" text="Itinerario" VBox.vgrow="ALWAYS" />
                      </children>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
                   </VBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                  <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
                         <JFXComboBox fx:id="jfxCbxEmpresa" promptText="Empresa" />
                         <JFXComboBox fx:id="jfxCbxCategoria" promptText="Categoría" />
                         <DatePicker fx:id="dpFechaSalida" promptText="Fecha salida" />
                         <DatePicker fx:id="dpFechaRegreso" promptText="Fecha Regreso" />
-                        <TextField fx:id="txtDuracion" promptText="Duración tour" />
+                        <TextField fx:id="txtDuracion" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Duración tour" styleClass="txtMantView" />
                         <JFXButton fx:id="jfxBtnClientes" onAction="#onActionJfxBtnClientes" text="Clientes" />
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
                         <ImageView fx:id="imgFotos" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                         <JFXButton fx:id="jfxBtnBuscarFotos" onAction="#onActionBtnBuscarFotos" text="Buscar Fotos" />
                      </children>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
                   </VBox>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                <children>
-                  <JFXButton fx:id="jfxBtnBuscar" onAction="#onActionJfxBtnBuscar" text="Buscar" />
-                  <JFXButton fx:id="btnNuevo" onAction="#onActionBtnNuevo" text="Nuevo" />
-                  <JFXButton fx:id="jfxBtnGuardar" onAction="#onActionBtnGuardar" text="Guardar" />
-                  <JFXButton fx:id="jfxBtnEliminar" onAction="#onActionJfxBtnEliminar" text="Eliminar" />
-                  <JFXButton fx:id="jfxBtnCancelar" onAction="#onActionJfxBtnCancelar" text="Cancelar" />
+                  <JFXButton fx:id="jfxBtnBuscar" onAction="#onActionJfxBtnBuscar" styleClass="botonMantView" text="Buscar" />
+                  <JFXButton fx:id="btnNuevo" onAction="#onActionBtnNuevo" styleClass="botonMantView" text="Nuevo" />
+                  <JFXButton fx:id="jfxBtnGuardar" onAction="#onActionBtnGuardar" styleClass="botonMantView" text="Guardar" />
+                  <JFXButton fx:id="jfxBtnEliminar" onAction="#onActionJfxBtnEliminar" styleClass="botonMantView" text="Eliminar" />
+                  <JFXButton fx:id="jfxBtnCancelar" onAction="#onActionJfxBtnCancelar" styleClass="botonMantView" text="Cancelar" />
                </children>
             </HBox>
          </children>
+         <BorderPane.margin>
+            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+         </BorderPane.margin>
       </VBox>
    </center>
 </BorderPane>
