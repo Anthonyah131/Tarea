@@ -11,8 +11,13 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 /**
  * FXML Controller class
@@ -29,14 +34,21 @@ public class InicioViewController extends Controller implements Initializable {
     private JFXButton jfxBtnAdmin;
     @FXML
     private JFXButton jfxBtnUser;
+    @FXML
+    private HBox hboxheader;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        imgLogo.setImage(new Image("cr/ac/una/tarea/resources/PuraVidaLogo1.png"));
+        hboxheader.setAlignment(Pos.CENTER_LEFT);
+        HBox.setMargin(jfxBtnAdmin, new Insets(0, 10, 0, 0));
+        HBox.setHgrow(jfxBtnAdmin, Priority.ALWAYS);
+        HBox.setHgrow(jfxBtnUser, Priority.ALWAYS);
+        HBox.setHgrow(imgLogo, Priority.NEVER);
+    }
 
     @Override
     public void initialize() {
@@ -50,5 +62,5 @@ public class InicioViewController extends Controller implements Initializable {
     @FXML
     private void onActionJfxBtnUser(ActionEvent event) {
     }
-    
+
 }

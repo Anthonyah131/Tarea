@@ -2,6 +2,30 @@
  * Empty Stylesheet file.
  */
 
-.mainFxmlClass {
-
+.colorFondo {
+    -fx-background-color: linear-gradient(to right, #d1bd95 50%, #8c686b 80%, #391b4a 100%);
 }
+
+.boton {
+    -fx-min-width: 100px;
+    -fx-max-width: 200px;
+    -fx-font-size: 18px;
+    -fx-text-fill: #8c686b;
+    -fx-border-radius: 25px;
+    -fx-background-color: #dbdea6;
+}
+
+#imgLogo {
+    -fx-fit-width: 20%;
+    -fx-fit-height: auto;
+}
+
+.splitPane, VBox {
+    -fx-background-color: #8c686b;
+}
+
+/*.color1 { #d1f7ba }
+.color2 { #dbdea6 }
+.color3 { #d1bd95 }
+.color4 { #8c686b }
+.color5 { #391b4a }*/
