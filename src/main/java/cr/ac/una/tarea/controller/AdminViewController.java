@@ -94,7 +94,7 @@ public class AdminViewController extends Controller implements Initializable {
 
     @FXML
     private void OnActionJfxBtnTours(ActionEvent event) {
-        FlowController.getInstance().goViewInWindowModal("MantToursView", this.getStage(), false);
+        FlowController.getInstance().goViewInWindow("MantToursView");
     }
 
     @FXML

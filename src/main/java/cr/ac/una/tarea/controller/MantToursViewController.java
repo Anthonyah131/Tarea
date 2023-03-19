@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.AppContext;
+import cr.ac.una.tarea.util.FlowController;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -64,14 +65,12 @@ public class MantToursViewController extends Controller implements Initializable
     @FXML
     private JFXButton jfxBtnCancelar;
 
-    ArrayList<Tour> tours = new ArrayList<>();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tours = (ArrayList<Tour>) AppContext.getInstance().get("ToursLista");
     }
 
     @Override
@@ -88,8 +87,12 @@ public class MantToursViewController extends Controller implements Initializable
 
     @FXML
     private void onActionJfxBtnBuscar(ActionEvent event) {
-        for (Tour obj : tours) {
-            System.out.println(obj.getNombre());
+        BusquedaViewController busquedaController = (BusquedaViewController) FlowController.getInstance().getController("BusquedaView");
+        busquedaController.busquedaTours();
+        FlowController.getInstance().goViewInWindowModal("BusquedaView", getStage(),true);
+        Tour tour = (Tour) busquedaController.getResultado();
+        if (tour != null) {
+            System.out.println(tour.getNombre());
         }
     }
 

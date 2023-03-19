@@ -15,17 +15,19 @@ import java.util.List;
 public class Tour {
 
     private String nombre;
+    private Empresa empresa;
     private Categoria categoria;
-    private double precio;
+    private Long precio;
     private LocalDate fechaSalida;
     private LocalDate fechaRegreso;
     private Itinerario itinerario;
-    private int cuposTotales;
-    private int cuposDisponibles;
+    private Long cuposTotales;
+    private Long cuposDisponibles;
     private List<Cliente> clientes;
 
-    public Tour(String nombre, Categoria categoria, double precio, LocalDate fechaSalida, LocalDate fechaRegreso, Itinerario itinerario, int cuposTotales) {
+    public Tour(String nombre,Empresa empresa, Categoria categoria, Long precio, LocalDate fechaSalida, LocalDate fechaRegreso, Itinerario itinerario, Long cuposTotales) {
         this.nombre = nombre;
+        this.empresa = empresa;
         this.categoria = categoria;
         this.precio = precio;
         this.fechaSalida = fechaSalida;
@@ -44,6 +46,14 @@ public class Tour {
         this.nombre = nombre;
     }
 
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
+
     public Categoria getCategoria() {
         return categoria;
     }
@@ -52,11 +62,11 @@ public class Tour {
         this.categoria = categoria;
     }
 
-    public double getPrecio() {
+    public Long getPrecio() {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(Long precio) {
         this.precio = precio;
     }
 
@@ -84,19 +94,19 @@ public class Tour {
         this.itinerario = itinerario;
     }
 
-    public int getCuposTotales() {
+    public Long getCuposTotales() {
         return cuposTotales;
     }
 
-    public void setCuposTotales(int cuposTotales) {
+    public void setCuposTotales(Long cuposTotales) {
         this.cuposTotales = cuposTotales;
     }
 
-    public int getCuposDisponibles() {
+    public Long getCuposDisponibles() {
         return cuposDisponibles;
     }
 
-    public void setCuposDisponibles(int cuposDisponibles) {
+    public void setCuposDisponibles(Long cuposDisponibles) {
         this.cuposDisponibles = cuposDisponibles;
     }
 

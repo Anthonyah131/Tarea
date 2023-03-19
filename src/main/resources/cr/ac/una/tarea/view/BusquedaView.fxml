@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" fx:id="rootBusqueda" prefHeight="600.0" prefWidth="800.0" styleClass="rootBusqueda" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="cr.ac.una.tarea.controller.BusquedaViewController">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+   <children>
+      <HBox alignment="CENTER" layoutX="188.0" layoutY="150.0" spacing="5.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
+         <children>
+            <VBox alignment="CENTER" maxWidth="200.0" prefHeight="200.0" prefWidth="200.0" spacing="5.0" HBox.hgrow="SOMETIMES">
+               <children>
+                  <ScrollPane maxWidth="200.0" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
+                     <content>
+                        <VBox fx:id="vbxBusqueda" prefHeight="700.0" prefWidth="200.0" spacing="10.0" />
+                     </content>
+                  </ScrollPane>
+                  <JFXButton fx:id="jfxBtnFiltrar" styleClass="botonMantView" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="350.0" spacing="5.0" HBox.hgrow="SOMETIMES">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <children>
+                  <TableView fx:id="tbvResultados" onMousePressed="#onMousePressenTbvResultados" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES" />
+                  <JFXButton fx:id="jfxBtnAceptar" onAction="#onActionJfxBtnAceptar" styleClass="botonMantView" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

@@ -2,7 +2,7 @@
  * Empty Stylesheet file.
  */
 
-BorderPane {
+BorderPane, .rootBusqueda {
     -fx-background-color: #ede6db;
 }
 
