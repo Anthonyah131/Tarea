@@ -10,21 +10,21 @@ package cr.ac.una.tarea.model;
  */
 
 public class Categoria {
-    private int id;
+    private Long id;
     private String nombre;
     private String descripcion;
     
-    public Categoria(int id, String nombre, String descripcion) {
+    public Categoria(Long id, String nombre, String descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
     
-    public int getId() {
+    public Long getId() {
         return id;
     }
     
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     

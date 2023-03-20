@@ -5,6 +5,9 @@
 package cr.ac.una.tarea.controller;
 
 import com.jfoenix.controls.JFXButton;
+import cr.ac.una.tarea.model.Categoria;
+import cr.ac.una.tarea.model.Tour;
+import cr.ac.una.tarea.util.FlowController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -51,6 +54,13 @@ public class MantCatViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionJfxBtnBuscar(ActionEvent event) {
+        BusquedaViewController busquedaController = (BusquedaViewController) FlowController.getInstance().getController("BusquedaView");
+        busquedaController.busquedaCategoria();
+        FlowController.getInstance().goViewInWindowModal("BusquedaView", getStage(),true);
+        Categoria categoria = (Categoria) busquedaController.getResultado();
+        if (categoria != null) {
+            System.out.println(categoria.getNombre());
+        }
     }
 
     @FXML

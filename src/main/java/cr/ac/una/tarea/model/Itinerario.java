@@ -12,7 +12,7 @@ package cr.ac.una.tarea.model;
 import java.time.LocalDateTime;
 
 public class Itinerario {
-    private Tour tour;
+    private Long id;
     private String lugar;
     private LocalDateTime fechaHoraLlegada;
     private LocalDateTime fechaHoraSalida;
@@ -22,8 +22,8 @@ public class Itinerario {
     private double coordenadasLongitud;
 
     // Constructor
-    public Itinerario(Tour tour, String lugar, LocalDateTime fechaHoraLlegada, LocalDateTime fechaHoraSalida, int duracionEnLugar, int orden, double coordenadasLatitud, double coordenadasLongitud) {
-        this.tour = tour;
+    public Itinerario(Long id, String lugar, LocalDateTime fechaHoraLlegada, LocalDateTime fechaHoraSalida, int duracionEnLugar, int orden, double coordenadasLatitud, double coordenadasLongitud) {
+        this.id = id;
         this.lugar = lugar;
         this.fechaHoraLlegada = fechaHoraLlegada;
         this.fechaHoraSalida = fechaHoraSalida;
@@ -33,13 +33,12 @@ public class Itinerario {
         this.coordenadasLongitud = coordenadasLongitud;
     }
 
-    // Getters y Setters
-    public Tour getTour() {
-        return tour;
+    public Long getId() {
+        return id;
     }
 
-    public void setTour(Tour tour) {
-        this.tour = tour;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLugar() {

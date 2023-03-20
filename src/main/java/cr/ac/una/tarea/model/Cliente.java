@@ -12,6 +12,7 @@ import java.time.LocalDate;
  */
 
 public class Cliente {
+    private Long id;
     private String nombre;
     private String apellido;
     private String cedula;
@@ -19,13 +20,22 @@ public class Cliente {
     private String correo;
     private LocalDate fechaNacimiento;
     
-    public Cliente(String nombre, String apellido, String cedula, String telefono, String correo, LocalDate fechaNacimiento) {
+    public Cliente(Long id, String nombre, String apellido, String cedula, String telefono, String correo, LocalDate fechaNacimiento) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.cedula = cedula;
         this.telefono = telefono;
         this.correo = correo;
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
     
     public String getNombre() {

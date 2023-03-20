@@ -10,6 +10,7 @@ package cr.ac.una.tarea.model;
  */
 
 public class Empresa {
+    private Long id;
     private String nombre;
     private String cedulaJuridica;
     private String logo;
@@ -17,13 +18,22 @@ public class Empresa {
     private String email;
     private int anioFundacion;
 
-    public Empresa(String nombre, String cedulaJuridica, String logo, String telefono, String email, int anioFundacion) {
+    public Empresa(Long id, String nombre, String cedulaJuridica, String logo, String telefono, String email, int anioFundacion) {
+        this.id = id;
         this.nombre = nombre;
         this.cedulaJuridica = cedulaJuridica;
         this.logo = logo;
         this.telefono = telefono;
         this.email = email;
         this.anioFundacion = anioFundacion;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {

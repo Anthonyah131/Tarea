@@ -13,7 +13,7 @@ import java.util.List;
  * @author ANTHONY
  */
 public class Tour {
-
+    private Long id;
     private String nombre;
     private Empresa empresa;
     private Categoria categoria;
@@ -25,7 +25,8 @@ public class Tour {
     private Long cuposDisponibles;
     private List<Cliente> clientes;
 
-    public Tour(String nombre,Empresa empresa, Categoria categoria, Long precio, LocalDate fechaSalida, LocalDate fechaRegreso, Itinerario itinerario, Long cuposTotales) {
+    public Tour(Long id, String nombre,Empresa empresa, Categoria categoria, Long precio, LocalDate fechaSalida, LocalDate fechaRegreso, Itinerario itinerario, Long cuposTotales) {
+        this.id = id;
         this.nombre = nombre;
         this.empresa = empresa;
         this.categoria = categoria;
@@ -36,6 +37,14 @@ public class Tour {
         this.cuposTotales = cuposTotales;
         this.cuposDisponibles = cuposTotales;
         this.clientes = new ArrayList<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {

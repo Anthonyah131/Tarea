@@ -5,6 +5,9 @@
 package cr.ac.una.tarea.controller;
 
 import com.jfoenix.controls.JFXButton;
+import cr.ac.una.tarea.model.Cliente;
+import cr.ac.una.tarea.model.Tour;
+import cr.ac.una.tarea.util.FlowController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -59,6 +62,13 @@ public class MantClientesViewController extends Controller implements Initializa
 
     @FXML
     private void onActionJfxBtnBuscar(ActionEvent event) {
+        BusquedaViewController busquedaController = (BusquedaViewController) FlowController.getInstance().getController("BusquedaView");
+        busquedaController.busquedaCliente();
+        FlowController.getInstance().goViewInWindowModal("BusquedaView", getStage(),true);
+        Cliente cliente = (Cliente) busquedaController.getResultado();
+        if (cliente != null) {
+            System.out.println(cliente.getNombre());
+        }
     }
 
     @FXML
