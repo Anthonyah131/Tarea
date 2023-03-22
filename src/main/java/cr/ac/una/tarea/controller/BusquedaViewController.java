@@ -5,7 +5,6 @@
 package cr.ac.una.tarea.controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
 import cr.ac.una.tarea.model.Categoria;
 import cr.ac.una.tarea.model.Cliente;
 import cr.ac.una.tarea.model.Empresa;
@@ -15,7 +14,6 @@ import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.Formato;
 import cr.ac.una.tarea.util.Mensaje;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -28,7 +26,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -139,7 +136,21 @@ public class BusquedaViewController extends Controller implements Initializable 
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Cliente", getStage(), "Error cargando los Clientes");
         }
     }
-
+    
+    private void cargarEmpresas() {
+        empresas.clear();
+        empresas.addAll((List<Empresa>) AppContext.getInstance().get("EmpresasLista"));
+        if (empresas != null) {
+            tbvResultados.setItems(empresas);
+            tbvResultados.refresh();
+            for (Empresa empresa : empresas) {
+                System.out.println(empresa.getNombre() + "Hola ");
+            }
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Empresa", getStage(), "Error cargando las Empresas");
+        }
+    }
+    
     public void busquedaTours() {
         try {
             TextField txtId = new TextField();
@@ -310,5 +321,57 @@ public class BusquedaViewController extends Controller implements Initializable 
             new Mensaje().showModal(Alert.AlertType.ERROR, "Consultar Cliente", getStage(), "Ocurrio un error consultando los Clientes");
         }
     }
+    
+    public void busquedaEmpresa() {
+        try {
+            TextField txtId = new TextField();
+            txtId.setPromptText("Id");
+            txtId.setTextFormatter(Formato.getInstance().integerFormat());
 
+            TextField txtNombre = new TextField();
+            txtNombre.setPromptText("Nombre");
+            txtNombre.setOnKeyPressed(keyEnter);
+            txtNombre.setTextFormatter(Formato.getInstance().letrasFormat(40));
+
+            TextField txtCedula = new TextField();
+            txtCedula.setPromptText("Cedula Juridica");
+            txtCedula.setTextFormatter(Formato.getInstance().cedulaFormat(15));
+
+            vbxBusqueda.getChildren().clear();
+            vbxBusqueda.getChildren().add(txtId);
+            vbxBusqueda.getChildren().add(txtNombre);
+            vbxBusqueda.getChildren().add(txtCedula);
+
+            tbvResultados.getColumns().clear();
+            tbvResultados.getItems().clear();
+
+            TableColumn<Empresa, String> tbcId = new TableColumn<>("Id");
+            tbcId.setPrefWidth(25);
+            tbcId.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getId().toString()));
+
+            TableColumn<Empresa, String> tbcNombre = new TableColumn<>("Nombre");
+            tbcNombre.setPrefWidth(100);
+            tbcNombre.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
+
+            TableColumn<Empresa, String> tbcCedula = new TableColumn<>("Cedula");
+            tbcCedula.setPrefWidth(100);
+            tbcCedula.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getCedulaJuridica()));
+
+            tbvResultados.getColumns().add(tbcId);
+            tbvResultados.getColumns().add(tbcNombre);
+            tbvResultados.getColumns().add(tbcCedula);
+            tbvResultados.refresh();
+
+            jfxBtnFiltrar.setOnAction((ActionEvent event) -> {
+                cargarEmpresas();
+                System.out.println("Entra");
+            });
+
+            cargarEmpresas();
+
+        } catch (Exception ex) {
+            Logger.getLogger(BusquedaViewController.class.getName()).log(Level.SEVERE, "Error consultando las Empresas", ex);
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Consultar Empresa", getStage(), "Ocurrio un error consultando las Empresas");
+        }
+    }
 }

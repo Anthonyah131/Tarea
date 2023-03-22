@@ -20,6 +20,9 @@ public class Cliente {
     private String correo;
     private LocalDate fechaNacimiento;
     
+    public Cliente() {
+    }
+    
     public Cliente(Long id, String nombre, String apellido, String cedula, String telefono, String correo, LocalDate fechaNacimiento) {
         this.id = id;
         this.nombre = nombre;

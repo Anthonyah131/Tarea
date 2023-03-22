@@ -31,15 +31,15 @@ public class App extends Application {
         ObservableList<Cliente> clientes = FXCollections.observableArrayList();
         ObservableList<Itinerario> itinerarios = FXCollections.observableArrayList();
 
-        Cliente cliente1 = new Cliente(1L, "Juan", "Perez", "123456789", "123456789", "juanperez@example.com", LocalDate.of(2023, 6, 1));
+        Cliente cliente1 = new Cliente(1L, "Juan", "Perez", "123456789", "123456789", "juanperez@example.com", LocalDate.of(1984, 3, 1));
         clientes.add(cliente1);
-        Cliente cliente2 = new Cliente(2L,"Maria", "Rodriguez", "987654321", "123456789", "maria@example.com", LocalDate.of(2023, 6, 1));
+        Cliente cliente2 = new Cliente(2L,"Maria", "Rodriguez", "987654321", "123456789", "maria@example.com", LocalDate.of(1992, 7, 25));
         clientes.add(cliente2);
-        Cliente cliente3 = new Cliente(3L,"Pedro", "Gomez", "456789123", "123456789", "pedro@example.com", LocalDate.of(2023, 6, 1));
+        Cliente cliente3 = new Cliente(3L,"Pedro", "Gomez", "456789123", "123456789", "pedro@example.com", LocalDate.of(2005, 4, 12));
         clientes.add(cliente3);
-        Cliente cliente4 = new Cliente(4L,"Laura", "Hernandez", "321654987", "123456789", "laura@example.com", LocalDate.of(2023, 6, 1));
+        Cliente cliente4 = new Cliente(4L,"Laura", "Hernandez", "321654987", "123456789", "laura@example.com", LocalDate.of(1999, 2, 8));
         clientes.add(cliente4);
-        Cliente cliente5 = new Cliente(5L,"Carlos", "Jimenez", "741852963", "123456789", "carlos@example.com", LocalDate.of(2023, 6, 1));
+        Cliente cliente5 = new Cliente(5L,"Carlos", "Jimenez", "741852963", "123456789", "carlos@example.com", LocalDate.of(2002, 8, 10));
         clientes.add(cliente5);
         
         Itinerario itinerario1 = new Itinerario(1L,"San José", LocalDateTime.of(2023, 4, 1, 10, 0), LocalDateTime.of(2023, 4, 2, 18, 0), 8, 1, 9.928069, -84.090729);
