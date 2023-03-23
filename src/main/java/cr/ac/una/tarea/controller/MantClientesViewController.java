@@ -5,9 +5,7 @@
 package cr.ac.una.tarea.controller;
 
 import com.jfoenix.controls.JFXButton;
-import cr.ac.una.tarea.model.Categoria;
 import cr.ac.una.tarea.model.Cliente;
-import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.FlowController;
 import cr.ac.una.tarea.util.Formato;
 import cr.ac.una.tarea.util.Mensaje;

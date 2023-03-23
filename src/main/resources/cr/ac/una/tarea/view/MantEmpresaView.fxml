@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -17,11 +16,12 @@
                <children>
                   <VBox alignment="CENTER" spacing="5.0">
                      <children>
+                        <TextField fx:id="txtId" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Id" styleClass="txtMantView" />
                         <TextField fx:id="txtNombre" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Nombre" styleClass="txtMantView" />
                         <TextField fx:id="txtCedulaJuridica" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Cédula jurídica" styleClass="txtMantView" />
                         <TextField fx:id="txtTelefono" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Teléfono" styleClass="txtMantView" />
                         <TextField fx:id="txtEmail" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Email" styleClass="txtMantView" />
-                        <DatePicker fx:id="dpEmpresa" styleClass="datepicker" />
+                        <TextField fx:id="txtAnioFundacion" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="AnioFundacion" styleClass="txtMantView" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" spacing="5.0">

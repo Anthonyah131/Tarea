@@ -38,6 +38,10 @@ public class Tour {
         this.cuposDisponibles = cuposTotales;
         this.clientes = new ArrayList<>();
     }
+    
+    public Tour() {
+        this.clientes = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;

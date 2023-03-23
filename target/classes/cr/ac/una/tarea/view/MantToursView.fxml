@@ -19,6 +19,7 @@
                <children>
                   <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
+                        <TextField fx:id="txtId" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Id" styleClass="txtMantView" />
                         <TextField fx:id="txtNombre" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Nombre del tour" styleClass="txtMantView" />
                         <TextField fx:id="txtPrecio" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Precio" styleClass="txtMantView" />
                         <TextField fx:id="txtCuposTotales" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Cupos Totales" styleClass="txtMantView" />
@@ -35,7 +36,6 @@
                         <JFXComboBox fx:id="jfxCbxCategoria" promptText="Categoría" />
                         <DatePicker fx:id="dpFechaSalida" promptText="Fecha salida" />
                         <DatePicker fx:id="dpFechaRegreso" promptText="Fecha Regreso" />
-                        <TextField fx:id="txtDuracion" maxHeight="25.0" maxWidth="250.0" prefHeight="25.0" prefWidth="250.0" promptText="Duración tour" styleClass="txtMantView" />
                         <JFXButton fx:id="jfxBtnClientes" onAction="#onActionJfxBtnClientes" text="Clientes" />
                      </children>
                      <HBox.margin>

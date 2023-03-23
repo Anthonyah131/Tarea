@@ -14,11 +14,11 @@ public class Empresa {
     private String nombre;
     private String cedulaJuridica;
     private String logo;
-    private String telefono;
+    private Long telefono;
     private String email;
-    private int anioFundacion;
+    private Long anioFundacion;
 
-    public Empresa(Long id, String nombre, String cedulaJuridica, String logo, String telefono, String email, int anioFundacion) {
+    public Empresa(Long id, String nombre, String cedulaJuridica, String logo, Long telefono, String email, Long anioFundacion) {
         this.id = id;
         this.nombre = nombre;
         this.cedulaJuridica = cedulaJuridica;
@@ -26,6 +26,9 @@ public class Empresa {
         this.telefono = telefono;
         this.email = email;
         this.anioFundacion = anioFundacion;
+    }
+    
+    public Empresa() {
     }
 
     public Long getId() {
@@ -60,11 +63,11 @@ public class Empresa {
         this.logo = logo;
     }
 
-    public String getTelefono() {
+    public Long getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(String telefono) {
+    public void setTelefono(Long telefono) {
         this.telefono = telefono;
     }
 
@@ -76,11 +79,11 @@ public class Empresa {
         this.email = email;
     }
 
-    public int getAnioFundacion() {
+    public Long getAnioFundacion() {
         return anioFundacion;
     }
 
-    public void setAnioFundacion(int anioFundacion) {
+    public void setAnioFundacion(Long anioFundacion) {
         this.anioFundacion = anioFundacion;
     }
 

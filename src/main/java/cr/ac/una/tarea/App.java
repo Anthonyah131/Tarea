@@ -11,7 +11,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javafx.collections.FXCollections;
@@ -64,29 +63,29 @@ public class App extends Application {
         Categoria categoria5 = new Categoria(5L, "Gastronomía", "Tours para degustar la comida típica del país");
         categorias.add(categoria5);
 
-        Empresa empresa1 = new Empresa(1L, "Empresa A", "123456789", "logo1.jpg", "2222-2222", "empresaA@ejemplo.com", 2000);
+        Empresa empresa1 = new Empresa(1L, "Empresa A", "123456789", "logo1.jpg", 22222222L, "empresaA@ejemplo.com", 2000L);
         empresas.add(empresa1);
-        Empresa empresa2 = new Empresa(2L, "Empresa B", "987654321", "logo2.jpg", "3333-3333", "empresaB@ejemplo.com", 1990);
+        Empresa empresa2 = new Empresa(2L, "Empresa B", "987654321", "logo2.jpg", 33333333L, "empresaB@ejemplo.com", 1990L);
         empresas.add(empresa2);
-        Empresa empresa3 = new Empresa(3L,"Empresa C", "456789123", "logo3.jpg", "4444-4444", "empresaC@ejemplo.com", 2005);
+        Empresa empresa3 = new Empresa(3L,"Empresa C", "456789123", "logo3.jpg", 44444444L, "empresaC@ejemplo.com", 2005L);
         empresas.add(empresa3);
-        Empresa empresa4 = new Empresa(4L, "Empresa D", "321654987", "logo4.jpg", "5555-5555", "empresaD@ejemplo.com", 1995);
+        Empresa empresa4 = new Empresa(4L, "Empresa D", "321654987", "logo4.jpg", 55555555L, "empresaD@ejemplo.com", 1995L);
         empresas.add(empresa4);
-        Empresa empresa5 = new Empresa(5L, "Empresa E", "789123456", "logo5.jpg", "6666-6666", "empresaE@ejemplo.com", 2008);
+        Empresa empresa5 = new Empresa(5L, "Empresa E", "789123456", "logo5.jpg", 66666666L, "empresaE@ejemplo.com", 2008L);
         empresas.add(empresa5);
 
         // Instancia 1
-        Tour tour1 = new Tour(1L, "Tour de Arenal", empresa5, categoria1, 50000L, LocalDate.of(2023, 4, 15), LocalDate.of(2023, 4, 20), itinerario1, 50L);
+        Tour tour1 = new Tour(1L, "Tour de Arenal", empresa3, categoria1, 50000L, LocalDate.of(2023, 4, 15), LocalDate.of(2023, 4, 20), itinerario1, 50L);
         tour1.setClientes(clientes);
         tours.add(tour1);
 
         // Instancia 2
-        Tour tour2 = new Tour(2L, "Tour de Tortuguero", empresa5, categoria1, 60000L, LocalDate.of(2023, 5, 1), LocalDate.of(2023, 5, 5), itinerario1, 30L);
+        Tour tour2 = new Tour(2L, "Tour de Tortuguero", empresa5, categoria2, 60000L, LocalDate.of(2023, 5, 1), LocalDate.of(2023, 5, 5), itinerario1, 30L);
         tour1.setClientes(clientes);
         tours.add(tour2);
 
         // Instancia 3
-        Tour tour3 = new Tour(3L, "Tour de Manuel Antonio", empresa5, categoria1, 75000L, LocalDate.of(2023, 5, 10), LocalDate.of(2023, 5, 15), itinerario1, 20L);
+        Tour tour3 = new Tour(3L, "Tour de Manuel Antonio", empresa5, categoria3, 75000L, LocalDate.of(2023, 5, 10), LocalDate.of(2023, 5, 15), itinerario1, 20L);
         tours.add(tour3);
 
         // Instancia 4
@@ -94,11 +93,11 @@ public class App extends Application {
         tours.add(tour4);
 
         // Instancia 5
-        Tour tour5 = new Tour(5L, "Tour de Guanacaste", empresa5, categoria1, 100000L, LocalDate.of(2023, 7, 1), LocalDate.of(2023, 7, 10), itinerario1, 40L);
+        Tour tour5 = new Tour(5L, "Tour de Guanacaste", empresa5, categoria5, 100000L, LocalDate.of(2023, 7, 1), LocalDate.of(2023, 7, 10), itinerario1, 40L);
         tours.add(tour5);
 
         // Instancia 6
-        Tour tour6 = new Tour(6L, "Tour de Limón", empresa5, categoria1, 90000L, LocalDate.of(2023, 8, 1), LocalDate.of(2023, 8, 5), itinerario1, 30L);
+        Tour tour6 = new Tour(6L, "Tour de Limón", empresa2, categoria5, 90000L, LocalDate.of(2023, 8, 1), LocalDate.of(2023, 8, 5), itinerario1, 30L);
         tour1.setClientes(clientes);
         tours.add(tour6);
 
@@ -107,29 +106,29 @@ public class App extends Application {
         tours.add(tour7);
 
         // Instancia 8
-        Tour tour8 = new Tour(8L, "Tour de Osa", empresa5, categoria1, 120000L, LocalDate.of(2023, 10, 1), LocalDate.of(2023, 10, 10), itinerario1, 50L);
+        Tour tour8 = new Tour(8L, "Tour de Osa", empresa1, categoria5, 120000L, LocalDate.of(2023, 10, 1), LocalDate.of(2023, 10, 10), itinerario1, 50L);
         tour1.setClientes(clientes);
         tours.add(tour8);
 
         // Instancia 9
-        Tour tour9 = new Tour(9L, "Tour de Sarapiquí", empresa5, categoria1, 55000L, LocalDate.of(2023, 11, 1), LocalDate.of(2023, 11, 5), itinerario1, 20L);
+        Tour tour9 = new Tour(9L, "Tour de Sarapiquí", empresa5, categoria4, 55000L, LocalDate.of(2023, 11, 1), LocalDate.of(2023, 11, 5), itinerario1, 20L);
         tours.add(tour9);
 
         // Instancia 10
-        Tour tour10 = new Tour(10L, "Tour de Jacó", empresa5, categoria1, 70000L, LocalDate.of(2023, 11, 15), LocalDate.of(2023, 11, 20), itinerario1, 25L);
+        Tour tour10 = new Tour(10L, "Tour de Jacó", empresa3, categoria1, 70000L, LocalDate.of(2023, 11, 15), LocalDate.of(2023, 11, 20), itinerario1, 25L);
         tour1.setClientes(clientes);
         tours.add(tour10);
 
         // Instancia 11
-        Tour tour11 = new Tour(11L, "Tour a la Selva", empresa5, categoria1, 60000L, LocalDate.of(2023, 5, 1), LocalDate.of(2023, 5, 7), itinerario1, 20L);
+        Tour tour11 = new Tour(11L, "Tour a la Selva", empresa2, categoria4, 60000L, LocalDate.of(2023, 5, 1), LocalDate.of(2023, 5, 7), itinerario1, 20L);
         tours.add(tour11);
 
         // Instancia 12      
-        Tour tour12 = new Tour(12L, "Tour de las Aves", empresa5, categoria1, 50000L, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 7), itinerario1, 15L);
+        Tour tour12 = new Tour(12L, "Tour de las Aves", empresa5, categoria3, 50000L, LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 7), itinerario1, 15L);
         tours.add(tour12);
 
         // Instancia 13       
-        Tour tour13 = new Tour(13L, "Tour de la Montaña", empresa5, categoria1, 80000L, LocalDate.of(2023, 7, 1), LocalDate.of(2023, 7, 7), itinerario1, 10L);
+        Tour tour13 = new Tour(13L, "Tour de la Montaña", empresa2, categoria2, 80000L, LocalDate.of(2023, 7, 1), LocalDate.of(2023, 7, 7), itinerario1, 10L);
         tours.add(tour13);
 
         // Instancia 14     
@@ -138,7 +137,7 @@ public class App extends Application {
         tours.add(tour14);
 
         // Instancia 15      
-        Tour tour15 = new Tour(15L, "Tour de la Playa", empresa5, categoria1, 90000L, LocalDate.of(2023, 9, 1), LocalDate.of(2023, 9, 7), itinerario1, 25L);
+        Tour tour15 = new Tour(15L, "Tour de la Playa", empresa1, categoria3, 90000L, LocalDate.of(2023, 9, 1), LocalDate.of(2023, 9, 7), itinerario1, 25L);
         tours.add(tour15);
 
         AppContext.getInstance().set("ToursLista", tours);
