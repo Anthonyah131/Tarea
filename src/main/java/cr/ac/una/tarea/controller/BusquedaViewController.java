@@ -115,9 +115,9 @@ public class BusquedaViewController extends Controller implements Initializable 
         if (tours != null) {
             tbvResultados.setItems(categorias);
             tbvResultados.refresh();
-            for (Categoria categoria : categorias) {
-                System.out.println(categoria.getNombre() + "Hola ");
-            }
+//            for (Categoria categoria : categorias) {
+//                System.out.println(categoria.getNombre() + "Hola ");
+//            }
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Categorias", getStage(), "Error cargando las Categorias");
         }

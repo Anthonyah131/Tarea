@@ -64,7 +64,7 @@ public class AppContext {
     }
 
     public void delete(String parameter) {
-        context.put(parameter, null);
+        context.remove(parameter, null);
     }
 
 }

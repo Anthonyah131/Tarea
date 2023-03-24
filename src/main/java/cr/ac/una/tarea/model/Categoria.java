@@ -4,51 +4,57 @@
  */
 package cr.ac.una.tarea.model;
 
+import javafx.beans.property.SimpleStringProperty;
+
 /**
  *
  * @author ANTHONY
  */
-
 public class Categoria {
-    private Long id;
-    private String nombre;
-    private String descripcion;
-    
-    public Categoria() {
-    }
-    public Categoria(Long id, String nombre, String descripcion) {
-        this.id = id;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-    }
-    
-    public Long getId() {
-        return id;
-    }
-    
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public String getNombre() {
-        return nombre;
-    }
-    
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    
-    public String getDescripcion() {
-        return descripcion;
-    }
-    
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-    
-    @Override
-    public String toString() {
-        return nombre;
-    }
-}
 
+    public SimpleStringProperty id;
+    public SimpleStringProperty nombre;
+    public SimpleStringProperty descripcion;
+
+    public Categoria() {
+        this.id = new SimpleStringProperty();
+        this.nombre = new SimpleStringProperty();
+        this.descripcion = new SimpleStringProperty();
+    }
+
+    public Categoria(Long id, String nombre, String descripcion) {
+        this();
+        this.id.set(id.toString());
+        this.nombre.set(nombre);
+        this.descripcion.set(descripcion);
+    }
+
+    public Long getId() {
+        if (id.get() != null && !id.get().isEmpty()) {
+            return Long.valueOf(id.get());
+        } else {
+            return null;
+        }
+    }
+
+    public void setId(Long Id) {
+        this.id.set(Id.toString());
+    }
+
+    public String getNombre() {
+        return nombre.get();
+    }
+
+    public void setNombre(String empNombre) {
+        this.nombre.set(empNombre);
+    }
+
+    public String getDescripcion() {
+        return descripcion.get();
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion.set(descripcion);
+    }
+
+}

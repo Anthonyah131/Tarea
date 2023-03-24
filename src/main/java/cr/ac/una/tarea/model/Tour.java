@@ -7,56 +7,82 @@ package cr.ac.una.tarea.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 /**
  *
  * @author ANTHONY
  */
 public class Tour {
-    private Long id;
-    private String nombre;
+    private SimpleStringProperty id;
+    private SimpleStringProperty nombre;
     private Empresa empresa;
     private Categoria categoria;
-    private Long precio;
-    private LocalDate fechaSalida;
-    private LocalDate fechaRegreso;
+    private SimpleStringProperty precio;
+    private ObjectProperty<LocalDate> fechaSalida;
+    private ObjectProperty<LocalDate> fechaRegreso;
     private Itinerario itinerario;
-    private Long cuposTotales;
-    private Long cuposDisponibles;
+    private SimpleStringProperty cuposTotales;
+    private SimpleStringProperty cuposDisponibles;
     private List<Cliente> clientes;
 
     public Tour(Long id, String nombre,Empresa empresa, Categoria categoria, Long precio, LocalDate fechaSalida, LocalDate fechaRegreso, Itinerario itinerario, Long cuposTotales) {
-        this.id = id;
-        this.nombre = nombre;
+        this();
+        this.id.set(id.toString());
+        this.nombre.set(nombre);
         this.empresa = empresa;
         this.categoria = categoria;
-        this.precio = precio;
-        this.fechaSalida = fechaSalida;
-        this.fechaRegreso = fechaRegreso;
+        this.precio.set(nombre);
+        if (this.fechaSalida != null) {
+            this.fechaSalida.set(fechaSalida);
+        } else {
+            this.fechaSalida.set(null);
+        }
+        if (this.fechaRegreso != null) {
+            this.fechaRegreso.set(fechaRegreso);
+        } else {
+            this.fechaRegreso.set(null);
+        }
         this.itinerario = itinerario;
-        this.cuposTotales = cuposTotales;
-        this.cuposDisponibles = cuposTotales;
+        this.cuposTotales.set(cuposTotales.toString());
+        this.cuposDisponibles.set(cuposDisponibles.toString());
         this.clientes = new ArrayList<>();
     }
     
     public Tour() {
+        this.id = new SimpleStringProperty();
+        this.nombre = new SimpleStringProperty();
+        this.empresa = null;
+        this.categoria = null;
+        this.precio = new SimpleStringProperty();
+        this.fechaSalida = new SimpleObjectProperty();
+        this.fechaRegreso = new SimpleObjectProperty();
+        this.itinerario = null;
+        this.cuposTotales = new SimpleStringProperty();
+        this.cuposDisponibles = new SimpleStringProperty();
         this.clientes = new ArrayList<>();
     }
 
     public Long getId() {
-        return id;
+        if (id.get() != null && !id.get().isEmpty()) {
+            return Long.valueOf(id.get());
+        } else {
+            return null;
+        }
     }
-
-    public void setId(Long id) {
-        this.id = id;
+    
+    public void setId(Long Id) {
+        this.id.set(Id.toString());
     }
 
     public String getNombre() {
-        return nombre;
+        return nombre.get();
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre.set(nombre);
     }
 
     public Empresa getEmpresa() {
@@ -75,28 +101,28 @@ public class Tour {
         this.categoria = categoria;
     }
 
-    public Long getPrecio() {
-        return precio;
+    public String getPrecio() {
+        return precio.get();
     }
 
-    public void setPrecio(Long precio) {
-        this.precio = precio;
+    public void setPrecio(String precio) {
+        this.precio.set(precio);
     }
 
     public LocalDate getFechaSalida() {
-        return fechaSalida;
+        return fechaSalida.get();
     }
 
     public void setFechaSalida(LocalDate fechaSalida) {
-        this.fechaSalida = fechaSalida;
+        this.fechaSalida.set(fechaSalida);
     }
 
     public LocalDate getFechaRegreso() {
-        return fechaRegreso;
+        return fechaRegreso.get();
     }
 
     public void setFechaRegreso(LocalDate fechaRegreso) {
-        this.fechaRegreso = fechaRegreso;
+        this.fechaRegreso.set(fechaRegreso);
     }
 
     public Itinerario getItinerario() {
@@ -108,19 +134,27 @@ public class Tour {
     }
 
     public Long getCuposTotales() {
-        return cuposTotales;
+        if (this.cuposTotales.get() != null && !this.cuposTotales.get().isEmpty()) {
+            return Long.valueOf(this.cuposTotales.get());
+        } else {
+            return null;
+        }
     }
 
     public void setCuposTotales(Long cuposTotales) {
-        this.cuposTotales = cuposTotales;
+        this.cuposTotales.set(cuposTotales.toString());
     }
 
     public Long getCuposDisponibles() {
-        return cuposDisponibles;
+        if (this.cuposDisponibles.get() != null && !this.cuposDisponibles.get().isEmpty()) {
+            return Long.valueOf(this.cuposDisponibles.get());
+        } else {
+            return null;
+        }
     }
 
     public void setCuposDisponibles(Long cuposDisponibles) {
-        this.cuposDisponibles = cuposDisponibles;
+        this.cuposDisponibles.set(cuposDisponibles.toString());
     }
 
     public List<Cliente> getClientes() {

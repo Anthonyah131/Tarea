@@ -41,15 +41,15 @@ public class App extends Application {
         Cliente cliente5 = new Cliente(5L,"Carlos", "Jimenez", "741852963", "123456789", "carlos@example.com", LocalDate.of(2002, 8, 10));
         clientes.add(cliente5);
         
-        Itinerario itinerario1 = new Itinerario(1L,"San José", LocalDateTime.of(2023, 4, 1, 10, 0), LocalDateTime.of(2023, 4, 2, 18, 0), 8, 1, 9.928069, -84.090729);
+        Itinerario itinerario1 = new Itinerario(1L,"San José", LocalDateTime.of(2023, 4, 1, 10, 0), LocalDateTime.of(2023, 4, 2, 18, 0), 8L, 1L, "9.928069", "-84.090729");
         itinerarios.add(itinerario1);
-        Itinerario itinerario2 = new Itinerario(2L, "Puerto Viejo", LocalDateTime.of(2023, 4, 3, 10, 0), LocalDateTime.of(2023, 4, 5, 18, 0), 2, 2, 9.654015, -82.757444);
+        Itinerario itinerario2 = new Itinerario(2L, "Puerto Viejo", LocalDateTime.of(2023, 4, 3, 10, 0), LocalDateTime.of(2023, 4, 5, 18, 0), 2L, 2L, "9.654015", "-82.757444");
         itinerarios.add(itinerario2);
-        Itinerario itinerario3 = new Itinerario(3L, "Arenal", LocalDateTime.of(2023, 5, 1, 10, 0), LocalDateTime.of(2023, 5, 3, 18, 0), 2, 3, 10.463287, -84.703027);
+        Itinerario itinerario3 = new Itinerario(3L, "Arenal", LocalDateTime.of(2023, 5, 1, 10, 0), LocalDateTime.of(2023, 5, 3, 18, 0), 2L, 3L, "10.463287", "-84.703027");
         itinerarios.add(itinerario3);
-        Itinerario itinerario4 = new Itinerario(4L, "Manuel Antonio", LocalDateTime.of(2023, 6, 1, 10, 0), LocalDateTime.of(2023, 6, 2, 18, 0), 8, 4, 9.394163, -84.136010);
+        Itinerario itinerario4 = new Itinerario(4L, "Manuel Antonio", LocalDateTime.of(2023, 6, 1, 10, 0), LocalDateTime.of(2023, 6, 2, 18, 0), 8L, 4L, "9.394163", "-84.136010");
         itinerarios.add(itinerario4);
-        Itinerario itinerario5 = new Itinerario(5L, "Tortuguero", LocalDateTime.of(2023, 7, 1, 10, 0), LocalDateTime.of(2023, 7, 4, 18, 0), 3, 5, 10.544650, -83.505056);
+        Itinerario itinerario5 = new Itinerario(5L, "Tortuguero", LocalDateTime.of(2023, 7, 1, 10, 0), LocalDateTime.of(2023, 7, 4, 18, 0), 3L, 5L, "10.544650", "-83.505056");
         itinerarios.add(itinerario5);
         
         Categoria categoria1 = new Categoria(1L, "Aventura", "Tours para los amantes de la adrenalina");
