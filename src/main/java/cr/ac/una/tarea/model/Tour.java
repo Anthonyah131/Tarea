@@ -16,25 +16,25 @@ import javafx.beans.property.SimpleStringProperty;
  * @author ANTHONY
  */
 public class Tour {
-    private SimpleStringProperty id;
-    private SimpleStringProperty nombre;
-    private Empresa empresa;
-    private Categoria categoria;
-    private SimpleStringProperty precio;
-    private ObjectProperty<LocalDate> fechaSalida;
-    private ObjectProperty<LocalDate> fechaRegreso;
-    private Itinerario itinerario;
-    private SimpleStringProperty cuposTotales;
-    private SimpleStringProperty cuposDisponibles;
-    private List<Cliente> clientes;
+    public SimpleStringProperty id;
+    public SimpleStringProperty nombre;
+    public ObjectProperty<Empresa> empresa;
+    public Categoria categoria;
+    public SimpleStringProperty precio;
+    public ObjectProperty<LocalDate> fechaSalida;
+    public ObjectProperty<LocalDate> fechaRegreso;
+    public Itinerario itinerario;
+    public SimpleStringProperty cuposTotales;
+    public SimpleStringProperty cuposDisponibles;
+    public List<Cliente> clientes;
 
     public Tour(Long id, String nombre,Empresa empresa, Categoria categoria, Long precio, LocalDate fechaSalida, LocalDate fechaRegreso, Itinerario itinerario, Long cuposTotales) {
         this();
         this.id.set(id.toString());
         this.nombre.set(nombre);
-        this.empresa = empresa;
+        this.empresa.set(empresa);
         this.categoria = categoria;
-        this.precio.set(nombre);
+        this.precio.set(precio.toString());
         if (this.fechaSalida != null) {
             this.fechaSalida.set(fechaSalida);
         } else {
@@ -47,14 +47,14 @@ public class Tour {
         }
         this.itinerario = itinerario;
         this.cuposTotales.set(cuposTotales.toString());
-        this.cuposDisponibles.set(cuposDisponibles.toString());
+        this.cuposDisponibles.set(cuposTotales.toString());
         this.clientes = new ArrayList<>();
     }
     
     public Tour() {
         this.id = new SimpleStringProperty();
         this.nombre = new SimpleStringProperty();
-        this.empresa = null;
+        this.empresa = new SimpleObjectProperty<>();
         this.categoria = null;
         this.precio = new SimpleStringProperty();
         this.fechaSalida = new SimpleObjectProperty();
@@ -86,11 +86,11 @@ public class Tour {
     }
 
     public Empresa getEmpresa() {
-        return empresa;
+        return empresa.get();
     }
 
     public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
+        this.empresa.set(empresa);
     }
 
     public Categoria getCategoria() {
@@ -101,12 +101,16 @@ public class Tour {
         this.categoria = categoria;
     }
 
-    public String getPrecio() {
-        return precio.get();
+    public Long getPrecio() {
+        if (this.precio.get() != null && !this.precio.get().isEmpty()) {
+            return Long.valueOf(this.precio.get());
+        } else {
+            return null;
+        }
     }
 
-    public void setPrecio(String precio) {
-        this.precio.set(precio);
+    public void setPrecio(Long precio) {
+        this.precio.set(precio.toString());
     }
 
     public LocalDate getFechaSalida() {

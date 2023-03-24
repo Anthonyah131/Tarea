@@ -94,6 +94,10 @@ public class BusquedaViewController extends Controller implements Initializable 
     public Object getResultado() {
         return resultado;
     }
+    
+    public void SetResultado() {
+        resultado = null;
+    }
 
     private void cargarTours(String nombre, String empresa, String categoria, String precio) {
         tours.clear();

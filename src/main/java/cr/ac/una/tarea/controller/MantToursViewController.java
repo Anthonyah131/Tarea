@@ -9,7 +9,6 @@ import com.jfoenix.controls.JFXComboBox;
 import cr.ac.una.tarea.model.Categoria;
 import cr.ac.una.tarea.model.Empresa;
 import cr.ac.una.tarea.model.Tour;
-import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.FlowController;
 import cr.ac.una.tarea.util.Formato;
@@ -19,6 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -77,10 +77,6 @@ public class MantToursViewController extends Controller implements Initializable
     private JFXButton jfxBtnClientes;
 
     Tour tour;
-    ObjectProperty<LocalDate> fechaSalidaProperty;
-    ObjectProperty<LocalDate> fechaRegresoProperty;
-    ObjectProperty<Empresa> empresaProperty;
-    ObjectProperty<Categoria> categoriaProperty;
 
     ObservableList<Empresa> empresas = FXCollections.observableArrayList();
     ObservableList<Categoria> categorias = FXCollections.observableArrayList();
@@ -97,14 +93,10 @@ public class MantToursViewController extends Controller implements Initializable
         txtDisponibles.setTextFormatter(Formato.getInstance().integerFormat());
         jfxTxaItinerario.setTextFormatter(Formato.getInstance().letrasFormat(50));
         tour = new Tour();
-        fechaSalidaProperty = new SimpleObjectProperty<>(tour.getFechaSalida());
-        fechaRegresoProperty = new SimpleObjectProperty<>(tour.getFechaRegreso());
+        nuevoTour();
 
         categorias.addAll((List<Categoria>) AppContext.getInstance().get("CategoriasLista"));
         empresas.addAll((List<Empresa>) AppContext.getInstance().get("EmpresasLista"));
-
-        empresaProperty = new SimpleObjectProperty<>(tour.getEmpresa());
-        categoriaProperty = new SimpleObjectProperty<>(tour.getCategoria());
 
         jfxCbxCategoria.setItems(categorias);
         jfxCbxEmpresa.setItems(empresas);
@@ -113,6 +105,7 @@ public class MantToursViewController extends Controller implements Initializable
 
     @Override
     public void initialize() {
+        limpiarCBX();
     }
 
     @FXML
@@ -124,20 +117,31 @@ public class MantToursViewController extends Controller implements Initializable
         BusquedaViewController busquedaController = (BusquedaViewController) FlowController.getInstance().getController("BusquedaView");
         busquedaController.busquedaTours();
         FlowController.getInstance().goViewInWindowModal("BusquedaView", getStage(), true);
-        tour = (Tour) busquedaController.getResultado();
-        cargarTour();
+        tour = (Tour) busquedaController.getResultado();        
+        busquedaController.SetResultado();
+        if (tour == null) {
+            tour = new Tour();
+        }
+        limpiarCBX();
+        unbindTour();
+        bindTour(false);
+        
     }
 
     @FXML
     private void onActionBtnNuevo(ActionEvent event) {
+        limpiarCBX();
+        nuevoTour();
     }
 
     @FXML
     private void onActionBtnGuardar(ActionEvent event) {
+        limpiarCBX();
     }
 
     @FXML
     private void onActionJfxBtnEliminar(ActionEvent event) {
+        limpiarCBX();
     }
 
     @FXML
@@ -150,31 +154,27 @@ public class MantToursViewController extends Controller implements Initializable
 
     private void bindTour(Boolean nuevo) {
         if (!nuevo) {
-            txtId.textProperty().bind(new SimpleStringProperty(tour.getId().toString()));
+            txtId.textProperty().bind(tour.id);
         }
-        txtNombre.textProperty().bindBidirectional(new SimpleStringProperty(tour.getNombre()));
-        txtPrecio.textProperty().bindBidirectional(new SimpleStringProperty(tour.getPrecio().toString()));
-        txtCuposTotales.textProperty().bindBidirectional(new SimpleStringProperty(tour.getCuposTotales().toString()));
-        txtDisponibles.textProperty().bindBidirectional(new SimpleStringProperty(tour.getCuposDisponibles().toString()));
-        //jfxTxaItinerario.textProperty().bindBidirectional(new SimpleStringProperty(tour.getCorreo()));
-        fechaSalidaProperty = new SimpleObjectProperty<>(tour.getFechaSalida());
-        fechaRegresoProperty = new SimpleObjectProperty<>(tour.getFechaRegreso());
-        dpFechaSalida.valueProperty().bindBidirectional(fechaSalidaProperty);
-        dpFechaRegreso.valueProperty().bindBidirectional(fechaRegresoProperty);
-        empresaProperty = new SimpleObjectProperty<>(tour.getEmpresa());
-        categoriaProperty = new SimpleObjectProperty<>(tour.getCategoria());
-        jfxCbxEmpresa.valueProperty().bindBidirectional(empresaProperty);
-        jfxCbxCategoria.valueProperty().bindBidirectional(categoriaProperty);
+        txtNombre.textProperty().bindBidirectional(tour.nombre);
+        txtPrecio.textProperty().bindBidirectional(tour.precio);
+        txtCuposTotales.textProperty().bindBidirectional(tour.cuposTotales);
+        txtDisponibles.textProperty().bindBidirectional(tour.cuposDisponibles);
+//        jfxTxaItinerario.textProperty().bindBidirectional((Property<String>) tour.itinerario);
+        dpFechaSalida.valueProperty().bindBidirectional(tour.fechaSalida);
+        dpFechaRegreso.valueProperty().bindBidirectional(tour.fechaRegreso);
+        jfxCbxEmpresa.valueProperty().bindBidirectional((Property<Empresa>) tour.empresa);
+//        jfxCbxCategoria.valueProperty().bindBidirectional((Property<Categoria>) tour.categoria);
     }
 
     private void unbindTour() {
         txtId.textProperty().unbind();
-        txtNombre.textProperty().unbindBidirectional(tour.getNombre());
-        txtPrecio.textProperty().unbindBidirectional(tour.getPrecio());
-        txtCuposTotales.textProperty().unbindBidirectional(tour.getCuposTotales());
-        txtDisponibles.textProperty().unbindBidirectional(tour.getCuposDisponibles());
-        dpFechaSalida.valueProperty().unbindBidirectional(fechaSalidaProperty);
-        dpFechaRegreso.valueProperty().unbindBidirectional(fechaRegresoProperty);
+        txtNombre.textProperty().unbindBidirectional(tour.nombre);
+        txtPrecio.textProperty().unbindBidirectional(tour.precio);
+        txtCuposTotales.textProperty().unbindBidirectional(tour.cuposTotales);
+        txtDisponibles.textProperty().unbindBidirectional(tour.cuposDisponibles);
+        dpFechaSalida.valueProperty().unbindBidirectional(tour.fechaSalida);
+        dpFechaRegreso.valueProperty().unbindBidirectional(tour.fechaRegreso);
     }
 
     private void nuevoTour() {
@@ -183,6 +183,16 @@ public class MantToursViewController extends Controller implements Initializable
         bindTour(true);
         txtId.clear();
         txtId.requestFocus();
+    }
+    
+    private void limpiarCBX() {
+        jfxCbxCategoria.getItems().clear();
+        jfxCbxEmpresa.getItems().clear();
+        
+        categorias.addAll((List<Categoria>) AppContext.getInstance().get("CategoriasLista"));
+        empresas.addAll((List<Empresa>) AppContext.getInstance().get("EmpresasLista"));
+        jfxCbxCategoria.setItems(categorias);
+        jfxCbxEmpresa.setItems(empresas);
     }
 
     private void cargarTour() {

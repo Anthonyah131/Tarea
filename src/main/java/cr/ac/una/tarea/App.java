@@ -139,7 +139,10 @@ public class App extends Application {
         // Instancia 15      
         Tour tour15 = new Tour(15L, "Tour de la Playa", empresa1, categoria3, 90000L, LocalDate.of(2023, 9, 1), LocalDate.of(2023, 9, 7), itinerario1, 25L);
         tours.add(tour15);
+        
+        Long contador[] = {5L,5L,5L,15L};
 
+        AppContext.getInstance().set("Contador", contador);
         AppContext.getInstance().set("ToursLista", tours);
         AppContext.getInstance().set("CategoriasLista", categorias);
         AppContext.getInstance().set("ClientesLista", clientes);

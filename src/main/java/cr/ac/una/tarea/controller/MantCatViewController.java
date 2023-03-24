@@ -6,18 +6,16 @@ package cr.ac.una.tarea.controller;
 
 import com.jfoenix.controls.JFXButton;
 import cr.ac.una.tarea.model.Categoria;
+import cr.ac.una.tarea.model.Cliente;
 import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.FlowController;
 import cr.ac.una.tarea.util.Formato;
 import cr.ac.una.tarea.util.Mensaje;
 import java.net.URL;
-import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -72,10 +70,14 @@ public class MantCatViewController extends Controller implements Initializable {
         BusquedaViewController busquedaController = (BusquedaViewController) FlowController.getInstance().getController("BusquedaView");
         busquedaController.busquedaCategoria();
         FlowController.getInstance().goViewInWindowModal("BusquedaView", getStage(), true);
-        unbindCategoria();
         categoria = (Categoria) busquedaController.getResultado();
+        busquedaController.SetResultado();
+        if (categoria == null) {
+            categoria = new Categoria();
+        }
+        unbindCategoria();
         bindCategoria(false);
-        cargarCategoria();
+        //cargarCategoria();
     }
 
     @FXML
@@ -88,25 +90,54 @@ public class MantCatViewController extends Controller implements Initializable {
     @FXML
     private void onActionBtnGuardar(ActionEvent event) {
         try {
+            Boolean banderaNuevo = true;
             ObservableList<Categoria> categorias = (ObservableList<Categoria>) AppContext.getInstance().get("CategoriasLista");
-            for (Categoria cat : categorias) {
-                if (Objects.equals(cat.getId(), categoria.getId())) {
-                    cat.setNombre(categoria.getNombre());
+            if (categoria.getId() != null) {
+                for (Categoria cat : categorias) {
+                    if (Objects.equals(cat.getId(), categoria.getId())) {
+                        cat = categoria;
+                        banderaNuevo = false;
+                    }
                 }
             }
-            unbindCategoria();
-            bindCategoria(false);
-            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar empleado", getStage(), "Empleado actualizado correctamente.");
+            if (banderaNuevo) {
+                Long contador[] = (Long[]) AppContext.getInstance().get("Contador");
+                contador[0]++;
+                categoria.setId(contador[0]);
+                categorias.add(categoria);
+            }
+            nuevoCategoria();
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Categoria", getStage(), "Categoria actualizado correctamente.");
 
         } catch (Exception ex) {
             Logger.getLogger(MantCatViewController.class.getName()).log(Level.SEVERE, "Error guardando el empleado.", ex);
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar empleado", getStage(), "Ocurrio un error guardando el empleado.");
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Categoria", getStage(), "Ocurrio un error guardando la Categoria.");
         }
     }
 
     @FXML
-    private void onActionJfxBtnEliminar(ActionEvent event
-    ) {
+    private void onActionJfxBtnEliminar(ActionEvent event) {
+        try {
+            if (categoria.getId() == null) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Categoria", getStage(), "Debe cargar la Categoria que desea eliminar.");
+            } else {
+                ObservableList<Categoria> categorias = (ObservableList<Categoria>) AppContext.getInstance().get("CategoriasLista");
+//                for (Categoria cat : categorias) {
+                for (int i = 0; i < categorias.size(); i++) {
+//                    if (Objects.equals(cat.getId(), categoria.getId())) {
+//                        categorias.remove(cat);
+//                    }
+                    if (Objects.equals(categorias.get(i).getId(), categoria.getId())) {
+                        categorias.remove(categorias.get(i));
+                    }
+                }
+                nuevoCategoria();
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Categoria", getStage(), "Categoria eliminado correctamente.");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MantCatViewController.class.getName()).log(Level.SEVERE, "Error eliminando la Categoria.", ex);
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Categoria", getStage(), "Ocurrio un error eliminando la Categoria.");
+        }
     }
 
     @FXML
@@ -138,7 +169,7 @@ public class MantCatViewController extends Controller implements Initializable {
         if (categoria != null) {
 
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar empleado", getStage(), "Erro al Cargar empleado");
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Categoria", getStage(), "Erro al Cargar Categoria");
         }
     }
 }

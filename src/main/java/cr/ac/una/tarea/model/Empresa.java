@@ -108,4 +108,10 @@ public class Empresa {
     public void setAnioFundacion(Long anioFundacion) {
         this.anioFundacion.set(anioFundacion.toString());
     }
+
+    @Override
+    public String toString() {
+        return "Empresa{" + "nombre=" + nombre + '}';
+    }
+    
 }
