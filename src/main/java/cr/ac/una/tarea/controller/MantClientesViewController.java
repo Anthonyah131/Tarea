@@ -78,6 +78,7 @@ public class MantClientesViewController extends Controller implements Initializa
 
     @FXML
     private void onActionJfxBtnBuscar(ActionEvent event) {
+        nuevoCliente();
         BusquedaViewController busquedaController = (BusquedaViewController) FlowController.getInstance().getController("BusquedaView");
         busquedaController.busquedaCliente();
         FlowController.getInstance().goViewInWindowModal("BusquedaView", getStage(), true);

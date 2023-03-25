@@ -57,4 +57,10 @@ public class Categoria {
         this.descripcion.set(descripcion);
     }
 
+    @Override
+    public String toString() {
+        return nombre.get();
+    }
+
+    
 }

@@ -18,12 +18,12 @@ import javafx.beans.property.SimpleStringProperty;
 public class Tour {
     public SimpleStringProperty id;
     public SimpleStringProperty nombre;
-    public ObjectProperty<Empresa> empresa;
+    public Empresa empresa;
     public Categoria categoria;
     public SimpleStringProperty precio;
     public ObjectProperty<LocalDate> fechaSalida;
     public ObjectProperty<LocalDate> fechaRegreso;
-    public Itinerario itinerario;
+    public ObjectProperty<Itinerario> itinerario;
     public SimpleStringProperty cuposTotales;
     public SimpleStringProperty cuposDisponibles;
     public List<Cliente> clientes;
@@ -32,7 +32,7 @@ public class Tour {
         this();
         this.id.set(id.toString());
         this.nombre.set(nombre);
-        this.empresa.set(empresa);
+        this.empresa = empresa;
         this.categoria = categoria;
         this.precio.set(precio.toString());
         if (this.fechaSalida != null) {
@@ -45,7 +45,7 @@ public class Tour {
         } else {
             this.fechaRegreso.set(null);
         }
-        this.itinerario = itinerario;
+        this.itinerario.set(itinerario);
         this.cuposTotales.set(cuposTotales.toString());
         this.cuposDisponibles.set(cuposTotales.toString());
         this.clientes = new ArrayList<>();
@@ -54,12 +54,12 @@ public class Tour {
     public Tour() {
         this.id = new SimpleStringProperty();
         this.nombre = new SimpleStringProperty();
-        this.empresa = new SimpleObjectProperty<>();
-        this.categoria = null;
+        this.empresa = new Empresa();
+        this.categoria = new Categoria();
         this.precio = new SimpleStringProperty();
         this.fechaSalida = new SimpleObjectProperty();
         this.fechaRegreso = new SimpleObjectProperty();
-        this.itinerario = null;
+        this.itinerario = new SimpleObjectProperty();
         this.cuposTotales = new SimpleStringProperty();
         this.cuposDisponibles = new SimpleStringProperty();
         this.clientes = new ArrayList<>();
@@ -86,11 +86,11 @@ public class Tour {
     }
 
     public Empresa getEmpresa() {
-        return empresa.get();
+        return empresa;
     }
 
     public void setEmpresa(Empresa empresa) {
-        this.empresa.set(empresa);
+        this.empresa = empresa;
     }
 
     public Categoria getCategoria() {
@@ -130,11 +130,11 @@ public class Tour {
     }
 
     public Itinerario getItinerario() {
-        return itinerario;
+        return itinerario.get();
     }
 
     public void setItinerario(Itinerario itinerario) {
-        this.itinerario = itinerario;
+        this.itinerario.set(itinerario);
     }
 
     public Long getCuposTotales() {

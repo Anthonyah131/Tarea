@@ -6,7 +6,7 @@ package cr.ac.una.tarea.controller;
 
 import com.jfoenix.controls.JFXButton;
 import cr.ac.una.tarea.model.Categoria;
-import cr.ac.una.tarea.model.Cliente;
+import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.FlowController;
 import cr.ac.una.tarea.util.Formato;
@@ -67,6 +67,7 @@ public class MantCatViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionJfxBtnBuscar(ActionEvent event) {
+        nuevoCategoria();
         BusquedaViewController busquedaController = (BusquedaViewController) FlowController.getInstance().getController("BusquedaView");
         busquedaController.busquedaCategoria();
         FlowController.getInstance().goViewInWindowModal("BusquedaView", getStage(), true);
@@ -118,21 +119,28 @@ public class MantCatViewController extends Controller implements Initializable {
     @FXML
     private void onActionJfxBtnEliminar(ActionEvent event) {
         try {
-            if (categoria.getId() == null) {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Categoria", getStage(), "Debe cargar la Categoria que desea eliminar.");
-            } else {
-                ObservableList<Categoria> categorias = (ObservableList<Categoria>) AppContext.getInstance().get("CategoriasLista");
-//                for (Categoria cat : categorias) {
-                for (int i = 0; i < categorias.size(); i++) {
-//                    if (Objects.equals(cat.getId(), categoria.getId())) {
-//                        categorias.remove(cat);
-//                    }
-                    if (Objects.equals(categorias.get(i).getId(), categoria.getId())) {
-                        categorias.remove(categorias.get(i));
-                    }
+            Boolean existe = false;
+            ObservableList<Tour> tours = (ObservableList<Tour>) AppContext.getInstance().get("ToursLista");
+            for (Tour tour : tours) {
+                if (tour.getCategoria().getId().equals(categoria.getId())) {
+                    existe = true;
                 }
-                nuevoCategoria();
-                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Categoria", getStage(), "Categoria eliminado correctamente.");
+            }
+            if (!existe) {
+                if (categoria.getId() == null) {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Categoria", getStage(), "Debe cargar la Categoria que desea eliminar.");
+                } else {
+                    ObservableList<Categoria> categorias = (ObservableList<Categoria>) AppContext.getInstance().get("CategoriasLista");
+                    for (int i = 0; i < categorias.size(); i++) {
+                        if (Objects.equals(categorias.get(i).getId(), categoria.getId())) {
+                            categorias.remove(categorias.get(i));
+                        }
+                    }
+                    nuevoCategoria();
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Categoria", getStage(), "Categoria eliminado correctamente.");
+                }
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Empresa", getStage(), "No se puede eliminar una empresa vinculada con un Tour");
             }
         } catch (Exception ex) {
             Logger.getLogger(MantCatViewController.class.getName()).log(Level.SEVERE, "Error eliminando la Categoria.", ex);

@@ -14,13 +14,11 @@ import cr.ac.una.tarea.util.FlowController;
 import cr.ac.una.tarea.util.Formato;
 import cr.ac.una.tarea.util.Mensaje;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -114,34 +112,112 @@ public class MantToursViewController extends Controller implements Initializable
 
     @FXML
     private void onActionJfxBtnBuscar(ActionEvent event) {
+        nuevoTour();
         BusquedaViewController busquedaController = (BusquedaViewController) FlowController.getInstance().getController("BusquedaView");
         busquedaController.busquedaTours();
         FlowController.getInstance().goViewInWindowModal("BusquedaView", getStage(), true);
-        tour = (Tour) busquedaController.getResultado();        
+        tour = (Tour) busquedaController.getResultado();
         busquedaController.SetResultado();
-        if (tour == null) {
+        limpiarCBX();
+        if (tour != null) {
+            jfxCbxCategoria.setValue(tour.categoria);
+            jfxCbxEmpresa.setValue(tour.empresa);
+        } else {
             tour = new Tour();
         }
-        limpiarCBX();
         unbindTour();
         bindTour(false);
-        
+
     }
 
     @FXML
     private void onActionBtnNuevo(ActionEvent event) {
-        limpiarCBX();
-        nuevoTour();
+        if (new Mensaje().showConfirmation("Limpiar Tour", getStage(), "¿Esta seguro que desea limpiar el registro?")) {
+            limpiarCBX();
+            nuevoTour();
+        }
     }
 
     @FXML
     private void onActionBtnGuardar(ActionEvent event) {
-        limpiarCBX();
+        try {
+            Boolean banderaNuevo = true;
+            ObservableList<Tour> tours = (ObservableList<Tour>) AppContext.getInstance().get("ToursLista");
+            if (tour.getId() != null) {
+                for (Tour tou : tours) {
+                    if (Objects.equals(tou.getId(), tour.getId())) {
+                        for (Empresa empr : empresas) {
+                            if (Objects.equals(jfxCbxEmpresa.getValue().getId(), empr.getId())) {
+                                tour.setEmpresa(empr);
+                                System.out.println("Entra" + empr);
+                            }
+                        }
+                        for (Categoria cat : categorias) {
+                            if (Objects.equals(jfxCbxCategoria.getValue().getId(), cat.getId())) {
+                                tour.setCategoria(cat);
+                                System.out.println("Entra" + cat);
+                            }
+                        }
+                        tou = tour;
+                        banderaNuevo = false;
+                    }
+                }
+            }
+            if (banderaNuevo) {
+                Long contador[] = (Long[]) AppContext.getInstance().get("Contador");
+                for (Empresa empr : empresas) {
+                    if (Objects.equals(jfxCbxEmpresa.getValue().getId(), empr.getId())) {
+                        tour.setEmpresa(empr);
+                        System.out.println("Entra" + empr);
+                    }
+                }
+                for (Categoria cat : categorias) {
+                    if (Objects.equals(jfxCbxCategoria.getValue().getId(), cat.getId())) {
+                        tour.setCategoria(cat);
+                        System.out.println("Entra" + cat);
+                    }
+                }
+                contador[3]++;
+                tour.setId(contador[3]);
+                tours.add(tour);
+            }
+            for (Tour tou : tours) {
+                System.out.println(tou.getEmpresa());
+            }
+            limpiarCBX();
+            nuevoTour();
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Tour", getStage(), "Tour actualizado correctamente.");
+
+        } catch (Exception ex) {
+            Logger.getLogger(MantCatViewController.class.getName()).log(Level.SEVERE, "Error guardando el Tour.", ex);
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Tour", getStage(), "Ocurrio un error guardando el Tour.");
+        }
     }
 
     @FXML
     private void onActionJfxBtnEliminar(ActionEvent event) {
-        limpiarCBX();
+        try {
+            if (tour.getId() == null) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Tour", getStage(), "Debe cargar la Tour que desea eliminar.");
+            } else {
+                ObservableList<Tour> tours = (ObservableList<Tour>) AppContext.getInstance().get("ToursLista");
+//                for (Categoria cat : categorias) {
+                for (int i = 0; i < tours.size(); i++) {
+//                    if (Objects.equals(cat.getId(), categoria.getId())) {
+//                        categorias.remove(cat);
+//                    }
+                    if (Objects.equals(tours.get(i).getId(), tour.getId())) {
+                        tours.remove(tours.get(i));
+                    }
+                }
+                nuevoTour();
+                limpiarCBX();
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Tour", getStage(), "Tour eliminado correctamente.");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MantCatViewController.class.getName()).log(Level.SEVERE, "Error eliminando la Tour.", ex);
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Tour", getStage(), "Ocurrio un error eliminando la Tour.");
+        }
     }
 
     @FXML
@@ -160,11 +236,8 @@ public class MantToursViewController extends Controller implements Initializable
         txtPrecio.textProperty().bindBidirectional(tour.precio);
         txtCuposTotales.textProperty().bindBidirectional(tour.cuposTotales);
         txtDisponibles.textProperty().bindBidirectional(tour.cuposDisponibles);
-//        jfxTxaItinerario.textProperty().bindBidirectional((Property<String>) tour.itinerario);
         dpFechaSalida.valueProperty().bindBidirectional(tour.fechaSalida);
         dpFechaRegreso.valueProperty().bindBidirectional(tour.fechaRegreso);
-        jfxCbxEmpresa.valueProperty().bindBidirectional((Property<Empresa>) tour.empresa);
-//        jfxCbxCategoria.valueProperty().bindBidirectional((Property<Categoria>) tour.categoria);
     }
 
     private void unbindTour() {
@@ -184,11 +257,14 @@ public class MantToursViewController extends Controller implements Initializable
         txtId.clear();
         txtId.requestFocus();
     }
-    
+
     private void limpiarCBX() {
         jfxCbxCategoria.getItems().clear();
         jfxCbxEmpresa.getItems().clear();
-        
+
+        categorias = FXCollections.observableArrayList();
+        empresas = FXCollections.observableArrayList();
+
         categorias.addAll((List<Categoria>) AppContext.getInstance().get("CategoriasLista"));
         empresas.addAll((List<Empresa>) AppContext.getInstance().get("EmpresasLista"));
         jfxCbxCategoria.setItems(categorias);

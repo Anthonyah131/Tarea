@@ -106,7 +106,7 @@ public class BusquedaViewController extends Controller implements Initializable 
             tbvResultados.setItems(tours);
             tbvResultados.refresh();
             for (Tour tour : tours) {
-                System.out.println(tour.getNombre() + "Hola ");
+                System.out.println(tour.getEmpresa() + " Hola ");
             }
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Tours", getStage(), "Error cargando los Tours");
@@ -186,19 +186,19 @@ public class BusquedaViewController extends Controller implements Initializable 
 
             TableColumn<Tour, String> tbcId = new TableColumn<>("Id");
             tbcId.setPrefWidth(25);
-            tbcId.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getId().toString()));
+            tbcId.setCellValueFactory(cd -> cd.getValue().id);
 
             TableColumn<Tour, String> tbcNombre = new TableColumn<>("Nombre");
             tbcNombre.setPrefWidth(100);
-            tbcNombre.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
+            tbcNombre.setCellValueFactory(cd -> cd.getValue().nombre);
 
             TableColumn<Tour, String> tbcEmpresa = new TableColumn<>("Empresa");
             tbcEmpresa.setPrefWidth(100);
-            tbcEmpresa.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getEmpresa().getNombre()));
+            tbcEmpresa.setCellValueFactory(cd -> cd.getValue().getEmpresa().nombre);
 
             TableColumn<Tour, String> tbcCategoria = new TableColumn<>("Categoria");
             tbcCategoria.setPrefWidth(100);
-            tbcCategoria.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getCategoria().getNombre()));
+            tbcCategoria.setCellValueFactory(cd -> cd.getValue().getCategoria().nombre);
 
             tbvResultados.getColumns().add(tbcId);
             tbvResultados.getColumns().add(tbcNombre);

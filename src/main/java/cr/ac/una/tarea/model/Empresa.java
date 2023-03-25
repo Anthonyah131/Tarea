@@ -111,7 +111,7 @@ public class Empresa {
 
     @Override
     public String toString() {
-        return "Empresa{" + "nombre=" + nombre + '}';
+        return nombre.get();
     }
     
 }
