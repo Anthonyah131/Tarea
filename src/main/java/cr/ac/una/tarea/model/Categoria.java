@@ -14,19 +14,16 @@ public class Categoria {
 
     public SimpleStringProperty id;
     public SimpleStringProperty nombre;
-    public SimpleStringProperty descripcion;
 
     public Categoria() {
         this.id = new SimpleStringProperty();
         this.nombre = new SimpleStringProperty();
-        this.descripcion = new SimpleStringProperty();
     }
 
-    public Categoria(Long id, String nombre, String descripcion) {
+    public Categoria(Long id, String nombre) {
         this();
         this.id.set(id.toString());
         this.nombre.set(nombre);
-        this.descripcion.set(descripcion);
     }
 
     public Long getId() {
@@ -47,14 +44,6 @@ public class Categoria {
 
     public void setNombre(String empNombre) {
         this.nombre.set(empNombre);
-    }
-
-    public String getDescripcion() {
-        return descripcion.get();
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion.set(descripcion);
     }
 
     @Override

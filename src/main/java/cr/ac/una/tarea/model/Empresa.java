@@ -4,7 +4,10 @@
  */
 package cr.ac.una.tarea.model;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.image.Image;
 
 /**
  *
@@ -15,12 +18,12 @@ public class Empresa {
     public SimpleStringProperty id;
     public SimpleStringProperty nombre;
     public SimpleStringProperty cedulaJuridica;
-    public SimpleStringProperty logo;
+    public ObjectProperty<Image> logo;
     public SimpleStringProperty telefono;
     public SimpleStringProperty email;
     public SimpleStringProperty anioFundacion;
 
-    public Empresa(Long id, String nombre, String cedulaJuridica, String logo, Long telefono, String email, Long anioFundacion) {
+    public Empresa(Long id, String nombre, String cedulaJuridica, Image logo, Long telefono, String email, Long anioFundacion) {
         this();
         this.id.set(id.toString());
         this.nombre.set(nombre);
@@ -35,7 +38,7 @@ public class Empresa {
         this.id = new SimpleStringProperty();
         this.nombre = new SimpleStringProperty();
         this.cedulaJuridica = new SimpleStringProperty();
-        this.logo = new SimpleStringProperty();
+        this.logo = new SimpleObjectProperty();
         this.telefono = new SimpleStringProperty();
         this.email = new SimpleStringProperty();
         this.anioFundacion = new SimpleStringProperty();
@@ -69,11 +72,11 @@ public class Empresa {
         this.cedulaJuridica.set(cedulaJuridica);
     }
 
-    public String getLogo() {
+    public Image getLogo() {
         return logo.get();
     }
 
-    public void setLogo(String logo) {
+    public void setLogo(Image logo) {
         this.logo.set(logo);
     }
 

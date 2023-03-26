@@ -11,18 +11,22 @@ import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.FlowController;
 import cr.ac.una.tarea.util.Formato;
 import cr.ac.una.tarea.util.Mensaje;
+import java.io.File;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.Property;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
 /**
  * FXML Controller class
@@ -59,6 +63,7 @@ public class MantEmpresaViewController extends Controller implements Initializab
     private JFXButton jfxBtnCancelar;
 
     Empresa empresa;
+    Image logo;
 
     /**
      * Initializes the controller class.
@@ -81,6 +86,16 @@ public class MantEmpresaViewController extends Controller implements Initializab
 
     @FXML
     private void onActionJfxBtnBuscarLogo(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();//Instancia el buscador de archivo
+        fileChooser.setTitle("Buscar Imagen");//Le pone un titulo a la ventala del buscador
+        
+        //Filtra la busqueda utilizando las extanciones jpg y png
+        fileChooser.getExtensionFilters().addAll( new FileChooser.ExtensionFilter("All Images", "*.*"),new FileChooser.ExtensionFilter("JPG", "*.jpg"),new FileChooser.ExtensionFilter("PNG", "*.png"));
+        
+        //trae la imagen
+        File file = fileChooser.showOpenDialog(null);
+        logo = new Image("file:"+ file.getAbsolutePath());
+        imgLogo.setImage(logo);
     }
 
     @FXML
@@ -113,6 +128,7 @@ public class MantEmpresaViewController extends Controller implements Initializab
             if (empresa.getId() != null) {
                 for (Empresa empre : empresas) {
                     if (Objects.equals(empre.getId(), empresa.getId())) {
+                        empresa.setLogo(logo);
                         empre = empresa;
                         banderaNuevo = false;
                     }
@@ -123,6 +139,7 @@ public class MantEmpresaViewController extends Controller implements Initializab
                 Long contador[] = (Long[]) AppContext.getInstance().get("Contador");
                 contador[2]++;
                 empresa.setId(contador[2]);
+                empresa.setLogo(logo);
                 empresas.add(empresa);
             }
             nuevoEmpresa();
@@ -179,6 +196,7 @@ public class MantEmpresaViewController extends Controller implements Initializab
         txtTelefono.textProperty().bindBidirectional(empresa.telefono);
         txtEmail.textProperty().bindBidirectional(empresa.email);
         txtAnioFundacion.textProperty().bindBidirectional(empresa.anioFundacion);
+        imgLogo.imageProperty().bindBidirectional(empresa.logo);
     }
 
     private void unbindEmpresa() {
@@ -188,6 +206,7 @@ public class MantEmpresaViewController extends Controller implements Initializab
         txtTelefono.textProperty().unbindBidirectional(empresa.telefono);
         txtEmail.textProperty().unbindBidirectional(empresa.email);
         txtAnioFundacion.textProperty().unbindBidirectional(empresa.anioFundacion);
+        imgLogo.imageProperty().unbindBidirectional(empresa.logo);
     }
 
     private void nuevoEmpresa() {

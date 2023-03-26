@@ -12,7 +12,9 @@ import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.FlowController;
 import cr.ac.una.tarea.util.Formato;
+import cr.ac.una.tarea.util.ImageSwitcher;
 import cr.ac.una.tarea.util.Mensaje;
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +30,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
 /**
  * FXML Controller class
@@ -78,6 +82,7 @@ public class MantToursViewController extends Controller implements Initializable
 
     ObservableList<Empresa> empresas = FXCollections.observableArrayList();
     ObservableList<Categoria> categorias = FXCollections.observableArrayList();
+    ImageSwitcher switcher = new ImageSwitcher();
 
     /**
      * Initializes the controller class.
@@ -98,7 +103,6 @@ public class MantToursViewController extends Controller implements Initializable
 
         jfxCbxCategoria.setItems(categorias);
         jfxCbxEmpresa.setItems(empresas);
-
     }
 
     @Override
@@ -108,6 +112,22 @@ public class MantToursViewController extends Controller implements Initializable
 
     @FXML
     private void onActionBtnBuscarFotos(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();//Instancia el buscador de archivo
+        fileChooser.setTitle("Buscar Imagen");//Le pone un titulo a la ventala del buscador
+
+        //Filtra la busqueda utilizando las extanciones jpg y png
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Images", "*.*"), new FileChooser.ExtensionFilter("JPG", "*.jpg"), new FileChooser.ExtensionFilter("PNG", "*.png"));
+
+        //trae la imagen
+        List<File> file = fileChooser.showOpenMultipleDialog(null);
+        if (!file.isEmpty()) {
+            tour.getFotos().clear();
+            for (File fi : file) {
+                tour.getFotos().add(new Image("file:" + fi.getAbsolutePath()));
+            }
+            switcher = new ImageSwitcher(tour.getFotos(), imgFotos);
+            switcher.start();
+        }
     }
 
     @FXML
@@ -120,8 +140,12 @@ public class MantToursViewController extends Controller implements Initializable
         busquedaController.SetResultado();
         limpiarCBX();
         if (tour != null) {
+            switcher.stop();
+            imgFotos.setImage(null);
             jfxCbxCategoria.setValue(tour.categoria);
             jfxCbxEmpresa.setValue(tour.empresa);
+            switcher = new ImageSwitcher(tour.getFotos(), imgFotos);
+            switcher.start();
         } else {
             tour = new Tour();
         }
@@ -133,6 +157,8 @@ public class MantToursViewController extends Controller implements Initializable
     @FXML
     private void onActionBtnNuevo(ActionEvent event) {
         if (new Mensaje().showConfirmation("Limpiar Tour", getStage(), "¿Esta seguro que desea limpiar el registro?")) {
+            switcher.stop();
+            imgFotos.setImage(null);
             limpiarCBX();
             nuevoTour();
         }
@@ -149,13 +175,11 @@ public class MantToursViewController extends Controller implements Initializable
                         for (Empresa empr : empresas) {
                             if (Objects.equals(jfxCbxEmpresa.getValue().getId(), empr.getId())) {
                                 tour.setEmpresa(empr);
-                                System.out.println("Entra" + empr);
                             }
                         }
                         for (Categoria cat : categorias) {
                             if (Objects.equals(jfxCbxCategoria.getValue().getId(), cat.getId())) {
                                 tour.setCategoria(cat);
-                                System.out.println("Entra" + cat);
                             }
                         }
                         tou = tour;
@@ -168,22 +192,20 @@ public class MantToursViewController extends Controller implements Initializable
                 for (Empresa empr : empresas) {
                     if (Objects.equals(jfxCbxEmpresa.getValue().getId(), empr.getId())) {
                         tour.setEmpresa(empr);
-                        System.out.println("Entra" + empr);
                     }
                 }
                 for (Categoria cat : categorias) {
                     if (Objects.equals(jfxCbxCategoria.getValue().getId(), cat.getId())) {
                         tour.setCategoria(cat);
-                        System.out.println("Entra" + cat);
                     }
                 }
                 contador[3]++;
+                tour.setCuposDisponibles(tour.getCuposTotales());
                 tour.setId(contador[3]);
                 tours.add(tour);
             }
-            for (Tour tou : tours) {
-                System.out.println(tou.getEmpresa());
-            }
+            switcher.stop();
+            imgFotos.setImage(null);
             limpiarCBX();
             nuevoTour();
             new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Tour", getStage(), "Tour actualizado correctamente.");
@@ -201,15 +223,13 @@ public class MantToursViewController extends Controller implements Initializable
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Tour", getStage(), "Debe cargar la Tour que desea eliminar.");
             } else {
                 ObservableList<Tour> tours = (ObservableList<Tour>) AppContext.getInstance().get("ToursLista");
-//                for (Categoria cat : categorias) {
                 for (int i = 0; i < tours.size(); i++) {
-//                    if (Objects.equals(cat.getId(), categoria.getId())) {
-//                        categorias.remove(cat);
-//                    }
                     if (Objects.equals(tours.get(i).getId(), tour.getId())) {
                         tours.remove(tours.get(i));
                     }
                 }
+                switcher.stop();
+                imgFotos.setImage(null);
                 nuevoTour();
                 limpiarCBX();
                 new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Tour", getStage(), "Tour eliminado correctamente.");

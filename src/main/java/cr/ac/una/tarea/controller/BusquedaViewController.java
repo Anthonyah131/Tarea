@@ -80,7 +80,6 @@ public class BusquedaViewController extends Controller implements Initializable 
     @FXML
     private void onActionJfxBtnAceptar(ActionEvent event) {
         resultado = tbvResultados.getSelectionModel().getSelectedItem();
-        //getStage().getScene().setRoot(new Pane());
         getStage().close();
     }
 
@@ -105,23 +104,17 @@ public class BusquedaViewController extends Controller implements Initializable 
         if (tours != null) {
             tbvResultados.setItems(tours);
             tbvResultados.refresh();
-            for (Tour tour : tours) {
-                System.out.println(tour.getEmpresa() + " Hola ");
-            }
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Tours", getStage(), "Error cargando los Tours");
         }
     }
     
-    private void cargarCategorias() {
+    private void cargarCategorias(Long id, String nombre) {
         categorias.clear();
         categorias.addAll((List<Categoria>) AppContext.getInstance().get("CategoriasLista"));
         if (tours != null) {
             tbvResultados.setItems(categorias);
             tbvResultados.refresh();
-//            for (Categoria categoria : categorias) {
-//                System.out.println(categoria.getNombre() + "Hola ");
-//            }
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Categorias", getStage(), "Error cargando las Categorias");
         }
@@ -133,9 +126,6 @@ public class BusquedaViewController extends Controller implements Initializable 
         if (clientes != null) {
             tbvResultados.setItems(clientes);
             tbvResultados.refresh();
-            for (Cliente cliente : clientes) {
-                System.out.println(cliente.getNombre() + "Hola ");
-            }
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Cliente", getStage(), "Error cargando los Clientes");
         }
@@ -147,9 +137,6 @@ public class BusquedaViewController extends Controller implements Initializable 
         if (empresas != null) {
             tbvResultados.setItems(empresas);
             tbvResultados.refresh();
-            for (Empresa empresa : empresas) {
-                System.out.println(empresa.getNombre() + "Hola ");
-            }
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Empresa", getStage(), "Error cargando las Empresas");
         }
@@ -208,7 +195,6 @@ public class BusquedaViewController extends Controller implements Initializable 
 
             jfxBtnFiltrar.setOnAction((ActionEvent event) -> {
                 cargarTours(null, null, null, null);
-                System.out.println("Entra");
             });
 
             cargarTours(null, null, null, null);
@@ -250,11 +236,10 @@ public class BusquedaViewController extends Controller implements Initializable 
             tbvResultados.refresh();
 
             jfxBtnFiltrar.setOnAction((ActionEvent event) -> {
-                cargarCategorias();
-                System.out.println("Entra");
+                cargarCategorias(Long.parseLong(txtId.getText()), txtNombre.getText());
             });
 
-            cargarCategorias();
+            cargarCategorias(null, "");
             
         } catch (Exception ex) {
             Logger.getLogger(BusquedaViewController.class.getName()).log(Level.SEVERE, "Error consultando las Categorias", ex);
@@ -315,7 +300,6 @@ public class BusquedaViewController extends Controller implements Initializable 
 
             jfxBtnFiltrar.setOnAction((ActionEvent event) -> {
                 cargarClientes();
-                System.out.println("Entra");
             });
 
             cargarClientes();
@@ -368,7 +352,6 @@ public class BusquedaViewController extends Controller implements Initializable 
 
             jfxBtnFiltrar.setOnAction((ActionEvent event) -> {
                 cargarEmpresas();
-                System.out.println("Entra");
             });
 
             cargarEmpresas();

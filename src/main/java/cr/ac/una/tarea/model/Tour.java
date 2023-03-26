@@ -10,6 +10,7 @@ import java.util.List;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.image.Image;
 
 /**
  *
@@ -27,8 +28,9 @@ public class Tour {
     public SimpleStringProperty cuposTotales;
     public SimpleStringProperty cuposDisponibles;
     public List<Cliente> clientes;
+    public List<Image> fotos;
 
-    public Tour(Long id, String nombre,Empresa empresa, Categoria categoria, Long precio, LocalDate fechaSalida, LocalDate fechaRegreso, Itinerario itinerario, Long cuposTotales) {
+    public Tour(Long id, String nombre,Empresa empresa, Categoria categoria, Long precio, LocalDate fechaSalida, LocalDate fechaRegreso, Itinerario itinerario, Long cuposTotales, List fotos) {
         this();
         this.id.set(id.toString());
         this.nombre.set(nombre);
@@ -49,6 +51,7 @@ public class Tour {
         this.cuposTotales.set(cuposTotales.toString());
         this.cuposDisponibles.set(cuposTotales.toString());
         this.clientes = new ArrayList<>();
+        this.fotos = fotos;
     }
     
     public Tour() {
@@ -63,6 +66,7 @@ public class Tour {
         this.cuposTotales = new SimpleStringProperty();
         this.cuposDisponibles = new SimpleStringProperty();
         this.clientes = new ArrayList<>();
+        this.fotos = new ArrayList<>();
     }
 
     public Long getId() {
@@ -167,5 +171,13 @@ public class Tour {
 
     public void setClientes(List<Cliente> clientes) {
         this.clientes = clientes;
+    }
+
+    public List<Image> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<Image> fotos) {
+        this.fotos = fotos;
     }
 }
