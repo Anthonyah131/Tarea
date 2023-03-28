@@ -93,55 +93,99 @@ public class BusquedaViewController extends Controller implements Initializable 
     public Object getResultado() {
         return resultado;
     }
-    
+
     public void SetResultado() {
         resultado = null;
     }
 
-    private void cargarTours(String nombre, String empresa, String categoria, String precio) {
+    private void cargarTours(Long id, String nombre, String empresa, String categoria) {
         tours.clear();
         tours.addAll((List<Tour>) AppContext.getInstance().get("ToursLista"));
         if (tours != null) {
+            if (id != null) {
+                tours.removeIf(c -> !c.getId().equals(id));
+            }
+            if (!nombre.isEmpty()) {
+                tours.removeIf(c -> !c.getNombre().toLowerCase().contains(nombre.toLowerCase()));
+            }
+            if (!empresa.isEmpty()) {
+                tours.removeIf(c -> !c.getEmpresa().getNombre().toLowerCase().contains(empresa.toLowerCase()));
+            }
+            if (!categoria.isEmpty()) {
+                tours.removeIf(c -> !c.getCategoria().getNombre().toLowerCase().contains(categoria.toLowerCase()));
+            }
+            
             tbvResultados.setItems(tours);
             tbvResultados.refresh();
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Tours", getStage(), "Error cargando los Tours");
         }
     }
-    
+
     private void cargarCategorias(Long id, String nombre) {
         categorias.clear();
         categorias.addAll((List<Categoria>) AppContext.getInstance().get("CategoriasLista"));
-        if (tours != null) {
+        if (categorias != null) {
+            if (id != null && !nombre.isEmpty()) {
+                categorias.removeIf(c -> !c.getId().equals(id) && !c.getNombre().toLowerCase().contains(nombre.toLowerCase()));
+            } else if (id != null) {
+                categorias.removeIf(c -> !c.getId().equals(id));
+            } else if (!nombre.isEmpty()) {
+                categorias.removeIf(c -> !c.getNombre().toLowerCase().contains(nombre.toLowerCase()));
+            }
+
             tbvResultados.setItems(categorias);
             tbvResultados.refresh();
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Categorias", getStage(), "Error cargando las Categorias");
         }
     }
-    
-    private void cargarClientes() {
+
+    private void cargarClientes(Long id, String nombre, String apellidos, String cedula) {
         clientes.clear();
         clientes.addAll((List<Cliente>) AppContext.getInstance().get("ClientesLista"));
         if (clientes != null) {
+            if (id != null) {
+                clientes.removeIf(c -> !c.getId().equals(id));
+            }
+            if (!nombre.isEmpty()) {
+                clientes.removeIf(c -> !c.getNombre().toLowerCase().contains(nombre.toLowerCase()));
+            }
+            if (!apellidos.isEmpty()) {
+                clientes.removeIf(c -> !c.getApellido().toLowerCase().contains(apellidos.toLowerCase()));
+            }
+            if (!cedula.isEmpty()) {
+                clientes.removeIf(c -> !c.getCedula().toLowerCase().contains(cedula.toLowerCase()));
+            }
+
             tbvResultados.setItems(clientes);
             tbvResultados.refresh();
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Cliente", getStage(), "Error cargando los Clientes");
         }
     }
-    
-    private void cargarEmpresas() {
+
+    private void cargarEmpresas(Long id, String nombre, String cedula) {
         empresas.clear();
         empresas.addAll((List<Empresa>) AppContext.getInstance().get("EmpresasLista"));
         if (empresas != null) {
+            if (id != null) {
+                empresas.removeIf(c -> !c.getId().equals(id));
+            }
+            if (!nombre.isEmpty()) {
+                empresas.removeIf(c -> !c.getNombre().toLowerCase().contains(nombre.toLowerCase()));
+            }
+            if (!cedula.isEmpty()) {
+                empresas.removeIf(c -> !c.getCedulaJuridica().toLowerCase().contains(cedula.toLowerCase()));
+            }
+            
             tbvResultados.setItems(empresas);
             tbvResultados.refresh();
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Empresa", getStage(), "Error cargando las Empresas");
         }
     }
-    
+
     public void busquedaTours() {
         try {
             TextField txtId = new TextField();
@@ -194,10 +238,14 @@ public class BusquedaViewController extends Controller implements Initializable 
             tbvResultados.refresh();
 
             jfxBtnFiltrar.setOnAction((ActionEvent event) -> {
-                cargarTours(null, null, null, null);
+                if (!txtId.getText().isEmpty() || !txtNombre.getText().isEmpty() || !txtEmpresa.getText().isEmpty() || !txtCategoria.getText().isEmpty()) {
+                    cargarTours((!txtId.getText().isEmpty() ? Long.valueOf(txtId.getText()) : null), txtNombre.getText(), txtEmpresa.getText(), txtCategoria.getText());
+                } else {
+                    cargarTours(null, "", "", "");
+                }
             });
 
-            cargarTours(null, null, null, null);
+            cargarTours(null, "", "", "");
 
         } catch (Exception ex) {
             Logger.getLogger(BusquedaViewController.class.getName()).log(Level.SEVERE, "Error consultando los tours", ex);
@@ -236,17 +284,21 @@ public class BusquedaViewController extends Controller implements Initializable 
             tbvResultados.refresh();
 
             jfxBtnFiltrar.setOnAction((ActionEvent event) -> {
-                cargarCategorias(Long.parseLong(txtId.getText()), txtNombre.getText());
+                if (!txtId.getText().isEmpty() || !txtNombre.getText().isEmpty()) {
+                    cargarCategorias((!txtId.getText().isEmpty() ? Long.valueOf(txtId.getText()) : null), txtNombre.getText());
+                } else {
+                    cargarCategorias(null, "");
+                }
             });
 
             cargarCategorias(null, "");
-            
+
         } catch (Exception ex) {
             Logger.getLogger(BusquedaViewController.class.getName()).log(Level.SEVERE, "Error consultando las Categorias", ex);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Consultar Categoria", getStage(), "Ocurrio un error consultando las Categorias");
         }
     }
-    
+
     public void busquedaCliente() {
         try {
             TextField txtId = new TextField();
@@ -299,17 +351,21 @@ public class BusquedaViewController extends Controller implements Initializable 
             tbvResultados.refresh();
 
             jfxBtnFiltrar.setOnAction((ActionEvent event) -> {
-                cargarClientes();
+                if (!txtId.getText().isEmpty() || !txtNombre.getText().isEmpty() || !txtApellidos.getText().isEmpty() || !txtCedula.getText().isEmpty()) {
+                    cargarClientes((!txtId.getText().isEmpty() ? Long.valueOf(txtId.getText()) : null), txtNombre.getText(), txtApellidos.getText(), txtCedula.getText());
+                } else {
+                    cargarClientes(null, "", "", "");
+                }
             });
 
-            cargarClientes();
+            cargarClientes(null, "", "", "");
 
         } catch (Exception ex) {
             Logger.getLogger(BusquedaViewController.class.getName()).log(Level.SEVERE, "Error consultando los Clientes", ex);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Consultar Cliente", getStage(), "Ocurrio un error consultando los Clientes");
         }
     }
-    
+
     public void busquedaEmpresa() {
         try {
             TextField txtId = new TextField();
@@ -351,10 +407,14 @@ public class BusquedaViewController extends Controller implements Initializable 
             tbvResultados.refresh();
 
             jfxBtnFiltrar.setOnAction((ActionEvent event) -> {
-                cargarEmpresas();
+                if (!txtId.getText().isEmpty() || !txtNombre.getText().isEmpty() || !txtCedula.getText().isEmpty()) {
+                    cargarEmpresas((!txtId.getText().isEmpty() ? Long.valueOf(txtId.getText()) : null), txtNombre.getText(), txtCedula.getText());
+                } else {
+                    cargarEmpresas(null, "", "");
+                }
             });
 
-            cargarEmpresas();
+            cargarEmpresas(null, "", "");
 
         } catch (Exception ex) {
             Logger.getLogger(BusquedaViewController.class.getName()).log(Level.SEVERE, "Error consultando las Empresas", ex);

@@ -30,7 +30,7 @@ public class Tour {
     public List<Cliente> clientes;
     public List<Image> fotos;
 
-    public Tour(Long id, String nombre,Empresa empresa, Categoria categoria, Long precio, LocalDate fechaSalida, LocalDate fechaRegreso, Itinerario itinerario, Long cuposTotales, List fotos) {
+    public Tour(Long id, String nombre,Empresa empresa, Categoria categoria, Long precio, LocalDate fechaSalida, LocalDate fechaRegreso, Itinerario itinerario, Long cuposTotales,List clientes, List fotos) {
         this();
         this.id.set(id.toString());
         this.nombre.set(nombre);
@@ -50,7 +50,7 @@ public class Tour {
         this.itinerario.set(itinerario);
         this.cuposTotales.set(cuposTotales.toString());
         this.cuposDisponibles.set(cuposTotales.toString());
-        this.clientes = new ArrayList<>();
+        this.clientes = clientes;
         this.fotos = fotos;
     }
     

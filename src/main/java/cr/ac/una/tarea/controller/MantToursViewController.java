@@ -7,6 +7,7 @@ package cr.ac.una.tarea.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import cr.ac.una.tarea.model.Categoria;
+import cr.ac.una.tarea.model.Cliente;
 import cr.ac.una.tarea.model.Empresa;
 import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.AppContext;
@@ -21,13 +22,19 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -77,12 +84,20 @@ public class MantToursViewController extends Controller implements Initializable
     private JFXButton jfxBtnCancelar;
     @FXML
     private JFXButton jfxBtnClientes;
+    @FXML
+    private TabPane tabTour;
+    @FXML
+    private Tab tbpTour;
+    @FXML
+    private Tab tbpClientes;
+    @FXML
+    private TableView<Cliente> tbvClientes;
 
     Tour tour;
 
     ObservableList<Empresa> empresas = FXCollections.observableArrayList();
     ObservableList<Categoria> categorias = FXCollections.observableArrayList();
-    ImageSwitcher switcher = new ImageSwitcher();
+    ImageSwitcher switcher;
 
     /**
      * Initializes the controller class.
@@ -93,7 +108,7 @@ public class MantToursViewController extends Controller implements Initializable
         txtNombre.setTextFormatter(Formato.getInstance().letrasFormat(30));
         txtPrecio.setTextFormatter(Formato.getInstance().integerFormat());
         txtCuposTotales.setTextFormatter(Formato.getInstance().integerFormat());
-        txtDisponibles.setTextFormatter(Formato.getInstance().integerFormat());
+        //txtDisponibles.setTextFormatter(Formato.getInstance().integerFormat());
         jfxTxaItinerario.setTextFormatter(Formato.getInstance().letrasFormat(50));
         tour = new Tour();
         nuevoTour();
@@ -103,6 +118,31 @@ public class MantToursViewController extends Controller implements Initializable
 
         jfxCbxCategoria.setItems(categorias);
         jfxCbxEmpresa.setItems(empresas);
+
+        tbvClientes.getColumns().clear();
+        tbvClientes.getItems().clear();
+
+        TableColumn<Cliente, String> tbcId = new TableColumn<>("Id");
+        tbcId.setPrefWidth(25);
+        tbcId.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getId().toString()));
+
+        TableColumn<Cliente, String> tbcNombre = new TableColumn<>("Nombre");
+        tbcNombre.setPrefWidth(100);
+        tbcNombre.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
+
+        TableColumn<Cliente, String> tbcApellidos = new TableColumn<>("Apellidos");
+        tbcApellidos.setPrefWidth(150);
+        tbcApellidos.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getApellido()));
+
+        TableColumn<Cliente, String> tbcCedula = new TableColumn<>("Cedula");
+        tbcCedula.setPrefWidth(100);
+        tbcCedula.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getCedula()));
+
+        tbvClientes.getColumns().add(tbcId);
+        tbvClientes.getColumns().add(tbcNombre);
+        tbvClientes.getColumns().add(tbcApellidos);
+        tbvClientes.getColumns().add(tbcCedula);
+        tbvClientes.refresh();
     }
 
     @Override
@@ -140,10 +180,13 @@ public class MantToursViewController extends Controller implements Initializable
         busquedaController.SetResultado();
         limpiarCBX();
         if (tour != null) {
-            switcher.stop();
+            if (switcher != null) {
+                switcher.stop();
+            }
             imgFotos.setImage(null);
             jfxCbxCategoria.setValue(tour.categoria);
             jfxCbxEmpresa.setValue(tour.empresa);
+            cargarClientes();
             switcher = new ImageSwitcher(tour.getFotos(), imgFotos);
             switcher.start();
         } else {
@@ -151,7 +194,6 @@ public class MantToursViewController extends Controller implements Initializable
         }
         unbindTour();
         bindTour(false);
-
     }
 
     @FXML
@@ -200,7 +242,7 @@ public class MantToursViewController extends Controller implements Initializable
                     }
                 }
                 contador[3]++;
-                tour.setCuposDisponibles(tour.getCuposTotales());
+                tour.setCuposDisponibles(Long.valueOf(txtCuposTotales.getText()));
                 tour.setId(contador[3]);
                 tours.add(tour);
             }
@@ -228,7 +270,9 @@ public class MantToursViewController extends Controller implements Initializable
                         tours.remove(tours.get(i));
                     }
                 }
-                switcher.stop();
+                if (switcher != null) {
+                    switcher.stop();
+                }
                 imgFotos.setImage(null);
                 nuevoTour();
                 limpiarCBX();
@@ -246,6 +290,20 @@ public class MantToursViewController extends Controller implements Initializable
 
     @FXML
     private void onActionJfxBtnClientes(ActionEvent event) {
+        BusquedaViewController busquedaController = (BusquedaViewController) FlowController.getInstance().getController("BusquedaView");
+        busquedaController.busquedaTours();
+        FlowController.getInstance().goViewInWindowModal("BusquedaView", getStage(), true);
+        tour = (Tour) busquedaController.getResultado();
+        busquedaController.SetResultado();
+        limpiarCBX();
+        if (tour != null) {
+            if (switcher != null) {
+                switcher.stop();
+            }
+            switcher.start();
+        } else {
+            tour = new Tour();
+        }
     }
 
     private void bindTour(Boolean nuevo) {
@@ -298,6 +356,28 @@ public class MantToursViewController extends Controller implements Initializable
             bindTour(false);
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Tour", getStage(), "Erro al Cargar Tour");
+        }
+    }
+
+    @FXML
+    private void onSelectionChangedTbpClientes(Event event) {
+        if (tbpClientes.isSelected()) {
+            if (tour.getId() == null) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Tour", getStage(), "Debe cargar el Tour del cúal desea ver los clientes.");
+                tabTour.getSelectionModel().select(tbpTour);
+            }
+        }
+    }
+    
+    private void cargarClientes() {
+        if (tour != null) {
+            ObservableList<Cliente> clientes = FXCollections.observableArrayList();
+            for(Cliente cli : tour.getClientes())
+                clientes.add(cli);
+            tbvClientes.setItems(clientes);
+            tbvClientes.refresh();
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Cliente", getStage(), "Error cargando los Clientes");
         }
     }
 
