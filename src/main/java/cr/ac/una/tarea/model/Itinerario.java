@@ -9,8 +9,6 @@ package cr.ac.una.tarea.model;
  * @author ANTHONY
  */
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -59,6 +57,16 @@ public class Itinerario {
         this.orden = new SimpleStringProperty();
         this.coordenadasLatitud = new SimpleStringProperty();
         this.coordenadasLongitud = new SimpleStringProperty();
+    }
+    
+    public void  setItinerario(Itinerario itinerario) {
+        this.lugar.set(itinerario.getLugar());
+        this.duracionEnLugar.set(itinerario.getDuracionEnLugar());
+        this.orden.set(itinerario.getOrden());
+        this.coordenadasLatitud.set(itinerario.getCoordenadasLatitud());
+        this.coordenadasLongitud.setValue(itinerario.getCoordenadasLongitud());
+        this.fechaSalida.set(itinerario.getFechaSalida());
+        this.fechaLlegada.set(itinerario.getFechaLlegada());
     }
 
     public Long getId() {

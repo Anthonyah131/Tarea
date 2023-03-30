@@ -54,6 +54,30 @@ public class Tour {
         this.fotos = fotos;
     }
     
+    public Tour(Tour tour) {
+        this();
+        this.id.set(tour.getId().toString());
+        this.nombre.set(tour.getNombre());
+        this.empresa = tour.getEmpresa();
+        this.categoria = tour.getCategoria();
+        this.precio.set(tour.getPrecio().toString());
+        if (this.fechaSalida != null) {
+            this.fechaSalida.set(tour.getFechaSalida());
+        } else {
+            this.fechaSalida.set(null);
+        }
+        if (this.fechaRegreso != null) {
+            this.fechaRegreso.set(tour.getFechaRegreso());
+        } else {
+            this.fechaRegreso.set(null);
+        }
+        this.itinerario = tour.getItinerarios();
+        this.cuposTotales.set(tour.getCuposTotales().toString());
+        this.cuposDisponibles.set(tour.getCuposDisponibles().toString());
+        this.clientes = tour.getClientes();
+        this.fotos = tour.getFotos();
+    }
+    
     public Tour() {
         this.id = new SimpleStringProperty();
         this.nombre = new SimpleStringProperty();
@@ -67,6 +91,28 @@ public class Tour {
         this.itinerario = new ArrayList<>();
         this.clientes = new ArrayList<>();
         this.fotos = new ArrayList<>();
+    }
+    
+    public void setTour(Tour tour) {
+        this.nombre.set(tour.getNombre());
+        this.empresa = tour.getEmpresa();
+        this.categoria = tour.getCategoria();
+        this.precio.set(tour.getPrecio().toString());
+        if (this.fechaSalida != null) {
+            this.fechaSalida.set(tour.getFechaSalida());
+        } else {
+            this.fechaSalida.set(null);
+        }
+        if (this.fechaRegreso != null) {
+            this.fechaRegreso.set(tour.getFechaRegreso());
+        } else {
+            this.fechaRegreso.set(null);
+        }
+        this.itinerario = tour.getItinerarios();
+        this.cuposTotales.set(tour.getCuposTotales().toString());
+        this.cuposDisponibles.set(tour.getCuposDisponibles().toString());
+        this.clientes = tour.getClientes();
+        this.fotos = tour.getFotos();
     }
 
     public Long getId() {

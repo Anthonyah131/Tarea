@@ -5,6 +5,7 @@
 package cr.ac.una.tarea.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import cr.ac.una.tarea.model.Empresa;
 import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.AppContext;
@@ -13,16 +14,21 @@ import cr.ac.una.tarea.util.Formato;
 import cr.ac.una.tarea.util.Mensaje;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.Property;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -64,6 +70,7 @@ public class MantEmpresaViewController extends Controller implements Initializab
 
     Empresa empresa;
     Image logo;
+    List<Node> requeridos = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -78,6 +85,7 @@ public class MantEmpresaViewController extends Controller implements Initializab
         txtAnioFundacion.setTextFormatter(Formato.getInstance().integerFormat());
         empresa = new Empresa();
         nuevoEmpresa();
+        indicarRequeridos();
     }
 
     @Override
@@ -88,14 +96,16 @@ public class MantEmpresaViewController extends Controller implements Initializab
     private void onActionJfxBtnBuscarLogo(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();//Instancia el buscador de archivo
         fileChooser.setTitle("Buscar Imagen");//Le pone un titulo a la ventala del buscador
-        
+
         //Filtra la busqueda utilizando las extanciones jpg y png
-        fileChooser.getExtensionFilters().addAll( new FileChooser.ExtensionFilter("All Images", "*.*"),new FileChooser.ExtensionFilter("JPG", "*.jpg"),new FileChooser.ExtensionFilter("PNG", "*.png"));
-        
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Images", "*.*"), new FileChooser.ExtensionFilter("JPG", "*.jpg"), new FileChooser.ExtensionFilter("PNG", "*.png"));
+
         //trae la imagen
         File file = fileChooser.showOpenDialog(null);
-        logo = new Image("file:"+ file.getAbsolutePath());
-        imgLogo.setImage(logo);
+        if (file != null) {
+            logo = new Image("file:" + file.getAbsolutePath());
+            imgLogo.setImage(logo);
+        }
     }
 
     @FXML
@@ -108,6 +118,8 @@ public class MantEmpresaViewController extends Controller implements Initializab
         busquedaController.SetResultado();
         if (empresa == null) {
             empresa = new Empresa();
+        } else {
+            empresa = new Empresa(empresa);
         }
         unbindEmpresa();
         bindEmpresa(false);
@@ -123,27 +135,34 @@ public class MantEmpresaViewController extends Controller implements Initializab
     @FXML
     private void onActionBtnGuardar(ActionEvent event) {
         try {
-            Boolean banderaNuevo = true;
-            ObservableList<Empresa> empresas = (ObservableList<Empresa>) AppContext.getInstance().get("EmpresasLista");
-            if (empresa.getId() != null) {
-                for (Empresa empre : empresas) {
-                    if (Objects.equals(empre.getId(), empresa.getId())) {
-                        empresa.setLogo(logo);
-                        empre = empresa;
-                        banderaNuevo = false;
+            String invalidos = validarRequeridos();
+            if (!invalidos.isEmpty()) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Categoria", getStage(), invalidos);
+            } else {
+                Boolean banderaNuevo = true;
+                ObservableList<Empresa> empresas = (ObservableList<Empresa>) AppContext.getInstance().get("EmpresasLista");
+                if (empresa.getId() != null) {
+                    for (Empresa empre : empresas) {
+                        if (Objects.equals(empre.getId(), empresa.getId())) {
+                            if (logo != null) {
+                                empresa.setLogo(logo);
+                            }
+                            empre.setEmpresa(empresa);
+                            banderaNuevo = false;
+                        }
                     }
                 }
-            }
 
-            if (banderaNuevo) {
-                Long contador[] = (Long[]) AppContext.getInstance().get("Contador");
-                contador[2]++;
-                empresa.setId(contador[2]);
-                empresa.setLogo(logo);
-                empresas.add(empresa);
+                if (banderaNuevo) {
+                    Long contador[] = (Long[]) AppContext.getInstance().get("Contador");
+                    contador[2]++;
+                    empresa.setId(contador[2]);
+                    empresa.setLogo(logo);
+                    empresas.add(empresa);
+                }
+                nuevoEmpresa();
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Empresa", getStage(), "Empresa actualizado correctamente.");
             }
-            nuevoEmpresa();
-            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Empresa", getStage(), "Empresa actualizado correctamente.");
         } catch (Exception ex) {
             Logger.getLogger(MantCatViewController.class.getName()).log(Level.SEVERE, "Error guardando el Empresa.", ex);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Empresa", getStage(), "Ocurrio un error guardando el Empresa.");
@@ -224,6 +243,53 @@ public class MantEmpresaViewController extends Controller implements Initializab
             bindEmpresa(false);
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Empresa", getStage(), "Erro al Cargar Empresa");
+        }
+    }
+
+    public void indicarRequeridos() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtNombre, txtCedulaJuridica, txtAnioFundacion, txtEmail));
+    }
+
+    public String validarRequeridos() {
+        Boolean validos = true;
+        String invalidos = "";
+        for (Node node : requeridos) {
+            if (node instanceof TextField && ((TextField) node).getText() == null || ((TextField) node).getText().isEmpty()) {
+                if (validos) {
+                    invalidos += ((TextField) node).getText();
+                } else {
+                    invalidos += "," + ((TextField) node).getText();
+                }
+
+                validos = false;
+            } else if (node instanceof JFXPasswordField && !((JFXPasswordField) node).validate()) {
+                if (validos) {
+                    invalidos += ((JFXPasswordField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXPasswordField) node).getPromptText();
+                }
+                validos = false;
+            } else if (node instanceof DatePicker && ((DatePicker) node).getValue() == null) {
+                if (validos) {
+                    invalidos += ((DatePicker) node).getAccessibleText();
+                } else {
+                    invalidos += "," + ((DatePicker) node).getAccessibleText();
+                }
+                validos = false;
+            } else if (node instanceof ComboBox && ((ComboBox) node).getSelectionModel().getSelectedIndex() < 0) {
+                if (validos) {
+                    invalidos += ((ComboBox) node).getPromptText();
+                } else {
+                    invalidos += "," + ((ComboBox) node).getPromptText();
+                }
+                validos = false;
+            }
+        }
+        if (validos) {
+            return "";
+        } else {
+            return "Campos requeridos o con problemas de formato [" + invalidos + "].";
         }
     }
 

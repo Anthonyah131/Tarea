@@ -33,6 +33,17 @@ public class Empresa {
         this.email.set(email);
         this.anioFundacion.set(anioFundacion.toString());
     }
+    
+    public Empresa(Empresa empresa) {
+        this();
+        this.id.set(empresa.getId().toString());
+        this.nombre.set(empresa.getNombre());
+        this.cedulaJuridica.set(empresa.getCedulaJuridica());
+        this.logo.set(empresa.getLogo());
+        this.telefono.set(empresa.getTelefono().toString());
+        this.email.set(empresa.getEmail());
+        this.anioFundacion.set(empresa.getAnioFundacion().toString());
+    }
 
     public Empresa() {
         this.id = new SimpleStringProperty();
@@ -42,6 +53,15 @@ public class Empresa {
         this.telefono = new SimpleStringProperty();
         this.email = new SimpleStringProperty();
         this.anioFundacion = new SimpleStringProperty();
+    }
+    
+    public void setEmpresa(Empresa empresa) {
+        this.nombre.set(empresa.getNombre());
+        this.cedulaJuridica.set(empresa.getCedulaJuridica());
+        this.logo.set(empresa.getLogo());
+        this.telefono.set(empresa.getTelefono().toString());
+        this.email.set(empresa.getEmail());
+        this.anioFundacion.set(empresa.getAnioFundacion().toString());
     }
 
     public Long getId() {
