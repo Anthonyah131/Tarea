@@ -24,13 +24,13 @@ public class Tour {
     public SimpleStringProperty precio;
     public ObjectProperty<LocalDate> fechaSalida;
     public ObjectProperty<LocalDate> fechaRegreso;
-    public ObjectProperty<Itinerario> itinerario;
     public SimpleStringProperty cuposTotales;
     public SimpleStringProperty cuposDisponibles;
     public List<Cliente> clientes;
+    public List<Itinerario> itinerario;
     public List<Image> fotos;
 
-    public Tour(Long id, String nombre,Empresa empresa, Categoria categoria, Long precio, LocalDate fechaSalida, LocalDate fechaRegreso, Itinerario itinerario, Long cuposTotales,List clientes, List fotos) {
+    public Tour(Long id, String nombre,Empresa empresa, Categoria categoria, Long precio, LocalDate fechaSalida, LocalDate fechaRegreso, List itinerario, Long cuposTotales,List clientes, List fotos) {
         this();
         this.id.set(id.toString());
         this.nombre.set(nombre);
@@ -47,7 +47,7 @@ public class Tour {
         } else {
             this.fechaRegreso.set(null);
         }
-        this.itinerario.set(itinerario);
+        this.itinerario = itinerario;
         this.cuposTotales.set(cuposTotales.toString());
         this.cuposDisponibles.set(cuposTotales.toString());
         this.clientes = clientes;
@@ -62,9 +62,9 @@ public class Tour {
         this.precio = new SimpleStringProperty();
         this.fechaSalida = new SimpleObjectProperty();
         this.fechaRegreso = new SimpleObjectProperty();
-        this.itinerario = new SimpleObjectProperty();
         this.cuposTotales = new SimpleStringProperty();
         this.cuposDisponibles = new SimpleStringProperty();
+        this.itinerario = new ArrayList<>();
         this.clientes = new ArrayList<>();
         this.fotos = new ArrayList<>();
     }
@@ -133,12 +133,12 @@ public class Tour {
         this.fechaRegreso.set(fechaRegreso);
     }
 
-    public Itinerario getItinerario() {
-        return itinerario.get();
+    public List<Itinerario> getItinerarios() {
+        return itinerario;
     }
 
-    public void setItinerario(Itinerario itinerario) {
-        this.itinerario.set(itinerario);
+    public void setItinerario(List<Itinerario> itinerario) {
+        this.itinerario = itinerario;
     }
 
     public Long getCuposTotales() {

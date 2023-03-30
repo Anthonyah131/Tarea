@@ -19,11 +19,21 @@ public class Categoria {
         this.id = new SimpleStringProperty();
         this.nombre = new SimpleStringProperty();
     }
+    
+    public Categoria(Categoria categoria) {
+        this();
+        this.id.set(categoria.getId().toString());
+        this.nombre.set(categoria.getNombre());
+    }
 
     public Categoria(Long id, String nombre) {
         this();
         this.id.set(id.toString());
         this.nombre.set(nombre);
+    }
+    
+    public void setCategoria(Categoria categoria) {
+        this.nombre.set(categoria.getNombre());
     }
 
     public Long getId() {

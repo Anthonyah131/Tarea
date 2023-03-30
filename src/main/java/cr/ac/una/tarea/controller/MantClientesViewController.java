@@ -5,12 +5,17 @@
 package cr.ac.una.tarea.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import cr.ac.una.tarea.model.Cliente;
+import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.FlowController;
 import cr.ac.una.tarea.util.Formato;
 import cr.ac.una.tarea.util.Mensaje;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -19,7 +24,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
@@ -56,6 +63,7 @@ public class MantClientesViewController extends Controller implements Initializa
     private JFXButton jfxBtnCancelar;
 
     Cliente cliente;
+    List<Node> requeridos = new ArrayList<>();
 
     /**
      * Initializes the controller class.
@@ -70,6 +78,7 @@ public class MantClientesViewController extends Controller implements Initializa
         txtCorreo.setTextFormatter(Formato.getInstance().letrasFormat(50));
         cliente = new Cliente();
         nuevoCliente();
+        indicarRequeridos();
     }
 
     @Override
@@ -86,6 +95,8 @@ public class MantClientesViewController extends Controller implements Initializa
         busquedaController.SetResultado();
         if (cliente == null) {
             cliente = new Cliente();
+        } else {
+            cliente = new Cliente(cliente);
         }
         unbindCliente();
         bindCliente(false);
@@ -101,26 +112,30 @@ public class MantClientesViewController extends Controller implements Initializa
     @FXML
     private void onActionBtnGuardar(ActionEvent event) {
         try {
-            Boolean banderaNuevo = true;
-            ObservableList<Cliente> clientes = (ObservableList<Cliente>) AppContext.getInstance().get("ClientesLista");
-            if (cliente.getId() != null) {
-                for (Cliente cli : clientes) {
-                    if (Objects.equals(cli.getId(), cliente.getId())) {
-                        cli = cliente;
-                        banderaNuevo = false;
+            String invalidos = validarRequeridos();
+            if (!invalidos.isEmpty()) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Categoria", getStage(), invalidos);
+            } else {
+                Boolean banderaNuevo = true;
+                ObservableList<Cliente> clientes = (ObservableList<Cliente>) AppContext.getInstance().get("ClientesLista");
+                if (cliente.getId() != null) {
+                    for (Cliente cli : clientes) {
+                        if (Objects.equals(cli.getId(), cliente.getId())) {
+                            cli.setCliente(cliente);
+                            banderaNuevo = false;
+                        }
                     }
                 }
-            }
 
-            if (banderaNuevo) {
-                Long contador[] = (Long[]) AppContext.getInstance().get("Contador");
-                contador[1]++;
-                cliente.setId(contador[1]);
-                clientes.add(cliente);
+                if (banderaNuevo) {
+                    Long contador[] = (Long[]) AppContext.getInstance().get("Contador");
+                    contador[1]++;
+                    cliente.setId(contador[1]);
+                    clientes.add(cliente);
+                }
+                nuevoCliente();
+                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Cliente", getStage(), "Cliente actualizado correctamente.");
             }
-            nuevoCliente();
-            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Cliente", getStage(), "Cliente actualizado correctamente.");
-
         } catch (Exception ex) {
             Logger.getLogger(MantCatViewController.class.getName()).log(Level.SEVERE, "Error guardando el Cliente.", ex);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Cliente", getStage(), "Ocurrio un error guardando el Cliente.");
@@ -130,21 +145,29 @@ public class MantClientesViewController extends Controller implements Initializa
     @FXML
     private void onActionJfxBtnEliminar(ActionEvent event) {
         try {
-            if (cliente.getId() == null) {
-                new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Cliente", getStage(), "Debe cargar el Cliente que desea eliminar.");
-            } else {
-                ObservableList<Cliente> clientes = (ObservableList<Cliente>) AppContext.getInstance().get("ClientesLista");
-//                for (Cliente cli : clientes) {
-                for(int i = 0; i < clientes.size(); i++) {
-//                    if (Objects.equals(cli.getId(), cliente.getId())) {
-//                        clientes.remove(cli);
-//                    }
-                    if (Objects.equals(clientes.get(i).getId(), cliente.getId())) {
-                        clientes.remove(clientes.get(i));
-                    }
+            Boolean existe = false;
+            ObservableList<Tour> tours = (ObservableList<Tour>) AppContext.getInstance().get("ToursLista");
+            for (Tour tour : tours) {
+                if (tour.getClientes().stream().anyMatch(a -> Objects.equals(a.getId(), cliente.getId()))) {
+                    existe = true;
+                    break;
                 }
-                nuevoCliente();
-                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Cliente", getStage(), "Cliente eliminado correctamente.");
+            }
+            if (!existe) {
+                if (cliente.getId() == null) {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Cliente", getStage(), "Debe cargar el Cliente que desea eliminar.");
+                } else {
+                    ObservableList<Cliente> clientes = (ObservableList<Cliente>) AppContext.getInstance().get("ClientesLista");
+                    for (int i = 0; i < clientes.size(); i++) {
+                        if (Objects.equals(clientes.get(i).getId(), cliente.getId())) {
+                            clientes.remove(clientes.get(i));
+                        }
+                    }
+                    nuevoCliente();
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Eliminar Cliente", getStage(), "Cliente eliminado correctamente.");
+                }
+            } else {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Empresa", getStage(), "No se puede eliminar una empresa vinculada con un Tour");
             }
         } catch (Exception ex) {
             Logger.getLogger(MantClientesViewController.class.getName()).log(Level.SEVERE, "Error eliminando el Cliente.", ex);
@@ -194,6 +217,53 @@ public class MantClientesViewController extends Controller implements Initializa
             bindCliente(false);
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Cliente", getStage(), "Erro al Cargar Cliente");
+        }
+    }
+
+    public void indicarRequeridos() {
+        requeridos.clear();
+        requeridos.addAll(Arrays.asList(txtNombre, txtApellidos, txtCedula, txtTelefono));
+    }
+
+    public String validarRequeridos() {
+        Boolean validos = true;
+        String invalidos = "";
+        for (Node node : requeridos) {
+            if (node instanceof TextField && ((TextField) node).getText() == null || ((TextField) node).getText().isEmpty()) {
+                if (validos) {
+                    invalidos += ((TextField) node).getText();
+                } else {
+                    invalidos += "," + ((TextField) node).getText();
+                }
+
+                validos = false;
+            } else if (node instanceof JFXPasswordField && !((JFXPasswordField) node).validate()) {
+                if (validos) {
+                    invalidos += ((JFXPasswordField) node).getPromptText();
+                } else {
+                    invalidos += "," + ((JFXPasswordField) node).getPromptText();
+                }
+                validos = false;
+            } else if (node instanceof DatePicker && ((DatePicker) node).getValue() == null) {
+                if (validos) {
+                    invalidos += ((DatePicker) node).getAccessibleText();
+                } else {
+                    invalidos += "," + ((DatePicker) node).getAccessibleText();
+                }
+                validos = false;
+            } else if (node instanceof ComboBox && ((ComboBox) node).getSelectionModel().getSelectedIndex() < 0) {
+                if (validos) {
+                    invalidos += ((ComboBox) node).getPromptText();
+                } else {
+                    invalidos += "," + ((ComboBox) node).getPromptText();
+                }
+                validos = false;
+            }
+        }
+        if (validos) {
+            return "";
+        } else {
+            return "Campos requeridos o con problemas de formato [" + invalidos + "].";
         }
     }
 

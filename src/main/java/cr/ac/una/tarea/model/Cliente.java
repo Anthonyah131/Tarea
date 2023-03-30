@@ -48,6 +48,33 @@ public class Cliente {
         }
     }
     
+    public Cliente(Cliente cliente) {
+        this();
+        this.id.set(cliente.getId().toString());
+        this.nombre.set(cliente.getNombre());
+        this.apellido.set(cliente.getApellido());
+        this.cedula.set(cliente.getCedula());
+        this.telefono.set(cliente.getTelefono());
+        this.correo.set(cliente.getCorreo());
+        if (fechaNacimiento != null) {
+            this.fechaNacimiento.set(cliente.getFechaNacimiento());
+        } else {
+            this.fechaNacimiento.set(null);
+        }
+    }
+    public void setCliente(Cliente cliente) {
+        this.nombre.set(cliente.getNombre());
+        this.apellido.set(cliente.getApellido());
+        this.cedula.set(cliente.getCedula());
+        this.telefono.set(cliente.getTelefono());
+        this.correo.set(cliente.getCorreo());
+        if (fechaNacimiento != null) {
+            this.fechaNacimiento.set(cliente.getFechaNacimiento());
+        } else {
+            this.fechaNacimiento.set(null);
+        }
+    }
+    
     public Long getId() {
         if (id.get() != null && !id.get().isEmpty()) {
             return Long.valueOf(id.get());

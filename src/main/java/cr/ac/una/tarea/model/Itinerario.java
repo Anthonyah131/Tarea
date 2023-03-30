@@ -10,6 +10,7 @@ package cr.ac.una.tarea.model;
  */
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,30 +19,42 @@ public class Itinerario {
 
     public SimpleStringProperty id;
     public SimpleStringProperty lugar;
-    public ObjectProperty<LocalDate> fechaHoraLlegada;
-    public ObjectProperty<LocalDate> fechaHoraSalida;
+    public ObjectProperty<LocalDate> fechaLlegada;
+    public ObjectProperty<LocalDate> fechaSalida;
     public SimpleStringProperty duracionEnLugar;
     public SimpleStringProperty orden;
     public SimpleStringProperty coordenadasLatitud;
     public SimpleStringProperty coordenadasLongitud;
 
-    public Itinerario(Long id, String lugar, LocalDateTime fechaHoraLlegada, LocalDateTime fechaHoraSalida, Long duracionEnLugar, Long orden, String coordenadasLatitud, String coordenadasLongitud) {
+    public Itinerario(Long id, String lugar, LocalDate fechaLlegada, LocalDate fechaSalida, Long duracionEnLugar, Long orden, String coordenadasLatitud, String coordenadasLongitud) {
         this();
         this.id.set(id.toString());
         this.lugar.set(lugar);
-        this.fechaHoraLlegada.set(LocalDate.MIN);
-        this.fechaHoraSalida.set(LocalDate.MIN);
+        this.fechaLlegada.set(fechaLlegada);
+        this.fechaSalida.set(fechaSalida);
         this.duracionEnLugar.set(duracionEnLugar.toString());
         this.orden.set(orden.toString());
         this.coordenadasLatitud.set(coordenadasLatitud);
         this.coordenadasLongitud.set(coordenadasLongitud);
     }
-    
+
+    public Itinerario(Itinerario itinerario) {
+        this();
+        this.id.set(itinerario.getId().toString());
+        this.lugar.set(itinerario.getLugar());
+        this.duracionEnLugar.set(itinerario.getDuracionEnLugar());
+        this.orden.set(itinerario.getOrden());
+        this.coordenadasLatitud.set(itinerario.getCoordenadasLatitud());
+        this.coordenadasLongitud.setValue(itinerario.getCoordenadasLongitud());
+        this.fechaSalida.set(itinerario.getFechaSalida());
+        this.fechaLlegada.set(itinerario.getFechaLlegada());
+    }
+
     public Itinerario() {
         this.id = new SimpleStringProperty();
         this.lugar = new SimpleStringProperty();
-        this.fechaHoraLlegada = new SimpleObjectProperty();
-        this.fechaHoraSalida = new SimpleObjectProperty();
+        this.fechaLlegada = new SimpleObjectProperty();
+        this.fechaSalida = new SimpleObjectProperty();
         this.duracionEnLugar = new SimpleStringProperty();
         this.orden = new SimpleStringProperty();
         this.coordenadasLatitud = new SimpleStringProperty();
@@ -68,20 +81,20 @@ public class Itinerario {
         this.lugar.set(lugar);
     }
 
-//    public LocalDateTime getFechaHoraLlegada() {
-//        return fechaHoraLlegada.get();
-//    }
-
-    public void setFechaHoraLlegada(LocalDateTime fechaHoraLlegada) {
-        this.fechaHoraLlegada.set(LocalDate.MIN);
+    public LocalDate getFechaLlegada() {
+        return fechaLlegada.get();
     }
 
-//    public LocalDateTime getFechaHoraSalida() {
-//        return fechaHoraSalida.get();
-//    }
+    public void setFechaLlegada(LocalDate fechaLlegada) {
+        this.fechaLlegada.set(fechaLlegada);
+    }
 
-    public void setFechaHoraSalida(LocalDateTime fechaHoraSalida) {
-        this.fechaHoraSalida.set(LocalDate.MIN);
+    public LocalDate getFechaSalida() {
+        return fechaSalida.get();
+    }
+
+    public void setFechaSalida(LocalDate fechaSalida) {
+        this.fechaSalida.set(fechaSalida);
     }
 
     public String getDuracionEnLugar() {

@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXComboBox;
 import cr.ac.una.tarea.model.Categoria;
 import cr.ac.una.tarea.model.Cliente;
 import cr.ac.una.tarea.model.Empresa;
+import cr.ac.una.tarea.model.Itinerario;
 import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.FlowController;
@@ -22,6 +23,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,9 +32,11 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -59,8 +63,6 @@ public class MantToursViewController extends Controller implements Initializable
     @FXML
     private TextField txtDisponibles;
     @FXML
-    private TextArea jfxTxaItinerario;
-    @FXML
     private JFXComboBox<Empresa> jfxCbxEmpresa;
     @FXML
     private JFXComboBox<Categoria> jfxCbxCategoria;
@@ -83,8 +85,6 @@ public class MantToursViewController extends Controller implements Initializable
     @FXML
     private JFXButton jfxBtnCancelar;
     @FXML
-    private JFXButton jfxBtnClientes;
-    @FXML
     private TabPane tabTour;
     @FXML
     private Tab tbpTour;
@@ -92,8 +92,33 @@ public class MantToursViewController extends Controller implements Initializable
     private Tab tbpClientes;
     @FXML
     private TableView<Cliente> tbvClientes;
-
+    @FXML
+    private Tab tbpItinerarios;
+    @FXML
+    private TextField txtIdItinerario;
+    @FXML
+    private TextField txtLugar;
+    @FXML
+    private TextField txtDuración;
+    @FXML
+    private TextField txtOrden;
+    @FXML
+    private TextField txtLatitud;
+    @FXML
+    private TextField txtLongitud;
+    @FXML
+    private DatePicker dpItinerarioSalida;
+    @FXML
+    private DatePicker dpItinerarioLlegada;
+    @FXML
+    private TableView<Itinerario> tbvItinerarios;
+    @FXML
+    private JFXButton jfxBtnGuardarIti;
+    @FXML
+    private JFXButton jfxBtnNuevoIti;
+    
     Tour tour;
+    Itinerario itinerario;
 
     ObservableList<Empresa> empresas = FXCollections.observableArrayList();
     ObservableList<Categoria> categorias = FXCollections.observableArrayList();
@@ -109,8 +134,9 @@ public class MantToursViewController extends Controller implements Initializable
         txtPrecio.setTextFormatter(Formato.getInstance().integerFormat());
         txtCuposTotales.setTextFormatter(Formato.getInstance().integerFormat());
         //txtDisponibles.setTextFormatter(Formato.getInstance().integerFormat());
-        jfxTxaItinerario.setTextFormatter(Formato.getInstance().letrasFormat(50));
         tour = new Tour();
+        itinerario = new Itinerario();
+        nuevoItinerario();
         nuevoTour();
 
         categorias.addAll((List<Categoria>) AppContext.getInstance().get("CategoriasLista"));
@@ -143,6 +169,46 @@ public class MantToursViewController extends Controller implements Initializable
         tbvClientes.getColumns().add(tbcApellidos);
         tbvClientes.getColumns().add(tbcCedula);
         tbvClientes.refresh();
+
+        tbvItinerarios.getColumns().clear();
+        tbvItinerarios.getItems().clear();
+
+        TableColumn<Itinerario, String> tbcIdIti = new TableColumn<>("Id");
+        tbcIdIti.setPrefWidth(25);
+        tbcIdIti.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getId().toString()));
+
+        TableColumn<Itinerario, String> tbcLugarIti = new TableColumn<>("Lugar");
+        tbcLugarIti.setPrefWidth(100);
+        tbcLugarIti.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getLugar()));
+
+        TableColumn<Itinerario, String> tbcDuracionIti = new TableColumn<>("Duración");
+        tbcDuracionIti.setPrefWidth(50);
+        tbcDuracionIti.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getDuracionEnLugar()));
+
+        TableColumn<Itinerario, String> tbcOrdenIti = new TableColumn<>("Orden");
+        tbcOrdenIti.setPrefWidth(50);
+        tbcOrdenIti.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getOrden()));
+
+        TableColumn<Itinerario, Boolean> tbcEliminar = new TableColumn<>("Eliminar");
+        tbcEliminar.setCellValueFactory(cd -> new SimpleObjectProperty(cd.getValue() != null));
+        tbcEliminar.setCellFactory(cd -> new ButtonCell());
+
+        tbvItinerarios.getColumns().add(tbcIdIti);
+        tbvItinerarios.getColumns().add(tbcLugarIti);
+        tbvItinerarios.getColumns().add(tbcDuracionIti);
+        tbvItinerarios.getColumns().add(tbcOrdenIti);
+        tbvItinerarios.getColumns().add(tbcEliminar);
+        tbvItinerarios.refresh();
+
+        tbvItinerarios.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                unbindItinerario();
+                itinerario = new Itinerario(newValue);
+                bindItinerario(false);
+            } else {
+                nuevoItinerario();
+            }
+        });
     }
 
     @Override
@@ -160,7 +226,7 @@ public class MantToursViewController extends Controller implements Initializable
 
         //trae la imagen
         List<File> file = fileChooser.showOpenMultipleDialog(null);
-        if (!file.isEmpty()) {
+        if (!file.isEmpty() && file != null) {
             tour.getFotos().clear();
             for (File fi : file) {
                 tour.getFotos().add(new Image("file:" + fi.getAbsolutePath()));
@@ -187,11 +253,15 @@ public class MantToursViewController extends Controller implements Initializable
             jfxCbxCategoria.setValue(tour.categoria);
             jfxCbxEmpresa.setValue(tour.empresa);
             cargarClientes();
+            cargarItinerarios();
             switcher = new ImageSwitcher(tour.getFotos(), imgFotos);
             switcher.start();
         } else {
             tour = new Tour();
+            itinerario = new Itinerario();
         }
+        unbindItinerario();
+        bindItinerario(true);
         unbindTour();
         bindTour(false);
     }
@@ -203,6 +273,7 @@ public class MantToursViewController extends Controller implements Initializable
             imgFotos.setImage(null);
             limpiarCBX();
             nuevoTour();
+            nuevoItinerario();
         }
     }
 
@@ -223,6 +294,10 @@ public class MantToursViewController extends Controller implements Initializable
                             if (Objects.equals(jfxCbxCategoria.getValue().getId(), cat.getId())) {
                                 tour.setCategoria(cat);
                             }
+                        }
+                        tour.getItinerarios().clear();
+                        for (Itinerario ititbv : tbvItinerarios.getItems()) {
+                            tour.getItinerarios().add(ititbv);
                         }
                         tou = tour;
                         banderaNuevo = false;
@@ -250,10 +325,13 @@ public class MantToursViewController extends Controller implements Initializable
             imgFotos.setImage(null);
             limpiarCBX();
             nuevoTour();
+            nuevoItinerario();
+            cargarItinerarios();
+            cargarClientes();
             new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Tour", getStage(), "Tour actualizado correctamente.");
 
         } catch (Exception ex) {
-            Logger.getLogger(MantCatViewController.class.getName()).log(Level.SEVERE, "Error guardando el Tour.", ex);
+            Logger.getLogger(MantToursViewController.class.getName()).log(Level.SEVERE, "Error guardando el Tour.", ex);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Tour", getStage(), "Ocurrio un error guardando el Tour.");
         }
     }
@@ -288,7 +366,6 @@ public class MantToursViewController extends Controller implements Initializable
     private void onActionJfxBtnCancelar(ActionEvent event) {
     }
 
-    @FXML
     private void onActionJfxBtnClientes(ActionEvent event) {
         BusquedaViewController busquedaController = (BusquedaViewController) FlowController.getInstance().getController("BusquedaView");
         busquedaController.busquedaTours();
@@ -328,12 +405,44 @@ public class MantToursViewController extends Controller implements Initializable
         dpFechaRegreso.valueProperty().unbindBidirectional(tour.fechaRegreso);
     }
 
+    private void bindItinerario(Boolean nuevo) {
+        if (!nuevo) {
+            txtIdItinerario.textProperty().bind(this.itinerario.id);
+        }
+        txtLugar.textProperty().bindBidirectional(this.itinerario.lugar);
+        txtDuración.textProperty().bindBidirectional(this.itinerario.duracionEnLugar);
+        txtOrden.textProperty().bindBidirectional(this.itinerario.orden);
+        txtLatitud.textProperty().bindBidirectional(this.itinerario.coordenadasLatitud);
+        txtLongitud.textProperty().bindBidirectional(this.itinerario.coordenadasLongitud);
+        dpItinerarioSalida.valueProperty().bindBidirectional(this.itinerario.fechaSalida);
+        dpItinerarioLlegada.valueProperty().bindBidirectional(this.itinerario.fechaLlegada);
+    }
+
+    private void unbindItinerario() {
+        txtIdItinerario.textProperty().unbind();
+        txtLugar.textProperty().unbindBidirectional(this.itinerario.lugar);
+        txtDuración.textProperty().unbindBidirectional(this.itinerario.duracionEnLugar);
+        txtOrden.textProperty().unbindBidirectional(this.itinerario.orden);
+        txtLatitud.textProperty().unbindBidirectional(this.itinerario.coordenadasLatitud);
+        txtLongitud.textProperty().unbindBidirectional(this.itinerario.coordenadasLongitud);
+        dpItinerarioSalida.valueProperty().unbindBidirectional(this.itinerario.fechaSalida);
+        dpItinerarioLlegada.valueProperty().unbindBidirectional(this.itinerario.fechaLlegada);
+    }
+
     private void nuevoTour() {
         unbindTour();
         tour = new Tour();
         bindTour(true);
         txtId.clear();
         txtId.requestFocus();
+    }
+
+    private void nuevoItinerario() {
+        unbindItinerario();
+        itinerario = new Itinerario();
+        bindItinerario(true);
+        txtIdItinerario.clear();
+        txtIdItinerario.requestFocus();
     }
 
     private void limpiarCBX() {
@@ -350,7 +459,6 @@ public class MantToursViewController extends Controller implements Initializable
     }
 
     private void cargarTour() {
-
         if (tour != null) {
             unbindTour();
             bindTour(false);
@@ -368,16 +476,98 @@ public class MantToursViewController extends Controller implements Initializable
             }
         }
     }
-    
+
     private void cargarClientes() {
         if (tour != null) {
             ObservableList<Cliente> clientes = FXCollections.observableArrayList();
-            for(Cliente cli : tour.getClientes())
+            for (Cliente cli : tour.getClientes()) {
                 clientes.add(cli);
+            }
             tbvClientes.setItems(clientes);
             tbvClientes.refresh();
         } else {
             new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Cliente", getStage(), "Error cargando los Clientes");
+        }
+    }
+
+    @FXML
+    private void onSelectionChangedTbpItinerarios(Event event) {
+        if (tbpItinerarios.isSelected()) {
+            if (tour.getId() == null) {
+                new Mensaje().showModal(Alert.AlertType.ERROR, "Tour", getStage(), "Debe cargar el Tour del cúal desea ver los Itinerarios.");
+                tabTour.getSelectionModel().select(tbpTour);
+            }
+        }
+    }
+
+    private void cargarItinerarios() {
+        if (tour != null) {
+            ObservableList<Itinerario> itinerarios = FXCollections.observableArrayList();
+            for (Itinerario iti : tour.getItinerarios()) {
+                itinerarios.add(new Itinerario(iti));
+            }
+            tbvItinerarios.setItems(itinerarios);
+            tbvItinerarios.refresh();
+        } else {
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Cliente", getStage(), "Error cargando los Clientes");
+        }
+    }
+
+    @FXML
+    private void onActionJfxBtnGuardarIti(ActionEvent event) {
+        try {
+            Long contador[] = (Long[]) AppContext.getInstance().get("Contador");
+            if (itinerario.getId() == null || !itinerario.getLugar().isEmpty() && !tbvItinerarios.getItems().stream().anyMatch(a -> a.getId().equals(itinerario.getId()))) {
+                contador[4]++;
+                itinerario.setId(contador[4]);
+                tbvItinerarios.getItems().add(itinerario);
+                tbvItinerarios.refresh();
+            } else if(itinerario.getId() != null && tbvItinerarios.getItems().stream().anyMatch(a -> a.getId().equals(itinerario.getId()))) {
+                for(int i = 0; i < tbvItinerarios.getItems().size(); i++) {
+                    if(Objects.equals(tbvItinerarios.getItems().get(i).getId(), itinerario.getId())) {
+                        tbvItinerarios.getItems().add(new Itinerario(itinerario));
+                        tbvItinerarios.getItems().remove(tbvItinerarios.getItems().get(i));
+                    }
+                }
+                tbvItinerarios.refresh();
+            }
+            nuevoItinerario();
+            new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Itinerario", getStage(), "Itinerario actualizado correctamente.");
+
+        } catch (Exception ex) {
+            Logger.getLogger(MantToursViewController.class.getName()).log(Level.SEVERE, "Error guardando el Itinerario.", ex);
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Itinerario", getStage(), "Ocurrio un error guardando el Itinerario.");
+        }
+    }
+
+    @FXML
+    private void onActionJfxBtnNuevoIti(ActionEvent event) {
+        if (new Mensaje().showConfirmation("Limpiar Itinerario", getStage(), "¿Esta seguro que desea limpiar el registro?")) {
+            nuevoItinerario();
+        }
+    }
+
+    private class ButtonCell extends TableCell<Itinerario, Boolean> {
+
+        final Button cellButton = new Button();
+
+        ButtonCell() {
+                cellButton.setPrefWidth(100);
+                cellButton.getStyleClass().add("jfx-btnimg-tbveliminar");
+
+                cellButton.setOnAction((ActionEvent t) -> {
+                    Itinerario iti = (Itinerario) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
+                    tbvItinerarios.getItems().remove(iti);
+                    tbvItinerarios.refresh();
+                });
+        }
+
+        @Override
+        protected void updateItem(Boolean t, boolean empty) {
+            super.updateItem(t, empty);
+            if (!empty) {
+                setGraphic(cellButton);
+            }
         }
     }
 
