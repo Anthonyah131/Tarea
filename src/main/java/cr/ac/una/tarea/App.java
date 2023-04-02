@@ -11,7 +11,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -36,20 +35,20 @@ public class App extends Application {
         Cliente cliente1 = new Cliente(1L, "Juan", "Perez", "123456789", "123456789", "juanperez@example.com", LocalDate.of(1984, 3, 1));
         clientes.add(cliente1);
         cleinetesArrayL.add(cliente1);
-        Cliente cliente2 = new Cliente(2L,"Maria", "Rodriguez", "987654321", "123456789", "maria@example.com", LocalDate.of(1992, 7, 25));
+        Cliente cliente2 = new Cliente(2L, "Maria", "Rodriguez", "987654321", "123456789", "maria@example.com", LocalDate.of(1992, 7, 25));
         clientes.add(cliente2);
         cleinetesArrayL.add(cliente2);
-        Cliente cliente3 = new Cliente(3L,"Pedro", "Gomez", "456789123", "123456789", "pedro@example.com", LocalDate.of(2005, 4, 12));
+        Cliente cliente3 = new Cliente(3L, "Pedro", "Gomez", "456789123", "123456789", "pedro@example.com", LocalDate.of(2005, 4, 12));
         clientes.add(cliente3);
         cleinetesArrayL.add(cliente3);
-        Cliente cliente4 = new Cliente(4L,"Laura", "Hernandez", "321654987", "123456789", "laura@example.com", LocalDate.of(1999, 2, 8));
+        Cliente cliente4 = new Cliente(4L, "Laura", "Hernandez", "321654987", "123456789", "laura@example.com", LocalDate.of(1999, 2, 8));
         clientes.add(cliente4);
         cleinetesArrayL.add(cliente4);
-        Cliente cliente5 = new Cliente(5L,"Carlos", "Jimenez", "741852963", "123456789", "carlos@example.com", LocalDate.of(2002, 8, 10));
+        Cliente cliente5 = new Cliente(5L, "Carlos", "Jimenez", "741852963", "123456789", "carlos@example.com", LocalDate.of(2002, 8, 10));
         clientes.add(cliente5);
         cleinetesArrayL.add(cliente5);
-        
-        Itinerario itinerario1 = new Itinerario(1L,"San José", LocalDate.of(2023, 4, 1), LocalDate.of(2023, 4, 2), 8L, 1L, "9.928069", "-84.090729");
+
+        Itinerario itinerario1 = new Itinerario(1L, "San José", LocalDate.of(2023, 4, 1), LocalDate.of(2023, 4, 2), 8L, 1L, "9.928069", "-84.090729");
         itinerarios.add(itinerario1);
         Itinerario itinerario2 = new Itinerario(2L, "Puerto Viejo", LocalDate.of(2023, 4, 3), LocalDate.of(2023, 4, 5), 2L, 2L, "9.654015", "-82.757444");
         itinerarios.add(itinerario2);
@@ -59,7 +58,7 @@ public class App extends Application {
         itinerarios.add(itinerario4);
         Itinerario itinerario5 = new Itinerario(5L, "Tortuguero", LocalDate.of(2023, 7, 1), LocalDate.of(2023, 7, 4), 3L, 5L, "10.544650", "-83.505056");
         itinerarios.add(itinerario5);
-        
+
         Categoria categoria1 = new Categoria(1L, "Aventura");
         categorias.add(categoria1);
         Categoria categoria2 = new Categoria(2L, "Playa");
@@ -70,20 +69,26 @@ public class App extends Application {
         categorias.add(categoria4);
         Categoria categoria5 = new Categoria(5L, "Gastronomía");
         categorias.add(categoria5);
-        
+
         Image image1 = new Image("cr/ac/una/tarea/resources/PuraVidaLogo.png");
         Image image2 = new Image("cr/ac/una/tarea/resources/PuraVidaLogo1.png");
         Image image3 = new Image("cr/ac/una/tarea/resources/MenuIcon.png");
-        
+        Image image4 = new Image("cr/ac/una/tarea/resources/Playa.jpg");
+        Image image5 = new Image("cr/ac/una/tarea/resources/Playa2.jpg");
+        Image image6 = new Image("cr/ac/una/tarea/resources/Playa3.jpg");
+
         fotos.add(image1);
         fotos.add(image2);
         fotos.add(image3);
+        fotos.add(image4);
+        fotos.add(image5);
+        fotos.add(image6);
 
         Empresa empresa1 = new Empresa(1L, "Empresa A", "123456789", image1, 22222222L, "empresaA@ejemplo.com", 2000L);
         empresas.add(empresa1);
         Empresa empresa2 = new Empresa(2L, "Empresa B", "987654321", image2, 33333333L, "empresaB@ejemplo.com", 1990L);
         empresas.add(empresa2);
-        Empresa empresa3 = new Empresa(3L,"Empresa C", "456789123", image3, 44444444L, "empresaC@ejemplo.com", 2005L);
+        Empresa empresa3 = new Empresa(3L, "Empresa C", "456789123", image3, 44444444L, "empresaC@ejemplo.com", 2005L);
         empresas.add(empresa3);
         Empresa empresa4 = new Empresa(4L, "Empresa D", "321654987", image1, 55555555L, "empresaD@ejemplo.com", 1995L);
         empresas.add(empresa4);
@@ -148,15 +153,15 @@ public class App extends Application {
         tours.add(tour13);
 
         // Instancia 14     
-        Tour tour14 = new Tour(14L, "Tour de los Volcanes", empresa5, categoria1, 75000L, LocalDate.of(2023, 8, 1), LocalDate.of(2023, 8, 7), new ArrayList<>() , 12L, cleinetesArrayL, fotos);
+        Tour tour14 = new Tour(14L, "Tour de los Volcanes", empresa5, categoria1, 75000L, LocalDate.of(2023, 8, 1), LocalDate.of(2023, 8, 7), new ArrayList<>(), 12L, cleinetesArrayL, fotos);
         tour1.setClientes(clientes);
         tours.add(tour14);
 
         // Instancia 15      
         Tour tour15 = new Tour(15L, "Tour de la Playa", empresa1, categoria3, 90000L, LocalDate.of(2023, 9, 1), LocalDate.of(2023, 9, 7), itinerarios, 25L, cleinetesArrayL, fotos);
         tours.add(tour15);
-        
-        Long contador[] = {5L,5L,5L,15L,5L};
+
+        Long contador[] = {5L, 5L, 5L, 15L, 5L};
 
         AppContext.getInstance().set("Contador", contador);
         AppContext.getInstance().set("ToursLista", tours);

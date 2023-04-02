@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" fx:id="rootClienteView" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.ClienteViewController">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+   <children>
+      <StackPane layoutX="230.0" layoutY="143.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <HBox prefHeight="50.0" prefWidth="200.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <ImageView fx:id="imgLogo" fitHeight="50.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></ImageView>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <JFXButton fx:id="jfxBtnCarrito" onAction="#onActionJfxBtnCarrito" text="0">
+                                 <graphic>
+                                    <ImageView fx:id="imgCarrito" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
+                                 </graphic>
+                              </JFXButton>
+                              <JFXButton fx:id="jfxBtnSalir" onAction="#onActionJfxBtnSalir" text="Salir">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin></JFXButton>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <AnchorPane fx:id="apTours" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" />
+                     </VBox.margin></AnchorPane>
+               </children>
+            </VBox>
+            <JFXButton fx:id="jfxBtnAnt" onAction="#onActionJfxBtnAnt" prefHeight="150.0" prefWidth="30.0" text="&lt;" StackPane.alignment="CENTER_LEFT" />
+            <JFXButton fx:id="jfxBtnSig" onAction="#onActionJfxBtnSig" prefHeight="150.0" prefWidth="30.0" text="&gt;" StackPane.alignment="CENTER_RIGHT" />
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>

@@ -12,7 +12,7 @@ JFXButton {
     -fx-background-color: #dbdea6;
 }
 
- /* InicioView */
+/* InicioView */
 
 .boton {
     -fx-min-width: 100px;
@@ -95,6 +95,25 @@ JFXButton {
 
 .jfx-combo-box .arrow-button {
     -fx-background-color: #dbdea6;
+}
+
+/* ClienteView */
+
+.vbox-contenedor {
+    -fx-border-radius: 5px;
+    -fx-background-color: #ede6db;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
+}
+.stackpane-contenedor {
+    -fx-background-color: #ede6db;
+    -fx-padding: 5px;
+    -fx-background-radius: 10px;
+}
+
+.label-titulo {
+    -fx-text-fill: #8c686b;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
 }
 
 

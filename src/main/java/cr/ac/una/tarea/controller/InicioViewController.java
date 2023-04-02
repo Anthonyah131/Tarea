@@ -61,6 +61,7 @@ public class InicioViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionJfxBtnUser(ActionEvent event) {
+        FlowController.getInstance().goViewInWindow("ClienteView");
     }
 
 }
