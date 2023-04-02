@@ -134,7 +134,7 @@ public class Empresa {
 
     @Override
     public String toString() {
-        return nombre.get();
+        return this.nombre.get();
     }
     
 }

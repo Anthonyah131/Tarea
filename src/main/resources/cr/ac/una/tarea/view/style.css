@@ -116,6 +116,12 @@ JFXButton {
     -fx-font-weight: bold;
 }
 
+.label-fecha {
+    -fx-text-fill: #8c686b;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
 
 /*.color1 { #d1f7ba }
 .color2 { #dbdea6 }

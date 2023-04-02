@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
@@ -42,6 +43,37 @@
                            </children>
                         </HBox>
                      </children>
+                  </HBox>
+                  <HBox prefHeight="25.0" spacing="5.0">
+                     <children>
+                        <JFXButton fx:id="jfxBtnTodos" onAction="#onActionJfxBtnTodos" text="Todos" />
+                        <HBox prefHeight="100.0" spacing="5.0">
+                           <children>
+                              <JFXButton fx:id="jfxBtnFecha" onAction="#onActionJfxBtnFecha">
+                                 <graphic>
+                                    <ImageView fx:id="imgFecha" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" spacing="5.0">
+                           <children>
+                              <JFXButton fx:id="jfxBtnNombre" onAction="#onActionJfxBtnNombre">
+                                 <graphic>
+                                    <ImageView fx:id="imgNombre" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                        <JFXComboBox fx:id="jfxcbEmpresa" onAction="#onActionJfxCbxEmpresa" promptText="Empresa" />
+                        <JFXComboBox fx:id="jfxcbCategoria" onAction="#onActionJfxCbxCategoria" promptText="Categoria" />
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" top="5.0" />
+                     </padding>
                   </HBox>
                   <AnchorPane fx:id="apTours" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <VBox.margin>
