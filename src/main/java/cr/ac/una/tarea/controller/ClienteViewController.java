@@ -6,12 +6,14 @@ package cr.ac.una.tarea.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import cr.ac.una.tarea.model.Carrito;
 import cr.ac.una.tarea.model.Categoria;
 import cr.ac.una.tarea.model.Empresa;
 import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.FlowController;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -79,6 +81,7 @@ public class ClienteViewController extends Controller implements Initializable {
     private ObservableList<Tour> tours = FXCollections.observableArrayList();
     private ObservableList<Empresa> empresas = FXCollections.observableArrayList();
     private ObservableList<Categoria> categorias = FXCollections.observableArrayList();
+    Carrito carrito;
     Tour tour;
 
     /**
@@ -101,7 +104,10 @@ public class ClienteViewController extends Controller implements Initializable {
         tourTotal = 0;
 
         tours.clear();
-        tours.addAll((List<Tour>) AppContext.getInstance().get("ToursLista"));
+        for (Tour tou : (List<Tour>) AppContext.getInstance().get("ToursLista")) {
+            tours.add(new Tour(tou));
+        }
+        carrito = new Carrito();
 
         limpiarCBX();
 
@@ -147,6 +153,14 @@ public class ClienteViewController extends Controller implements Initializable {
                         tourController.cargarTour(tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get());
                         FlowController.getInstance().goViewInWindowModal("TourView", getStage(), true);
                         tourController.carrusel.stopCarrusel();
+                        if (!tourController.getToursCompra().isEmpty()) {
+                            for (Tour tou : tourController.getToursCompra()) {
+                                carrito.agregarTour(tou);
+                            }
+                            long longValue = tourController.getToursCompra().size();
+                            tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get().compraCuposDisponibles(longValue);
+                            jfxBtnCarrito.setText("" + carrito.getCantidad());
+                        }
                     });
 
                     vboxContenedor.getChildren().addAll(hboxLogo, lbNombre, imgTour, lbFecha, jfxBtnVerTour);
@@ -239,6 +253,9 @@ public class ClienteViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionJfxBtnCarrito(ActionEvent event) {
+        CarritoViewController carritoController = (CarritoViewController) FlowController.getInstance().getController("CarritoView");
+//        carritoController.cargarCarrito(carrito);
+        FlowController.getInstance().goViewInWindowModal("CarritoView", getStage(), true);
     }
 
     @FXML
@@ -317,9 +334,8 @@ public class ClienteViewController extends Controller implements Initializable {
         tourVista = 0;
         tourTotal = 0;
 
-        tours.clear();
-        tours.addAll((List<Tour>) AppContext.getInstance().get("ToursLista"));
-
+//        tours.clear();
+//        tours.addAll((List<Tour>) AppContext.getInstance().get("ToursLista"));
         ObservableList<Tour> toursFiltro = FXCollections.observableArrayList();
 
         switch (tipo) {
@@ -432,6 +448,14 @@ public class ClienteViewController extends Controller implements Initializable {
                         tourController.cargarTour(tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get());
                         FlowController.getInstance().goViewInWindowModal("TourView", getStage(), true);
                         tourController.carrusel.stopCarrusel();
+                        if (!tourController.getToursCompra().isEmpty()) {
+                            for (Tour tou : tourController.getToursCompra()) {
+                                carrito.agregarTour(tou);
+                            }
+                            long longValue = tourController.getToursCompra().size();
+                            tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get().compraCuposDisponibles(longValue);
+                            jfxBtnCarrito.setText("" + carrito.getCantidad());
+                        }
                     });
 
                     vboxContenedor.getChildren().addAll(hboxLogo, lbNombre, imgTour, lbFecha, jfxBtnVerTour);

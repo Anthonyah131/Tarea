@@ -210,6 +210,11 @@ public class Tour {
     public void setCuposDisponibles(Long cuposDisponibles) {
         this.cuposDisponibles.set(cuposDisponibles.toString());
     }
+    
+    public void compraCuposDisponibles(Long cuposDisponibles) {
+        Long nuevaCantidad = Long.valueOf(this.cuposDisponibles.get()) - cuposDisponibles;
+        this.cuposDisponibles.set(nuevaCantidad.toString());
+    }
 
     public List<Cliente> getClientes() {
         return clientes;

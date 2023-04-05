@@ -7,13 +7,12 @@ package cr.ac.una.tarea.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import cr.ac.una.tarea.model.Tour;
-import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.Carrusel3D;
+import cr.ac.una.tarea.util.FlowController;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -62,6 +61,8 @@ public class TourViewController extends Controller implements Initializable {
     private AnchorPane rootTourView;
     
     public Carrusel3D carrusel;
+    public List<Tour> toursCompra = new ArrayList<>();
+    Tour tour;
 
 
     /**
@@ -83,23 +84,44 @@ public class TourViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionJfxBtnMenos(ActionEvent event) {
+        int n = Integer.parseInt(txtCantidad.getText());
+        n--;
+        if(n < 1)
+            n = 1;
+        txtCantidad.setText("" + n);
     }
 
     @FXML
     private void onActionJfxBtnMas(ActionEvent event) {
+        int n = Integer.parseInt(txtCantidad.getText());
+        n++;
+        if(n < 1)
+            n = 1;
+        txtCantidad.setText("" + n);
     }
 
     @FXML
     private void onActionJfxBtnAgregar(ActionEvent event) {
+        int comprar = Integer.parseInt(txtCantidad.getText());
+        int dispo = Integer.parseInt(txtDsiponibles.getText());
+        if(comprar <= dispo) {
+            for(int i = 0; i < comprar; i++) {
+                toursCompra.add(new Tour(tour));
+            }
+            this.getStage().close();
+        }
     }
 
     void cargarTour(Tour tour) {
+        this.tour = new Tour(tour);
+        toursCompra.clear();
         lbTitulo.setText(tour.getNombre());
         imgLogo.setImage(tour.getEmpresa().getLogo());
         txtFechaSalida.setText(tour.getFechaSalida().toString());
         txtFechaLLegada.setText(tour.getFechaRegreso().toString());
         txtDsiponibles.setText(tour.getCuposDisponibles().toString());
         txtPrecio.setText(tour.getPrecio().toString());
+        txtCantidad.setText("0");
         
         apTours.getChildren().clear();
         carrusel = new Carrusel3D(tour.getFotos(), apTours);
@@ -108,4 +130,7 @@ public class TourViewController extends Controller implements Initializable {
         carrusel.startCarrusel();
     }
 
+    public List<Tour> getToursCompra() {
+        return toursCompra;
+    }
 }

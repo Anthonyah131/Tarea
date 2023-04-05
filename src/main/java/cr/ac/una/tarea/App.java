@@ -3,6 +3,7 @@ package cr.ac.una.tarea;
 import cr.ac.una.tarea.model.Categoria;
 import cr.ac.una.tarea.model.Cliente;
 import cr.ac.una.tarea.model.Empresa;
+import cr.ac.una.tarea.model.Factura;
 import cr.ac.una.tarea.model.Itinerario;
 import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.AppContext;
@@ -28,6 +29,7 @@ public class App extends Application {
         ObservableList<Empresa> empresas = FXCollections.observableArrayList();
         ObservableList<Categoria> categorias = FXCollections.observableArrayList();
         ObservableList<Cliente> clientes = FXCollections.observableArrayList();
+        ObservableList<Factura> facturas = FXCollections.observableArrayList();
         List<Itinerario> itinerarios = new ArrayList<>();
         List<Image> fotos = new ArrayList<>();
         List<Cliente> cleinetesArrayL = new ArrayList<>();
