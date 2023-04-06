@@ -29,6 +29,7 @@ public class Tour {
     public List<Cliente> clientes;
     public List<Itinerario> itinerario;
     public List<Image> fotos;
+    public SimpleStringProperty cantidadCompra;
 
     public Tour(Long id, String nombre,Empresa empresa, Categoria categoria, Long precio, LocalDate fechaSalida, LocalDate fechaRegreso, List itinerario, Long cuposTotales,List clientes, List fotos) {
         this();
@@ -52,6 +53,7 @@ public class Tour {
         this.cuposDisponibles.set(cuposTotales.toString());
         this.clientes = clientes;
         this.fotos = fotos;
+        this.cantidadCompra.set("0");
     }
     
     public Tour(Tour tour) {
@@ -76,6 +78,7 @@ public class Tour {
         this.cuposDisponibles.set(tour.getCuposDisponibles().toString());
         this.clientes = tour.getClientes();
         this.fotos = tour.getFotos();
+        this.cantidadCompra.set(tour.getCantidadCompra().toString());
     }
     
     public Tour() {
@@ -91,6 +94,7 @@ public class Tour {
         this.itinerario = new ArrayList<>();
         this.clientes = new ArrayList<>();
         this.fotos = new ArrayList<>();
+        this.cantidadCompra = new SimpleStringProperty();
     }
     
     public void setTour(Tour tour) {
@@ -113,6 +117,7 @@ public class Tour {
         this.cuposDisponibles.set(tour.getCuposDisponibles().toString());
         this.clientes = tour.getClientes();
         this.fotos = tour.getFotos();
+        this.cantidadCompra.set(tour.getCantidadCompra().toString());
     }
 
     public Long getId() {
@@ -230,5 +235,18 @@ public class Tour {
 
     public void setFotos(List<Image> fotos) {
         this.fotos = fotos;
+    }
+
+    public Long getCantidadCompra() {
+        return Long.valueOf(cantidadCompra.get());
+    }
+    
+    public Long getCompraTotal() {
+        Long n = Long.valueOf(cantidadCompra.get()) * Long.valueOf(precio.get());
+        return n;
+    }
+
+    public void setCantidadCompra(Long cantidadCompra) {
+        this.cantidadCompra.set(cantidadCompra.toString());
     }
 }

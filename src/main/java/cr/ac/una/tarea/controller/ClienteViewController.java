@@ -13,7 +13,6 @@ import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.FlowController;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -104,9 +103,10 @@ public class ClienteViewController extends Controller implements Initializable {
         tourTotal = 0;
 
         tours.clear();
-        for (Tour tou : (List<Tour>) AppContext.getInstance().get("ToursLista")) {
-            tours.add(new Tour(tou));
-        }
+//        for (Tour tou : (List<Tour>) AppContext.getInstance().get("ToursLista")) {
+//            tours.add(new Tour(tou));
+//        }
+        tours.addAll((List<Tour>) AppContext.getInstance().get("ToursLista"));
         carrito = new Carrito();
 
         limpiarCBX();
@@ -118,7 +118,7 @@ public class ClienteViewController extends Controller implements Initializable {
             hboxContenedor.setMaxWidth(Double.MAX_VALUE);
             for (int j = 0; j < 3 && i + j < tours.size(); j++) {
                 tour = new Tour(tours.get(i + j));
-                if (tour != null) {
+                if (tour != null && tour.getCuposDisponibles() > 0) {
                     Long id = tour.getId();
                     VBox vboxContenedor = new VBox();
                     vboxContenedor.setMaxHeight(500);
@@ -153,13 +153,12 @@ public class ClienteViewController extends Controller implements Initializable {
                         tourController.cargarTour(tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get());
                         FlowController.getInstance().goViewInWindowModal("TourView", getStage(), true);
                         tourController.carrusel.stopCarrusel();
-                        if (!tourController.getToursCompra().isEmpty()) {
-                            for (Tour tou : tourController.getToursCompra()) {
-                                carrito.agregarTour(tou);
-                            }
-                            long longValue = tourController.getToursCompra().size();
+                        if (tourController.compraBandera) {
+                            carrito.agregarTour(tourController.getToursCompra(), tourController.getToursCantidad());
+                            long longValue = tourController.getToursCantidad();
                             tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get().compraCuposDisponibles(longValue);
                             jfxBtnCarrito.setText("" + carrito.getCantidad());
+                            filtro("Todos");
                         }
                     });
 
@@ -254,8 +253,10 @@ public class ClienteViewController extends Controller implements Initializable {
     @FXML
     private void onActionJfxBtnCarrito(ActionEvent event) {
         CarritoViewController carritoController = (CarritoViewController) FlowController.getInstance().getController("CarritoView");
-//        carritoController.cargarCarrito(carrito);
+        carritoController.cargarCarrito(carrito);
         FlowController.getInstance().goViewInWindowModal("CarritoView", getStage(), true);
+        jfxBtnCarrito.setText("" + carrito.getCantidad());
+        filtro("Todos");
     }
 
     @FXML
@@ -413,7 +414,7 @@ public class ClienteViewController extends Controller implements Initializable {
             hboxContenedor.setMaxWidth(Double.MAX_VALUE);
             for (int j = 0; j < 3 && i + j < toursFiltro.size(); j++) {
                 tour = new Tour(toursFiltro.get(i + j));
-                if (tour != null) {
+                if (tour != null && tour.getCuposDisponibles() > 0) {
                     Long id = tour.getId();
                     VBox vboxContenedor = new VBox();
                     vboxContenedor.setMaxHeight(500);
@@ -448,13 +449,12 @@ public class ClienteViewController extends Controller implements Initializable {
                         tourController.cargarTour(tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get());
                         FlowController.getInstance().goViewInWindowModal("TourView", getStage(), true);
                         tourController.carrusel.stopCarrusel();
-                        if (!tourController.getToursCompra().isEmpty()) {
-                            for (Tour tou : tourController.getToursCompra()) {
-                                carrito.agregarTour(tou);
-                            }
-                            long longValue = tourController.getToursCompra().size();
+                        if (tourController.compraBandera) {
+                            carrito.agregarTour(tourController.getToursCompra(), tourController.getToursCantidad());
+                            long longValue = tourController.getToursCantidad();
                             tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get().compraCuposDisponibles(longValue);
                             jfxBtnCarrito.setText("" + carrito.getCantidad());
+                            filtro("Todos");
                         }
                     });
 

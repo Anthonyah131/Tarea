@@ -8,10 +8,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.Carrusel3D;
-import cr.ac.una.tarea.util.FlowController;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,8 +58,8 @@ public class TourViewController extends Controller implements Initializable {
     private AnchorPane rootTourView;
     
     public Carrusel3D carrusel;
-    public List<Tour> toursCompra = new ArrayList<>();
     Tour tour;
+    public Boolean compraBandera = false;
 
 
     /**
@@ -105,23 +102,23 @@ public class TourViewController extends Controller implements Initializable {
         int comprar = Integer.parseInt(txtCantidad.getText());
         int dispo = Integer.parseInt(txtDsiponibles.getText());
         if(comprar <= dispo) {
-            for(int i = 0; i < comprar; i++) {
-                toursCompra.add(new Tour(tour));
-            }
+            compraBandera = true;
             this.getStage().close();
+        } else {
+            txtCantidad.setText("1");
         }
     }
 
     void cargarTour(Tour tour) {
         this.tour = new Tour(tour);
-        toursCompra.clear();
+        compraBandera = false;
         lbTitulo.setText(tour.getNombre());
         imgLogo.setImage(tour.getEmpresa().getLogo());
         txtFechaSalida.setText(tour.getFechaSalida().toString());
         txtFechaLLegada.setText(tour.getFechaRegreso().toString());
         txtDsiponibles.setText(tour.getCuposDisponibles().toString());
         txtPrecio.setText(tour.getPrecio().toString());
-        txtCantidad.setText("0");
+        txtCantidad.setText("1");
         
         apTours.getChildren().clear();
         carrusel = new Carrusel3D(tour.getFotos(), apTours);
@@ -130,7 +127,11 @@ public class TourViewController extends Controller implements Initializable {
         carrusel.startCarrusel();
     }
 
-    public List<Tour> getToursCompra() {
-        return toursCompra;
+    public Tour getToursCompra() {
+        return tour;
+    }
+    
+    public int getToursCantidad() {
+        return Integer.parseInt(txtCantidad.getText());
     }
 }
