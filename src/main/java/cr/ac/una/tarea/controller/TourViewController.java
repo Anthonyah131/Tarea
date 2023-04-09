@@ -21,19 +21,19 @@ import com.sothawo.mapjfx.event.MapLabelEvent;
 import com.sothawo.mapjfx.event.MapViewEvent;
 import com.sothawo.mapjfx.event.MarkerEvent;
 import com.sothawo.mapjfx.offline.OfflineCache;
+import cr.ac.una.tarea.model.Itinerario;
 import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.Carrusel3D;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -87,43 +87,16 @@ public class TourViewController extends Controller implements Initializable {
     private static final Logger logger = LoggerFactory.getLogger(TourViewController.class);
 
     private static final Coordinate coordCostaRica = new Coordinate(9.7489, -83.7534);
-    //private static final Extent extentAll
-    //         = Extent.forCoordinates(coordCostaRica);
 
-    private static final CoordinateLine coordinateLine
-            = new CoordinateLine(coordCostaRica)
-                    .setVisible(true)
-                    .setColor(Color.DODGERBLUE)
-                    .setWidth(7)
-                    .setClosed(true)
-                    .setFillColor(Color.web("lawngreen", 0.5));
-
-    private static final Marker marker;
-
-    private static final MapCircle circle;
-
-    private static final MapLabel mapLabel;
+    CoordinateLine coordinateLineIti = null;
+    List<Coordinate> coordinates = new ArrayList<>();
+    List<Marker> markers = new ArrayList<>();
 
     private static final WMSParam wmsParam;
 
     private static final XYZParam xyzParam;
 
     static {
-        marker = Marker.createProvided(Marker.Provided.BLUE)
-                .setPosition(coordCostaRica)
-                .setRotation(90)
-                .setVisible(true);
-
-        mapLabel = new MapLabel("blau!")
-                .setCssClass("blue-label")
-                .setPosition(coordCostaRica)
-                .setRotation(90)
-                .setVisible(true);
-
-        marker.attachLabel(mapLabel);
-
-        circle = new MapCircle(coordCostaRica, 1_000).setVisible(true);
-
 //        wmsParam = new WMSParam()
 //                .setUrl("http://irs.gis-lab.info/?")
 //                .addParam("layers", "landsat")
@@ -205,7 +178,7 @@ public class TourViewController extends Controller implements Initializable {
         txtDsiponibles.setText(tour.getCuposDisponibles().toString());
         txtPrecio.setText(tour.getPrecio().toString());
         txtCantidad.setText("1");
-        
+
         cargarMapa();
 
         apTours.getChildren().clear();
@@ -218,9 +191,9 @@ public class TourViewController extends Controller implements Initializable {
     private void cargarMapa() {
         logger.info("starting devtest program...");
 
-        // MapView in the center with an initial coordinate (optional)
-        // the MapView is created first as the other elements reference it
         mapView = new MapView();
+        borderPaneMap.getChildren().clear();
+        
         // animate pan and zoom with 500ms
         mapView.setAnimationDuration(500);
         borderPaneMap.setCenter(mapView);
@@ -230,18 +203,6 @@ public class TourViewController extends Controller implements Initializable {
 
         //add XYZParam
         mapView.setXYZParam(xyzParam);
-
-        // listen to MapViewEvent MAP_CLICKED
-        mapView.addEventHandler(MapViewEvent.MAP_CLICKED, event -> {
-            logger.info("MAP_CLICKED event at {}", event.getCoordinate().normalize());
-            event.consume();
-            if (marker.getVisible()) {
-                marker.setPosition(event.getCoordinate());
-            }
-            if (mapLabel.getVisible()) {
-                mapLabel.setPosition(event.getCoordinate());
-            }
-        });
 
         // listen to MapViewEvent MAP_RIGHTCLICKED
         mapView.addEventHandler(MapViewEvent.MAP_RIGHTCLICKED, event -> {
@@ -260,14 +221,6 @@ public class TourViewController extends Controller implements Initializable {
         mapView.addEventHandler(MapViewEvent.MAP_BOUNDING_EXTENT, event -> {
             logger.info("MAP_BOUNDING_EXTENT event: {}", event.getExtent());
             event.consume();
-        });
-
-        // listen to MARKER_CLICKED event.
-        mapView.addEventHandler(MarkerEvent.MARKER_CLICKED, event -> {
-            Marker marker = event.getMarker();
-            logger.info("MARKER_CLICKED event: {}", marker);
-            event.consume();
-            marker.setRotation(marker.getRotation() + 5);
         });
 
         // listen to MARKER_MOUSEDOWN event.
@@ -347,32 +300,53 @@ public class TourViewController extends Controller implements Initializable {
         // add listener for mapView initialization state
         mapView.initializedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                // a map is only displayed when an initial coordinate is set
-                mapView.setCenter(coordCostaRica);
-                //mapView.setExtent(coordCostaRica);
-                mapView.setZoom(5);
+                coordinates.clear();
+                markers.clear();
+                coordinateLineIti = null;
+                if (!this.tour.getItinerarios().isEmpty()) {
+                    for (Itinerario iti : this.tour.getItinerarios()) {
+                        Coordinate coordenada = new Coordinate(Double.valueOf(iti.getCoordenadasLatitud()), Double.valueOf(iti.getCoordenadasLongitud()));
 
-                // add two markers without keeping a ref to them, they should disappear from the map when gc'ed
-                mapView.addMarker(Marker.createProvided(Marker.Provided.GREEN).setPosition(coordCostaRica)
-                        .setVisible(true));
-                mapView.addMarker(
-                        Marker.createProvided(Marker.Provided.ORANGE).setPosition(coordCostaRica).setVisible(
-                                true));
+                        Marker marker = Marker.createProvided(Marker.Provided.BLUE)
+                                .setPosition(coordenada)
+                                .setRotation(360)
+                                .setVisible(true);
 
-                // add a coordinate line to be gc'ed
-                mapView.addCoordinateLine(
-                        new CoordinateLine(coordCostaRica)
-                                .setVisible(true)
-                                .setColor(Color.FUCHSIA).setWidth(5));
+                        MapLabel mapLabel = new MapLabel(iti.getLugar())
+                                .setCssClass("blue-label")
+                                .setPosition(coordenada)
+                                .setRotation(360)
+                                .setVisible(true);
 
-                // add a label to be gc'ed
-                mapView.addLabel(new MapLabel("clean me up").setPosition(coordCostaRica)
-                        .setVisible(true));
+                        marker.attachLabel(mapLabel);
 
-                // add normal circle and a circle to be gc'ed
-                mapView.addMapCircle(circle);
-                mapView.addMapCircle(new MapCircle(coordCostaRica, 100).setVisible(true));
+                        coordinates.add(coordenada);
+                        markers.add(marker);
+                    }
+                    coordinateLineIti = new CoordinateLine(coordinates)
+                            .setVisible(true)
+                            .setColor(Color.DODGERBLUE)
+                            .setWidth(7)
+                            .setClosed(true)
+                            .setFillColor(Color.web("lawngreen", 0.5));
+                }
 
+                if (coordinates.isEmpty()) {
+                    mapView.setCenter(coordCostaRica);
+                } else {
+                    mapView.setCenter(coordinates.get(0));
+                }
+
+                mapView.setZoom(6);
+
+                if (coordinateLineIti != null) {
+                    mapView.addCoordinateLine(coordinateLineIti);
+                }
+                if (markers != null) {
+                    for (Marker mark : markers) {
+                        mapView.addMarker(mark);
+                    }
+                }
             }
         });
 
@@ -387,6 +361,10 @@ public class TourViewController extends Controller implements Initializable {
                 .build());
 
         logger.debug("application started.");
+    }
+
+    public void stop() throws Exception {
+        mapView.close();
     }
 
     private void initOfflineCache() {

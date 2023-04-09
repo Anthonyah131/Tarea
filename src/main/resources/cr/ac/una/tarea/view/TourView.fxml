@@ -45,13 +45,16 @@
                         <JFXTextField fx:id="txtFechaLLegada" editable="false" labelFloat="true" promptText="Fecha Llegada" />
                      </children>
                   </HBox>
-                  <HBox fx:id="hboxMapa" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                  <HBox fx:id="hboxMapa" alignment="CENTER" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <children>
                         <BorderPane fx:id="borderPaneMap" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                     </children></HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin></HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <JFXTextField fx:id="txtDsiponibles" editable="false" text="Dsiponibles" />
+                        <JFXTextField fx:id="txtDsiponibles" editable="false" text="Disponibles" />
                         <JFXButton fx:id="jfxBtnItinerario" onAction="#onActionJfxBtnItinerario" text="Itinerario Completo" />
                         <JFXTextField fx:id="txtPrecio" editable="false" text="Precio" />
                      </children>

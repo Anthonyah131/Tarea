@@ -78,7 +78,11 @@ public class Tour {
         this.cuposDisponibles.set(tour.getCuposDisponibles().toString());
         this.clientes = tour.getClientes();
         this.fotos = tour.getFotos();
-        this.cantidadCompra.set(tour.getCantidadCompra().toString());
+        if (tour.getCantidadCompra() != null) {
+            this.cantidadCompra.set(tour.getCantidadCompra().toString());
+        } else {
+            this.cantidadCompra.set("0");
+        }
     }
     
     public Tour() {
@@ -238,7 +242,10 @@ public class Tour {
     }
 
     public Long getCantidadCompra() {
-        return Long.valueOf(cantidadCompra.get());
+        if(cantidadCompra.get() == null)
+            return 0L;
+        else 
+            return Long.valueOf(cantidadCompra.get());
     }
     
     public Long getCompraTotal() {

@@ -145,7 +145,7 @@ public class ClienteViewController extends Controller implements Initializable {
                     hboxLogo.getChildren().add(imgLogoEmpresa);
                     hboxLogo.setAlignment(Pos.CENTER_LEFT);
                     lbNombre.setText(tour.getNombre());
-                    imgTour.setImage(tour.getFotos().get(5));
+                    imgTour.setImage(tour.getFotos().get(0));
                     imgTour.setPreserveRatio(true);
                     imgTour.setFitHeight(150);
                     VBox.setVgrow(imgTour, Priority.ALWAYS);
@@ -160,6 +160,11 @@ public class ClienteViewController extends Controller implements Initializable {
                         }
                         FlowController.getInstance().goViewInWindowModal("TourView", getStage(), true);
                         tourController.carrusel.stopCarrusel();
+                        try {
+                            tourController.stop();
+                        } catch (Exception ex) {
+                            Logger.getLogger(ClienteViewController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         if (tourController.compraBandera) {
                             carrito.agregarTour(tourController.getToursCompra(), tourController.getToursCantidad());
                             long longValue = tourController.getToursCantidad();
@@ -445,7 +450,7 @@ public class ClienteViewController extends Controller implements Initializable {
                     hboxLogo.getChildren().add(imgLogoEmpresa);
                     hboxLogo.setAlignment(Pos.CENTER_LEFT);
                     lbNombre.setText(tour.getNombre());
-                    imgTour.setImage(tour.getFotos().get(5));
+                    imgTour.setImage(tour.getFotos().get(0));
                     imgTour.setPreserveRatio(true);
                     imgTour.setFitHeight(150);
                     VBox.setVgrow(imgTour, Priority.ALWAYS);
@@ -460,6 +465,11 @@ public class ClienteViewController extends Controller implements Initializable {
                         }
                         FlowController.getInstance().goViewInWindowModal("TourView", getStage(), true);
                         tourController.carrusel.stopCarrusel();
+                        try {
+                            tourController.stop();
+                        } catch (Exception ex) {
+                            Logger.getLogger(ClienteViewController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         if (tourController.compraBandera) {
                             carrito.agregarTour(tourController.getToursCompra(), tourController.getToursCantidad());
                             long longValue = tourController.getToursCantidad();
