@@ -4,59 +4,81 @@
  */
 package cr.ac.una.tarea.model;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 /**
  *
  * @author ANTHONY
  */
 public class Factura {
-    private int id;
-    private Date fecha;
-    private double montoTotal;
-    private List<List<Tour>> toursComprados;
+    private SimpleStringProperty id;
+    private ObjectProperty<LocalDate> fecha;
+    private SimpleStringProperty montoTotal;
+    private Carrito carrito;
     private Cliente cliente;
 
-    public Factura(int id, Date fecha, double montoTotal, List toursComprados, Cliente cliente) {
-        this.id = id;
-        this.fecha = fecha;
-        this.montoTotal = montoTotal;
-        this.toursComprados = toursComprados;
+    public Factura(LocalDate fecha, Long montoTotal, Carrito carrito, Cliente cliente) {
+        this();
+        if (this.fecha != null) {
+            this.fecha.set(fecha);
+        } else {
+            this.fecha.set(null);
+        }
+        this.montoTotal.set(montoTotal.toString());
+        this.carrito = carrito;
         this.cliente = cliente;
+    }
+    
+    public Factura() {
+        this.id = new SimpleStringProperty();
+        this.fecha = new SimpleObjectProperty();
+        this.montoTotal = new SimpleStringProperty();
+        this.carrito = new Carrito();
+        this.cliente = new Cliente();
     }
 
     // Métodos getters y setters
-    public int getId() {
-        return id;
+    public Long getId() {
+        if (id.get() != null && !id.get().isEmpty()) {
+            return Long.valueOf(id.get());
+        } else {
+            return null;
+        }
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(Long id) {
+        this.id.set(id.toString());
     }
 
-    public Date getFecha() {
-        return fecha;
+    public LocalDate getFecha() {
+        return fecha.get();
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setFecha(LocalDate fecha) {
+        this.fecha.set(fecha);
     }
 
-    public double getMontoTotal() {
-        return montoTotal;
+    public Long getMontoTotal() {
+        if (montoTotal.get() != null && !montoTotal.get().isEmpty()) {
+            return Long.valueOf(montoTotal.get());
+        } else {
+            return null;
+        }
     }
 
-    public void setMontoTotal(double montoTotal) {
-        this.montoTotal = montoTotal;
+    public void setMontoTotal(Long montoTotal) {
+        this.montoTotal.set(montoTotal.toString());
     }
 
-    public List<List<Tour>> getToursComprados() {
-        return toursComprados;
+    public Carrito getCarrito() {
+        return carrito;
     }
 
-    public void setToursComprados(List<List<Tour>> toursComprados) {
-        this.toursComprados = toursComprados;
+    public void setCarrito(Carrito carrito) {
+        this.carrito = carrito;
     }
 
     public Cliente getCliente() {
@@ -65,16 +87,6 @@ public class Factura {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
-    }
-
-    // Método para calcular el total de la factura
-    public double calcularTotal() {
-        double total = 0;
-        for (List<Tour> list: toursComprados) {
-            for(Tour tour : list)
-                total += tour.getPrecio();
-        }
-        return total;
     }
 }
 

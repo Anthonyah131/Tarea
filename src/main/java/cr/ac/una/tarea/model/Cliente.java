@@ -137,6 +137,6 @@ public class Cliente {
     
     @Override
     public String toString() {
-        return nombre + " " + apellido;
+        return nombre.get() + " " + apellido.get();
     }
 }

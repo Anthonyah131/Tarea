@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.ImageView?>
@@ -23,6 +25,15 @@
                      <children>
                         <ImageView fx:id="imgLogo" fitHeight="50.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
                         <Label fx:id="lbCarrito" text="Carrito" />
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <JFXComboBox fx:id="cbxCliente" promptText="Cliente" />
+                              <JFXButton fx:id="jfxBtnAgregarCliente" onAction="#onActionJfxBtnAgregarCliente" text="Agregar Nuevo" />
+                           </children>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </HBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefWidth="200.0" VBox.vgrow="ALWAYS">

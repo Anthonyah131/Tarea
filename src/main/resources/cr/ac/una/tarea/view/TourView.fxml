@@ -7,11 +7,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="rootTourView" prefHeight="600.0" prefWidth="500.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="cr.ac.una.tarea.controller.TourViewController">
+<AnchorPane id="AnchorPane" fx:id="rootTourView" prefHeight="600.0" prefWidth="500.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.TourViewController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
@@ -44,7 +45,10 @@
                         <JFXTextField fx:id="txtFechaLLegada" editable="false" labelFloat="true" promptText="Fecha Llegada" />
                      </children>
                   </HBox>
-                  <HBox fx:id="hboxMapa" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  <HBox fx:id="hboxMapa" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <BorderPane fx:id="borderPaneMap" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                     </children></HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <JFXTextField fx:id="txtDsiponibles" editable="false" text="Dsiponibles" />
@@ -72,5 +76,6 @@
             </VBox>
          </children>
       </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

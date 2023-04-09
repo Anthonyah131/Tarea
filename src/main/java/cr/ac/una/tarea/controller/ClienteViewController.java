@@ -12,11 +12,14 @@ import cr.ac.una.tarea.model.Empresa;
 import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.FlowController;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
@@ -150,7 +153,11 @@ public class ClienteViewController extends Controller implements Initializable {
                     jfxBtnVerTour.setText("Ver Tour");
                     jfxBtnVerTour.setOnAction(event -> {
                         TourViewController tourController = (TourViewController) FlowController.getInstance().getController("TourView");
-                        tourController.cargarTour(tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get());
+                        try {
+                            tourController.cargarTour(tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get());
+                        } catch (IOException ex) {
+                            Logger.getLogger(ClienteViewController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         FlowController.getInstance().goViewInWindowModal("TourView", getStage(), true);
                         tourController.carrusel.stopCarrusel();
                         if (tourController.compraBandera) {
@@ -446,7 +453,11 @@ public class ClienteViewController extends Controller implements Initializable {
                     jfxBtnVerTour.setText("Ver Tour");
                     jfxBtnVerTour.setOnAction(event -> {
                         TourViewController tourController = (TourViewController) FlowController.getInstance().getController("TourView");
-                        tourController.cargarTour(tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get());
+                        try {
+                            tourController.cargarTour(tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get());
+                        } catch (IOException ex) {
+                            Logger.getLogger(ClienteViewController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         FlowController.getInstance().goViewInWindowModal("TourView", getStage(), true);
                         tourController.carrusel.stopCarrusel();
                         if (tourController.compraBandera) {

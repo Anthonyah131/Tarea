@@ -10,31 +10,35 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXButton;
 import cr.ac.una.tarea.model.Carrito;
+import cr.ac.una.tarea.model.Cliente;
+import cr.ac.una.tarea.model.Factura;
 import cr.ac.una.tarea.model.Tour;
+import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.FlowController;
+import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import javafx.scene.layout.AnchorPane;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javax.imageio.ImageIO;
 
@@ -67,6 +71,26 @@ public class FacturaViewController extends Controller implements Initializable {
     private ColumnConstraints gpPrecioT;
     @FXML
     private GridPane gridFactura;
+    @FXML
+    private JFXButton jfxBtnContinuar;
+    @FXML
+    private Label lbNombreCliente;
+    @FXML
+    private Label lbCedula;
+    @FXML
+    private Label lbTelefono;
+    @FXML
+    private Label lbCorreo;
+    @FXML
+    private Label lbFecha;
+    @FXML
+    private Label lbFactura;
+
+    Cliente cliente;
+    Factura factura;
+    ObservableList<Tour> tours = FXCollections.observableArrayList();
+    ObservableList<Cliente> clientes = FXCollections.observableArrayList();
+    ObservableList<Factura> facturas = FXCollections.observableArrayList();
 
     /**
      * Initializes the controller class.
@@ -82,39 +106,34 @@ public class FacturaViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionJfxBtnDescargarPdf(ActionEvent event) {
-        descargarFactura();
-    }
-
-    public void descargarFactura() {
         try {
-            // Crear objeto Document de ITextPDF y especificar tamaño de página
             Document documento = new Document(PageSize.A4);
-            // Crear objeto PdfWriter de ITextPDF
-            PdfWriter.getInstance(documento, new FileOutputStream("factura.pdf"));
-            // Abrir documento para escribir en él
+            PdfWriter.getInstance(documento, new FileOutputStream("factura" + this.cliente.getNombre() + factura.getId().toString() + ".pdf"));
             documento.open();
-            // Agregar componentes de la interfaz al PDF
+
             WritableImage image = vboxFactura.snapshot(new SnapshotParameters(), null);
-            File output = new File("factura.png");
+            File output = new File("factura" + this.cliente.getNombre() + factura.getId().toString() + ".png");
 
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", output);
-            // Obtener las dimensiones de la página y la imagen
             float pageWidth = documento.getPageSize().getWidth();
             float pageHeight = documento.getPageSize().getHeight();
             BufferedImage bufferedImage = ImageIO.read(output);
             float imageWidth = bufferedImage.getWidth();
             float imageHeight = bufferedImage.getHeight();
-            // Calcular el factor de escala para la imagen
             float scale = Math.min(pageWidth / imageWidth, pageHeight / imageHeight);
-            // Crear un objeto Image de iTextPDF y establecer la imagen redimensionada
+
             Image imagen = Image.getInstance(output.getPath());
             imagen.scaleToFit(imageWidth * scale, imageHeight * scale);
-            // Establecer la alineación de la imagen como centrada
             imagen.setAlignment(Image.ALIGN_CENTER);
-            // Agregar la imagen al documento
             documento.add(imagen);
-            // Cerrar documento
+
             documento.close();
+
+            Desktop desktop = Desktop.getDesktop();
+
+            File file = new File("factura" + this.cliente.getNombre() + factura.getId().toString() + ".pdf");
+            desktop.open(file);
+
         } catch (FileNotFoundException | DocumentException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -122,12 +141,33 @@ public class FacturaViewController extends Controller implements Initializable {
         }
     }
 
-    void cargarFactura(Carrito carrito) {
+    @FXML
+    private void onActionJfxBtnContinuar(ActionEvent event) {
+        this.getStage().close();
+    }
+
+    void cargarFactura(Carrito carrito, Cliente cliente) {
+        facturas.clear();
+        facturas.addAll((List<Factura>) AppContext.getInstance().get("ToursLista"));
+
+        factura = new Factura(LocalDate.now(), 0L, carrito, cliente);
+
+        Long contador[] = (Long[]) AppContext.getInstance().get("Contador");
+        contador[5]++;
+        factura.setId(contador[5]);
+        facturas.add(factura);
+
+        this.cliente = cliente;
+        lbNombreCliente.setText(this.cliente.toString());
+        lbCedula.setText(this.cliente.getCedula());
+        lbTelefono.setText(this.cliente.getTelefono());
+        lbCorreo.setText(this.cliente.getCorreo());
+        lbFecha.setText(factura.getFecha().toString());
+        lbFactura.setText(factura.getId().toString());
+
         // Recorrer los tours del carrito
         gridFactura.getChildren().clear();
         gridFactura.setAlignment(Pos.CENTER);
-
-        gridFactura.setGridLinesVisible(true);
 
         Label lbTituloNombre = new Label("Nombre");
         GridPane.setHalignment(lbTituloNombre, HPos.CENTER);
@@ -155,9 +195,17 @@ public class FacturaViewController extends Controller implements Initializable {
         gridFactura.add(lbTituloPrecioU, 2, 0);
         gridFactura.add(lbTituloPrecioT, 3, 0);
 
+        tours.clear();
+        tours.addAll((List<Tour>) AppContext.getInstance().get("ToursLista"));
+
+        clientes.clear();
+        clientes.addAll((List<Cliente>) AppContext.getInstance().get("ClientesLista"));
+
         for (int i = 0; i < carrito.getTours().size(); i++) {
             Tour tour = new Tour((Tour) carrito.getTours().get(i)[0]);
             int cantidad = (int) carrito.getTours().get(i)[1];
+
+            tours.stream().filter(t -> Objects.equals(t.getId(), tour.getId())).findFirst().get().getClientes().add(clientes.stream().filter(t -> Objects.equals(t.getId(), this.cliente.getId())).findFirst().get());
 
             Label lbNombre = new Label(tour.getNombre());
             GridPane.setHalignment(lbNombre, HPos.CENTER);
@@ -188,5 +236,7 @@ public class FacturaViewController extends Controller implements Initializable {
             gridFactura.getChildren().addAll(lbNombre, lbCantidad, lbPrecioU, lbPrecioT);
         }
         lbTotal.setText("Total: " + carrito.getTotal());
+        ClienteViewController clienteController = (ClienteViewController) FlowController.getInstance().getController("ClienteView");
+        clienteController.carrito = new Carrito();
     }
 }

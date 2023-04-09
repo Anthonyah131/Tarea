@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="rootFacturaView" prefHeight="400.0" prefWidth="500.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="cr.ac.una.tarea.controller.FacturaViewController">
+<AnchorPane id="AnchorPane" fx:id="rootFacturaView" prefHeight="500.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.FacturaViewController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
@@ -27,12 +27,48 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
                                  <children>
-                                    <ImageView fx:id="imgLogo" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                                    <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <ImageView fx:id="imgLogo" fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                                   <children>
+                                                      <Label styleClass="label-tour-Factura" text="Cliente: " />
+                                                      <Label styleClass="label-tour-Factura" text="Cedula: " />
+                                                      <Label styleClass="label-tour-Factura" text="Telefono: " />
+                                                      <Label styleClass="label-tour-Factura" text="Correo: " />
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label fx:id="lbNombreCliente" styleClass="label-tour-Factura" text="....." />
+                                                      <Label fx:id="lbCedula" styleClass="label-tour-Factura" text="....." />
+                                                      <Label fx:id="lbTelefono" styleClass="label-tour-Factura" text="....." />
+                                                      <Label fx:id="lbCorreo" styleClass="label-tour-Factura" text="....." />
+                                                   </children>
+                                                </VBox>
+                                                <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                                   <children>
+                                                      <Label styleClass="label-tour-Factura" text="Fecha: " />
+                                                      <Label styleClass="label-tour-Factura" text="Factura #: " />
+                                                   </children>
+                                                </VBox>
+                                                <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label fx:id="lbFecha" styleClass="label-tour-Factura" text="....." />
+                                                      <Label fx:id="lbFactura" styleClass="label-tour-Factura" text="....." />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
                               <VBox fx:id="vboxTours" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <GridPane fx:id="gridFactura" alignment="CENTER" VBox.vgrow="ALWAYS">
+                                    <GridPane fx:id="gridFactura" alignment="CENTER" gridLinesVisible="true" VBox.vgrow="ALWAYS">
                                       <columnConstraints>
                                         <ColumnConstraints fx:id="gpNombre" hgrow="SOMETIMES" minWidth="10.0" />
                                           <ColumnConstraints fx:id="gpCantidad" hgrow="SOMETIMES" minWidth="10.0" />
@@ -64,7 +100,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <JFXButton text="Continuar" />
+                              <JFXButton fx:id="jfxBtnContinuar" onAction="#onActionJfxBtnContinuar" text="Continuar" />
                            </children>
                         </HBox>
                      </children>
