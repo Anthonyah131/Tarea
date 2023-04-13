@@ -38,6 +38,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableCell;
@@ -46,6 +47,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 
 /**
@@ -128,6 +131,8 @@ public class MantToursViewController extends Controller implements Initializable
     ObservableList<Empresa> empresas = FXCollections.observableArrayList();
     ObservableList<Categoria> categorias = FXCollections.observableArrayList();
     ImageSwitcher switcher;
+    @FXML
+    private Label lbImagenes;
 
     /**
      * Initializes the controller class.
@@ -216,6 +221,46 @@ public class MantToursViewController extends Controller implements Initializable
         });
 
         indicarRequeridos();
+
+        imgFotos.setOnDragOver(event -> {
+            if (event.getGestureSource() != imgFotos && event.getDragboard().hasFiles()) {
+                for (File file : event.getDragboard().getFiles()) {
+                    // Validar que el archivo sea una imagen
+                    String extension = getFileExtension(file);
+                    if (extension != null && (extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg"))) {
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    }
+                }
+            }
+            event.consume();
+        });
+
+        lbImagenes.setWrapText(true);
+
+        imgFotos.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasFiles()) {
+                tour.getFotos().clear();
+                for (File file : db.getFiles()) {
+                    String extension = getFileExtension(file);
+                    if (extension != null && (extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg"))) {
+                        Image image = new Image(file.toURI().toString());
+                        tour.getFotos().add(image);
+                        System.out.println(file.toURI().toString());
+                        success = true;
+                    }
+                }
+                if (switcher != null) {
+                    switcher.stop();
+                }
+                switcher = new ImageSwitcher(tour.getFotos(), imgFotos);
+                switcher.start();
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        });
+
     }
 
     @Override
@@ -232,11 +277,15 @@ public class MantToursViewController extends Controller implements Initializable
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Images", "*.*"), new FileChooser.ExtensionFilter("JPG", "*.jpg"), new FileChooser.ExtensionFilter("PNG", "*.png"));
 
         //trae la imagen
-        List<File> file = fileChooser.showOpenMultipleDialog(null);
-        if (!file.isEmpty() && file != null) {
+        List<File> file;
+        file = fileChooser.showOpenMultipleDialog(null);
+        if (file != null && !file.isEmpty()) {
             tour.getFotos().clear();
             for (File fi : file) {
                 tour.getFotos().add(new Image("file:" + fi.getAbsolutePath()));
+            }
+            if (switcher != null) {
+                switcher.stop();
             }
             switcher = new ImageSwitcher(tour.getFotos(), imgFotos);
             switcher.start();
@@ -381,21 +430,13 @@ public class MantToursViewController extends Controller implements Initializable
     private void onActionJfxBtnCancelar(ActionEvent event) {
     }
 
-    private void onActionJfxBtnClientes(ActionEvent event) {
-        BusquedaViewController busquedaController = (BusquedaViewController) FlowController.getInstance().getController("BusquedaView");
-        busquedaController.busquedaTours();
-        FlowController.getInstance().goViewInWindowModal("BusquedaView", getStage(), true);
-        tour = (Tour) busquedaController.getResultado();
-        busquedaController.SetResultado();
-        limpiarCBX();
-        if (tour != null) {
-            if (switcher != null) {
-                switcher.stop();
-            }
-            switcher.start();
-        } else {
-            tour = new Tour();
+    private String getFileExtension(File file) {
+        String name = file.getName();
+        int lastIndexOf = name.lastIndexOf(".");
+        if (lastIndexOf == -1) {
+            return null;
         }
+        return name.substring(lastIndexOf + 1);
     }
 
     private void bindTour(Boolean nuevo) {

@@ -27,11 +27,16 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -79,6 +84,11 @@ public class ClienteViewController extends Controller implements Initializable {
 
     int tourVista = 0;
     int tourTotal = 0;
+    int tourActual = 0;
+    String tipoTour = "Todos";
+    boolean isDragging = false;
+    double startX, startY;
+    Point2D imgTourInitialPos = null;
     boolean isAnimating = false;
     private ObservableList<Tour> tours = FXCollections.observableArrayList();
     private ObservableList<Empresa> empresas = FXCollections.observableArrayList();
@@ -91,15 +101,14 @@ public class ClienteViewController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    }
-
-    @Override
-    public void initialize() {
         imgLogo.setImage(new Image("cr/ac/una/tarea/resources/PuraVidaLogo1.png"));
         imgCarrito.setImage(new Image("cr/ac/una/tarea/resources/Carrito2.png"));
         imgFecha.setImage(new Image("cr/ac/una/tarea/resources/Cercana.png"));
         imgNombre.setImage(new Image("cr/ac/una/tarea/resources/Asce.png"));
+    }
 
+    @Override
+    public void initialize() {
         apTours.getChildren().clear();
 
         tourVista = 0;
@@ -150,6 +159,7 @@ public class ClienteViewController extends Controller implements Initializable {
                     imgTour.setFitHeight(150);
                     VBox.setVgrow(imgTour, Priority.ALWAYS);
                     lbFecha.setText(tour.getFechaSalida().toString());
+
                     jfxBtnVerTour.setText("Ver Tour");
                     jfxBtnVerTour.setOnAction(event -> {
                         TourViewController tourController = (TourViewController) FlowController.getInstance().getController("TourView");
@@ -170,7 +180,27 @@ public class ClienteViewController extends Controller implements Initializable {
                             long longValue = tourController.getToursCantidad();
                             tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get().compraCuposDisponibles(longValue);
                             jfxBtnCarrito.setText("" + carrito.getCantidad());
-                            filtro("Todos");
+                            filtro(tipoTour);
+                        }
+                    });
+
+                    vboxContenedor.setOnMousePressed(event -> {
+                        vboxContenedor.setCursor(Cursor.MOVE);
+                    });
+
+                    vboxContenedor.setOnMouseDragged(event -> {
+                    });
+
+                    vboxContenedor.setOnMouseReleased(event -> {
+                        vboxContenedor.setCursor(Cursor.DEFAULT);
+                        Node node = event.getPickResult().getIntersectedNode();
+                        if ("jfxBtnCarrito".equals(node.getId())) {
+                            System.out.println("Correcto");
+                            carrito.agregarTour(tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get(), 1);
+                            long longValue = 1;
+                            tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get().compraCuposDisponibles(longValue);
+                            jfxBtnCarrito.setText("" + carrito.getCantidad());
+                            filtro(tipoTour);
                         }
                     });
 
@@ -192,14 +222,28 @@ public class ClienteViewController extends Controller implements Initializable {
         tourVista--;
         tourTotal = tourVista;
 
-        for (int i = apTours.getChildren().size() - 1; i >= 1; i--) {
-            Node node = apTours.getChildren().get(i);
-            if (node instanceof StackPane) {
-                StackPane pane = (StackPane) node;
-                translateAnimation(0.5, pane, 2000);
-            }
-        }
         tourVista = 0;
+
+        if (tourActual <= tourTotal && tourActual > 0) {
+            for (int i = apTours.getChildren().size() - 1; i > tourActual; i--) {
+                Node node = apTours.getChildren().get(i);
+                if (node instanceof StackPane) {
+                    StackPane pane = (StackPane) node;
+                    translateAnimation(0.5, pane, 2000);
+                }
+            }
+            tourVista = tourActual;
+        } else {
+            for (int i = apTours.getChildren().size() - 1; i >= 1; i--) {
+                Node node = apTours.getChildren().get(i);
+                if (node instanceof StackPane) {
+                    StackPane pane = (StackPane) node;
+                    translateAnimation(0.5, pane, 2000);
+                }
+            }
+            tourVista = 0;
+            tourActual = 0;
+        }
     }
 
     @FXML
@@ -231,6 +275,7 @@ public class ClienteViewController extends Controller implements Initializable {
                     }
                 }
             }
+            tourActual = tourVista;
         }
     }
 
@@ -259,6 +304,7 @@ public class ClienteViewController extends Controller implements Initializable {
                     }
                 }
             }
+            tourActual = tourVista;
         }
     }
 
@@ -268,12 +314,13 @@ public class ClienteViewController extends Controller implements Initializable {
         carritoController.cargarCarrito(carrito);
         FlowController.getInstance().goViewInWindowModal("CarritoView", getStage(), true);
         jfxBtnCarrito.setText("" + carrito.getCantidad());
-        filtro("Todos");
+        filtro(tipoTour);
     }
 
     @FXML
     private void onActionJfxBtnTodos(ActionEvent event) {
-        filtro("Todos");
+        tipoTour = "Todos";
+        filtro(tipoTour);
     }
 
     int fechaCont = 0;
@@ -281,11 +328,13 @@ public class ClienteViewController extends Controller implements Initializable {
     @FXML
     private void onActionJfxBtnFecha(ActionEvent event) {
         if (fechaCont == 0) {
-            filtro("Fecha");
+            tipoTour = "Fecha";
+            filtro(tipoTour);
             imgFecha.setImage(new Image("cr/ac/una/tarea/resources/Cercana.png"));
             fechaCont++;
         } else if (fechaCont == 1) {
-            filtro("FechaLej");
+            tipoTour = "FechaLej";
+            filtro(tipoTour);
             imgFecha.setImage(new Image("cr/ac/una/tarea/resources/Lejana.png"));
             fechaCont = 0;
         }
@@ -296,11 +345,13 @@ public class ClienteViewController extends Controller implements Initializable {
     @FXML
     private void onActionJfxBtnNombre(ActionEvent event) {
         if (fechaNombre == 0) {
-            filtro("Nombre");
+            tipoTour = "Nombre";
+            filtro(tipoTour);
             imgNombre.setImage(new Image("cr/ac/una/tarea/resources/Asce.png"));
             fechaNombre++;
         } else if (fechaNombre == 1) {
-            filtro("NombreDes");
+            tipoTour = "NombreDes";
+            filtro(tipoTour);
             imgNombre.setImage(new Image("cr/ac/una/tarea/resources/Desce.png"));
             fechaNombre = 0;
         }
@@ -308,12 +359,14 @@ public class ClienteViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionJfxCbxEmpresa(ActionEvent event) {
-        filtro("Empresa");
+        tipoTour = "Empresa";
+        filtro(tipoTour);
     }
 
     @FXML
     private void onActionJfxCbxCategoria(ActionEvent event) {
-        filtro("Categoria");
+        tipoTour = "Categoria";
+        filtro(tipoTour);
     }
 
     public void translateAnimation(double duration, Node node, double width) {
@@ -475,7 +528,27 @@ public class ClienteViewController extends Controller implements Initializable {
                             long longValue = tourController.getToursCantidad();
                             tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get().compraCuposDisponibles(longValue);
                             jfxBtnCarrito.setText("" + carrito.getCantidad());
-                            filtro("Todos");
+                            filtro(tipoTour);
+                        }
+                    });
+
+                    vboxContenedor.setOnMousePressed(event -> {
+                        vboxContenedor.setCursor(Cursor.MOVE);
+                    });
+
+                    vboxContenedor.setOnMouseDragged(event -> {
+                    });
+
+                    vboxContenedor.setOnMouseReleased(event -> {
+                        vboxContenedor.setCursor(Cursor.DEFAULT);
+                        Node node = event.getPickResult().getIntersectedNode();
+                        if ("jfxBtnCarrito".equals(node.getId())) {
+                            System.out.println("Correcto");
+                            carrito.agregarTour(tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get(), 1);
+                            long longValue = 1;
+                            tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get().compraCuposDisponibles(longValue);
+                            jfxBtnCarrito.setText("" + carrito.getCantidad());
+                            filtro(tipoTour);
                         }
                     });
 
@@ -497,13 +570,27 @@ public class ClienteViewController extends Controller implements Initializable {
         tourVista--;
         tourTotal = tourVista;
 
-        for (int i = apTours.getChildren().size() - 1; i >= 1; i--) {
-            Node node = apTours.getChildren().get(i);
-            if (node instanceof StackPane) {
-                StackPane pane = (StackPane) node;
-                translateAnimation(0.5, pane, 2000);
-            }
-        }
         tourVista = 0;
+
+        if (tourActual <= tourTotal && tourActual > 0) {
+            for (int i = apTours.getChildren().size() - 1; i > tourActual; i--) {
+                Node node = apTours.getChildren().get(i);
+                if (node instanceof StackPane) {
+                    StackPane pane = (StackPane) node;
+                    translateAnimation(0.5, pane, 2000);
+                }
+            }
+            tourVista = tourActual;
+        } else {
+            for (int i = apTours.getChildren().size() - 1; i >= 1; i--) {
+                Node node = apTours.getChildren().get(i);
+                if (node instanceof StackPane) {
+                    StackPane pane = (StackPane) node;
+                    translateAnimation(0.5, pane, 2000);
+                }
+            }
+            tourVista = 0;
+            tourActual = 0;
+        }
     }
 }

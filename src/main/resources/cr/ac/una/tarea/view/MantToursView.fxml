@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableView?>
@@ -51,6 +52,7 @@
                                     </VBox>
                                     <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                                        <children>
+                                          <Label fx:id="lbImagenes" prefHeight="50.0" prefWidth="236.0" styleClass="label-tour-Factura" text="Busque o arrastre sus imagenes acá" />
                                           <ImageView fx:id="imgFotos" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" />
                                           <JFXButton fx:id="jfxBtnBuscarFotos" onAction="#onActionBtnBuscarFotos" text="Buscar Fotos" />
                                        </children>
