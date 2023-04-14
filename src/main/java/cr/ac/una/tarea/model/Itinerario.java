@@ -116,6 +116,10 @@ public class Itinerario {
     public String getOrden() {
         return orden.get();
     }
+    
+    public int getOrdenInt() {
+        return Integer.parseInt(orden.get());
+    }
 
     public void setOrden(Long orden) {
         this.orden.set(orden.toString());

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="rootTourView" prefHeight="600.0" prefWidth="500.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.TourViewController">
+<AnchorPane id="AnchorPane" fx:id="rootTourView" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.TourViewController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
@@ -28,16 +28,16 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="lbTitulo" text="Label" />
+                        <Label fx:id="lbTitulo" styleClass="label-titulo-Tour" text="Label" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" maxHeight="300.0" maxWidth="600.0" prefHeight="250.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <AnchorPane fx:id="apTours" HBox.hgrow="ALWAYS" />
-                     </children>
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="250.0" prefWidth="450.0">
                      <VBox.margin>
                         <Insets left="25.0" right="25.0" />
                      </VBox.margin>
+                     <children>
+                        <AnchorPane fx:id="apTours" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="450.0" />
+                     </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
                      <children>
@@ -54,9 +54,9 @@
                      </VBox.margin></HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <JFXTextField fx:id="txtDsiponibles" editable="false" text="Disponibles" />
+                        <JFXTextField fx:id="txtDsiponibles" editable="false" labelFloat="true" text="Disponibles" />
                         <JFXButton fx:id="jfxBtnItinerario" onAction="#onActionJfxBtnItinerario" text="Itinerario Completo" />
-                        <JFXTextField fx:id="txtPrecio" editable="false" text="Precio" />
+                        <JFXTextField fx:id="txtPrecio" editable="false" labelFloat="true" text="Precio" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
@@ -79,6 +79,5 @@
             </VBox>
          </children>
       </StackPane>
-      <StackPane prefHeight="150.0" prefWidth="200.0" />
    </children>
 </AnchorPane>
