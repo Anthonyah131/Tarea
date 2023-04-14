@@ -28,7 +28,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="lbTitulo" text="Label" />
+                        <Label fx:id="lbTitulo" styleClass="label-titulo-Tour" text="Label" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" maxHeight="300.0" maxWidth="600.0" prefHeight="250.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
@@ -54,9 +54,9 @@
                      </VBox.margin></HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <JFXTextField fx:id="txtDsiponibles" editable="false" text="Disponibles" />
+                        <JFXTextField fx:id="txtDsiponibles" editable="false" labelFloat="true" text="Disponibles" />
                         <JFXButton fx:id="jfxBtnItinerario" onAction="#onActionJfxBtnItinerario" text="Itinerario Completo" />
-                        <JFXTextField fx:id="txtPrecio" editable="false" text="Precio" />
+                        <JFXTextField fx:id="txtPrecio" editable="false" labelFloat="true" text="Precio" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
