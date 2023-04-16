@@ -144,14 +144,6 @@ JFXButton {
     -fx-text-fill: #dbdea6;
 }
 
-/* TourView */
-
-.label-titulo-Tour {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #dbdea6;
-}
-
 /*.color1 { #d1f7ba }
 .color2 { #dbdea6 }
 .color3 { #d1bd95 }

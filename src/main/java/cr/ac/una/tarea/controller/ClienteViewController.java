@@ -169,7 +169,7 @@ public class ClienteViewController extends Controller implements Initializable {
                             Logger.getLogger(ClienteViewController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         FlowController.getInstance().goViewInWindowModal("TourView", getStage(), true);
-//                        tourController.carrusel.stopCarrusel();
+                        tourController.carrusel.stopCarrusel();
                         try {
                             tourController.stop();
                         } catch (Exception ex) {

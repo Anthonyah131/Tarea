@@ -9,6 +9,8 @@ import com.jfoenix.controls.JFXTextField;
 import com.sothawo.mapjfx.Configuration;
 import com.sothawo.mapjfx.Coordinate;
 import com.sothawo.mapjfx.CoordinateLine;
+import com.sothawo.mapjfx.Extent;
+import com.sothawo.mapjfx.MapCircle;
 import com.sothawo.mapjfx.MapLabel;
 import com.sothawo.mapjfx.MapView;
 import com.sothawo.mapjfx.MapType;
@@ -22,28 +24,22 @@ import com.sothawo.mapjfx.offline.OfflineCache;
 import cr.ac.una.tarea.model.Itinerario;
 import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.Carrusel3D;
-import cr.ac.una.tarea.util.DisplayShelf;
-import cr.ac.una.tarea.util.FlowController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +55,8 @@ public class TourViewController extends Controller implements Initializable {
     private ImageView imgLogo;
     @FXML
     private Label lbTitulo;
+    @FXML
+    private AnchorPane apTours;
     @FXML
     private JFXTextField txtFechaSalida;
     @FXML
@@ -118,11 +116,8 @@ public class TourViewController extends Controller implements Initializable {
     private MapView mapView;
 
     public Carrusel3D carrusel;
-    public DisplayShelf carrucel1;
     Tour tour;
     public Boolean compraBandera = false;
-    @FXML
-    private AnchorPane apTours;
 
     /**
      * Initializes the controller class.
@@ -186,13 +181,11 @@ public class TourViewController extends Controller implements Initializable {
 
         cargarMapa();
 
-//        carrusel = new Carrusel3D(tour.getFotos(), apTours);
-//
-//        carrusel.inicializarCarrusel();
-//        carrusel.startCarrusel();
-        carrucel1 = new DisplayShelf();
-        
-        carrucel1.mostrarCarrucel(tour.getFotos(), apTours);
+        apTours.getChildren().clear();
+        carrusel = new Carrusel3D(tour.getFotos(), apTours);
+
+        carrusel.inicializarCarrusel();
+        carrusel.startCarrusel();
     }
 
     private void cargarMapa() {
@@ -200,7 +193,7 @@ public class TourViewController extends Controller implements Initializable {
 
         mapView = new MapView();
         borderPaneMap.getChildren().clear();
-
+        
         // animate pan and zoom with 500ms
         mapView.setAnimationDuration(500);
         borderPaneMap.setCenter(mapView);
@@ -311,7 +304,6 @@ public class TourViewController extends Controller implements Initializable {
                 markers.clear();
                 coordinateLineIti = null;
                 if (!this.tour.getItinerarios().isEmpty()) {
-                    Collections.sort(this.tour.getItinerarios(), Comparator.comparingInt(Itinerario::getOrdenInt));
                     for (Itinerario iti : this.tour.getItinerarios()) {
                         Coordinate coordenada = new Coordinate(Double.valueOf(iti.getCoordenadasLatitud()), Double.valueOf(iti.getCoordenadasLongitud()));
 
@@ -320,7 +312,7 @@ public class TourViewController extends Controller implements Initializable {
                                 .setRotation(360)
                                 .setVisible(true);
 
-                        MapLabel mapLabel = new MapLabel(iti.getOrden() + "." + iti.getLugar())
+                        MapLabel mapLabel = new MapLabel(iti.getLugar())
                                 .setCssClass("blue-label")
                                 .setPosition(coordenada)
                                 .setRotation(360)
@@ -338,7 +330,6 @@ public class TourViewController extends Controller implements Initializable {
                             .setClosed(true)
                             .setFillColor(Color.web("lawngreen", 0.5));
                 }
-                Collections.sort(this.tour.getItinerarios(), Comparator.comparingLong(Itinerario::getId));
 
                 if (coordinates.isEmpty()) {
                     mapView.setCenter(coordCostaRica);
@@ -412,11 +403,5 @@ public class TourViewController extends Controller implements Initializable {
 
     public int getToursCantidad() {
         return Integer.parseInt(txtCantidad.getText());
-    }
-
-    private void onActionBtnCarrucel(ActionEvent event) throws IOException {
-//        CarrucelViewController busquedaController = (CarrucelViewController) FlowController.getInstance().getController("CarrucelView");
-//        busquedaController.mostrarCarrucel(tour.getFotos());
-//        FlowController.getInstance().goViewInWindow("CarrucelView");
     }
 }

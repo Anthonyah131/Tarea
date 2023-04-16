@@ -78,26 +78,13 @@ public class App extends Application {
         Image image4 = new Image("cr/ac/una/tarea/resources/Playa.jpg");
         Image image5 = new Image("cr/ac/una/tarea/resources/Playa2.jpg");
         Image image6 = new Image("cr/ac/una/tarea/resources/Playa3.jpg");
-        
-        Image image7 = new Image("cr/ac/una/tarea/resources/imgs/animals/animal1.jpg");
-        Image image8 = new Image("cr/ac/una/tarea/resources/imgs/animals/animal2.jpg");
-        Image image9 = new Image("cr/ac/una/tarea/resources/imgs/animals/animal3.jpg");
-        Image image10 = new Image("cr/ac/una/tarea/resources/imgs/animals/animal4.jpg");
-        Image image11 = new Image("cr/ac/una/tarea/resources/imgs/animals/animal5.jpg");
-        Image image12 = new Image("cr/ac/una/tarea/resources/imgs/animals/animal6.jpg");
 
-//        fotos.add(image1);
-//        fotos.add(image2);
-//        fotos.add(image3);
+        fotos.add(image1);
+        fotos.add(image2);
+        fotos.add(image3);
         fotos.add(image4);
         fotos.add(image5);
         fotos.add(image6);
-        fotos.add(image7);
-        fotos.add(image8);
-        fotos.add(image9);
-        fotos.add(image10);
-        fotos.add(image11);
-        fotos.add(image12);
 
         Empresa empresa1 = new Empresa(1L, "Empresa A", "123456789", image1, 22222222L, "empresaA@ejemplo.com", 2000L);
         empresas.add(empresa1);

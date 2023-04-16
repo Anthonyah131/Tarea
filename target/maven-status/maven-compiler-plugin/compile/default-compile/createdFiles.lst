@@ -20,6 +20,7 @@ cr\ac\una\tarea\controller\CarritoViewController.class
 cr\ac\una\tarea\model\Itinerario.class
 cr\ac\una\tarea\controller\FacturaViewController.class
 cr\ac\una\tarea\controller\MantToursViewController.class
+.netbeans_automatic_build
 cr\ac\una\tarea\util\Mensaje.class
 cr\ac\una\tarea\util\FlowController.class
 cr\ac\una\tarea\model\Cliente.class
