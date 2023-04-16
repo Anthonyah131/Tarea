@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -304,6 +305,7 @@ public class TourViewController extends Controller implements Initializable {
                 markers.clear();
                 coordinateLineIti = null;
                 if (!this.tour.getItinerarios().isEmpty()) {
+                    Collections.sort(this.tour.getItinerarios(), Comparator.comparingInt(Itinerario::getOrdenInt));
                     for (Itinerario iti : this.tour.getItinerarios()) {
                         Coordinate coordenada = new Coordinate(Double.valueOf(iti.getCoordenadasLatitud()), Double.valueOf(iti.getCoordenadasLongitud()));
 
@@ -312,7 +314,7 @@ public class TourViewController extends Controller implements Initializable {
                                 .setRotation(360)
                                 .setVisible(true);
 
-                        MapLabel mapLabel = new MapLabel(iti.getLugar())
+                        MapLabel mapLabel = new MapLabel(iti.getOrden() + "." + iti.getLugar())
                                 .setCssClass("blue-label")
                                 .setPosition(coordenada)
                                 .setRotation(360)
@@ -330,6 +332,7 @@ public class TourViewController extends Controller implements Initializable {
                             .setClosed(true)
                             .setFillColor(Color.web("lawngreen", 0.5));
                 }
+                Collections.sort(this.tour.getItinerarios(), Comparator.comparingLong(Itinerario::getId));
 
                 if (coordinates.isEmpty()) {
                     mapView.setCenter(coordCostaRica);

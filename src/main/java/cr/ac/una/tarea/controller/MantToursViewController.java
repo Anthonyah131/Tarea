@@ -341,59 +341,62 @@ public class MantToursViewController extends Controller implements Initializable
             if (!invalidos.isEmpty()) {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Categoria", getStage(), invalidos);
             } else {
-                Boolean banderaNuevo = true;
-                ObservableList<Tour> tours = (ObservableList<Tour>) AppContext.getInstance().get("ToursLista");
-                if (tour.getId() != null) {
-                    for (Tour tou : tours) {
-                        if (Objects.equals(tou.getId(), tour.getId())) {
-                            for (Empresa empr : empresas) {
-                                if (Objects.equals(jfxCbxEmpresa.getValue().getId(), empr.getId())) {
-                                    tour.setEmpresa(empr);
+                if (0 < dpFechaRegreso.getValue().compareTo(dpFechaSalida.getValue())) {
+                    Boolean banderaNuevo = true;
+                    ObservableList<Tour> tours = (ObservableList<Tour>) AppContext.getInstance().get("ToursLista");
+                    if (tour.getId() != null) {
+                        for (Tour tou : tours) {
+                            if (Objects.equals(tou.getId(), tour.getId())) {
+                                for (Empresa empr : empresas) {
+                                    if (Objects.equals(jfxCbxEmpresa.getValue().getId(), empr.getId())) {
+                                        tour.setEmpresa(empr);
+                                    }
                                 }
-                            }
-                            for (Categoria cat : categorias) {
-                                if (Objects.equals(jfxCbxCategoria.getValue().getId(), cat.getId())) {
-                                    tour.setCategoria(cat);
+                                for (Categoria cat : categorias) {
+                                    if (Objects.equals(jfxCbxCategoria.getValue().getId(), cat.getId())) {
+                                        tour.setCategoria(cat);
+                                    }
                                 }
+                                tour.getItinerarios().clear();
+                                for (Itinerario ititbv : tbvItinerarios.getItems()) {
+                                    tour.getItinerarios().add(ititbv);
+                                }
+                                tou.setTour(tour);
+                                banderaNuevo = false;
                             }
-                            tour.getItinerarios().clear();
-                            for (Itinerario ititbv : tbvItinerarios.getItems()) {
-                                tour.getItinerarios().add(ititbv);
+                        }
+                    }
+                    if (banderaNuevo) {
+                        Long contador[] = (Long[]) AppContext.getInstance().get("Contador");
+                        for (Empresa empr : empresas) {
+                            if (Objects.equals(jfxCbxEmpresa.getValue().getId(), empr.getId())) {
+                                tour.setEmpresa(empr);
                             }
-                            tou.setTour(tour);
-                            banderaNuevo = false;
                         }
-                    }
-                }
-                if (banderaNuevo) {
-                    Long contador[] = (Long[]) AppContext.getInstance().get("Contador");
-                    for (Empresa empr : empresas) {
-                        if (Objects.equals(jfxCbxEmpresa.getValue().getId(), empr.getId())) {
-                            tour.setEmpresa(empr);
+                        for (Categoria cat : categorias) {
+                            if (Objects.equals(jfxCbxCategoria.getValue().getId(), cat.getId())) {
+                                tour.setCategoria(cat);
+                            }
                         }
+                        contador[3]++;
+                        tour.setCuposDisponibles(Long.valueOf(txtCuposTotales.getText()));
+                        tour.setId(contador[3]);
+                        tours.add(tour);
                     }
-                    for (Categoria cat : categorias) {
-                        if (Objects.equals(jfxCbxCategoria.getValue().getId(), cat.getId())) {
-                            tour.setCategoria(cat);
-                        }
+                    if (switcher != null) {
+                        switcher.stop();
                     }
-                    contador[3]++;
-                    tour.setCuposDisponibles(Long.valueOf(txtCuposTotales.getText()));
-                    tour.setId(contador[3]);
-                    tours.add(tour);
+                    imgFotos.setImage(null);
+                    limpiarCBX();
+                    nuevoTour();
+                    nuevoItinerario();
+                    cargarItinerarios();
+                    cargarClientes();
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Tour", getStage(), "Tour actualizado correctamente.");
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Tour", getStage(), "Ocurrio un error con las fechas");
                 }
-                if (switcher != null) {
-                    switcher.stop();
-                }
-                imgFotos.setImage(null);
-                limpiarCBX();
-                nuevoTour();
-                nuevoItinerario();
-                cargarItinerarios();
-                cargarClientes();
-                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Tour", getStage(), "Tour actualizado correctamente.");
             }
-
         } catch (Exception ex) {
             Logger.getLogger(MantToursViewController.class.getName()).log(Level.SEVERE, "Error guardando el Tour.", ex);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Tour", getStage(), "Ocurrio un error guardando el Tour.");
@@ -576,22 +579,27 @@ public class MantToursViewController extends Controller implements Initializable
             if (!invalidos.isEmpty()) {
                 new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Categoria", getStage(), invalidos);
             } else {
-                Long contador[] = (Long[]) AppContext.getInstance().get("Contador");
-                if (itinerario.getId() == null || !itinerario.getLugar().isEmpty() && !tbvItinerarios.getItems().stream().anyMatch(a -> a.getId().equals(itinerario.getId()))) {
-                    contador[4]++;
-                    itinerario.setId(contador[4]);
-                    tbvItinerarios.getItems().add(itinerario);
-                    tbvItinerarios.refresh();
-                } else if (itinerario.getId() != null && tbvItinerarios.getItems().stream().anyMatch(a -> a.getId().equals(itinerario.getId()))) {
-                    for (int i = 0; i < tbvItinerarios.getItems().size(); i++) {
-                        if (Objects.equals(tbvItinerarios.getItems().get(i).getId(), itinerario.getId())) {
-                            tbvItinerarios.getItems().get(i).setItinerario(itinerario);
+                if (dpItinerarioSalida.getValue().compareTo(dpFechaSalida.getValue()) >= 0 && dpItinerarioLlegada.getValue().compareTo(dpFechaRegreso.getValue()) <= 0 && 0 < dpItinerarioLlegada.getValue().compareTo(dpItinerarioSalida.getValue())) {
+                    Long contador[] = (Long[]) AppContext.getInstance().get("Contador");
+                    if (itinerario.getId() == null || !itinerario.getLugar().isEmpty() && !tbvItinerarios.getItems().stream().anyMatch(a -> a.getId().equals(itinerario.getId()))) {
+                        contador[4]++;
+                        itinerario.setId(contador[4]);
+                        tbvItinerarios.getItems().add(itinerario);
+                        tbvItinerarios.refresh();
+                    } else if (itinerario.getId() != null && tbvItinerarios.getItems().stream().anyMatch(a -> a.getId().equals(itinerario.getId()))) {
+                        for (int i = 0; i < tbvItinerarios.getItems().size(); i++) {
+                            if (Objects.equals(tbvItinerarios.getItems().get(i).getId(), itinerario.getId())) {
+                                tbvItinerarios.getItems().get(i).setItinerario(itinerario);
+                            }
                         }
+                        tbvItinerarios.refresh();
                     }
-                    tbvItinerarios.refresh();
+                    nuevoItinerario();
+                    new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Itinerario", getStage(), "Itinerario actualizado correctamente.");
+
+                } else {
+                    new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Categoria", getStage(), "Ocurrio un error con las fechas");
                 }
-                nuevoItinerario();
-                new Mensaje().showModal(Alert.AlertType.INFORMATION, "Guardar Itinerario", getStage(), "Itinerario actualizado correctamente.");
             }
         } catch (Exception ex) {
             Logger.getLogger(MantToursViewController.class.getName()).log(Level.SEVERE, "Error guardando el Itinerario.", ex);
