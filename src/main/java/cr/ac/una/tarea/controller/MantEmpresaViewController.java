@@ -65,8 +65,6 @@ public class MantEmpresaViewController extends Controller implements Initializab
     private JFXButton jfxBtnGuardar;
     @FXML
     private JFXButton jfxBtnEliminar;
-    @FXML
-    private JFXButton jfxBtnCancelar;
 
     Empresa empresa;
     Image logo;
@@ -81,7 +79,6 @@ public class MantEmpresaViewController extends Controller implements Initializab
         txtNombre.setTextFormatter(Formato.getInstance().letrasFormat(30));
         txtCedulaJuridica.setTextFormatter(Formato.getInstance().cedulaFormat(50));
         txtTelefono.setTextFormatter(Formato.getInstance().integerFormat());
-        txtEmail.setTextFormatter(Formato.getInstance().letrasFormat(30));
         txtAnioFundacion.setTextFormatter(Formato.getInstance().integerFormat());
         empresa = new Empresa();
         nuevoEmpresa();
@@ -94,13 +91,11 @@ public class MantEmpresaViewController extends Controller implements Initializab
 
     @FXML
     private void onActionJfxBtnBuscarLogo(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();//Instancia el buscador de archivo
-        fileChooser.setTitle("Buscar Imagen");//Le pone un titulo a la ventala del buscador
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Buscar Imagen");
 
-        //Filtra la busqueda utilizando las extanciones jpg y png
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Images", "*.*"), new FileChooser.ExtensionFilter("JPG", "*.jpg"), new FileChooser.ExtensionFilter("PNG", "*.png"));
 
-        //trae la imagen
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
             logo = new Image("file:" + file.getAbsolutePath());
@@ -199,11 +194,6 @@ public class MantEmpresaViewController extends Controller implements Initializab
             Logger.getLogger(MantCatViewController.class.getName()).log(Level.SEVERE, "Error eliminando la Empresa.", ex);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Empresa", getStage(), "Ocurrio un error eliminando la Empresa.");
         }
-    }
-
-    @FXML
-    private void onActionJfxBtnCancelar(ActionEvent event
-    ) {
     }
 
     private void bindEmpresa(Boolean nuevo) {

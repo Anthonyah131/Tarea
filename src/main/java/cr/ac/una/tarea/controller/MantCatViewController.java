@@ -52,8 +52,6 @@ public class MantCatViewController extends Controller implements Initializable {
     private JFXButton jfxBtnGuardar;
     @FXML
     private JFXButton jfxBtnEliminar;
-    @FXML
-    private JFXButton jfxBtnCancelar;
 
     Categoria categoria;
     List<Node> requeridos = new ArrayList<>();
@@ -89,7 +87,6 @@ public class MantCatViewController extends Controller implements Initializable {
         }
         unbindCategoria();
         bindCategoria(false);
-        //cargarCategoria();
     }
 
     @FXML
@@ -161,11 +158,6 @@ public class MantCatViewController extends Controller implements Initializable {
             Logger.getLogger(MantCatViewController.class.getName()).log(Level.SEVERE, "Error eliminando la Categoria.", ex);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Categoria", getStage(), "Ocurrio un error eliminando la Categoria.");
         }
-    }
-
-    @FXML
-    private void onActionJfxBtnCancelar(ActionEvent event
-    ) {
     }
 
     private void bindCategoria(Boolean nuevo) {

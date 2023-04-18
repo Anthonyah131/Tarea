@@ -43,11 +43,6 @@ public class InicioViewController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         imgLogo.setImage(new Image("cr/ac/una/tarea/resources/PuraVidaLogo1.png"));
-        hboxheader.setAlignment(Pos.CENTER_LEFT);
-        HBox.setMargin(jfxBtnAdmin, new Insets(0, 10, 0, 0));
-        HBox.setHgrow(jfxBtnAdmin, Priority.ALWAYS);
-        HBox.setHgrow(jfxBtnUser, Priority.ALWAYS);
-        HBox.setHgrow(imgLogo, Priority.NEVER);
     }
 
     @Override
@@ -56,6 +51,8 @@ public class InicioViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionJfxBtnAdmin(ActionEvent event) {
+        AdminViewController adminViewController = (AdminViewController) FlowController.getInstance().getController("AdminView");
+        adminViewController.cargarDashBoard();
         FlowController.getInstance().goViewInWindow("AdminView");
     }
 

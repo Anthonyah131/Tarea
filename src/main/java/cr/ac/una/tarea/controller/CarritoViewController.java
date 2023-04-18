@@ -8,9 +8,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import cr.ac.una.tarea.model.Carrito;
-import cr.ac.una.tarea.model.Categoria;
 import cr.ac.una.tarea.model.Cliente;
-import cr.ac.una.tarea.model.Empresa;
 import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.AppContext;
 import cr.ac.una.tarea.util.FlowController;
@@ -90,6 +88,8 @@ public class CarritoViewController extends Controller implements Initializable {
         clientes.addAll((List<Cliente>) AppContext.getInstance().get("ClientesLista"));
 
         cbxCliente.setItems(clientes);
+        
+        cbxCliente.setPromptText("Cliente");
     }
 
     @FXML
@@ -168,22 +168,12 @@ public class CarritoViewController extends Controller implements Initializable {
             tbcPrecioT.setPrefWidth(80);
             tbcPrecioT.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getCompraTotal().toString()));
 
-            TableColumn<Tour, String> tbcEmpresa = new TableColumn<>("Empresa");
-            tbcEmpresa.setPrefWidth(80);
-            tbcEmpresa.setCellValueFactory(cd -> cd.getValue().getEmpresa().nombre);
-
-            TableColumn<Tour, String> tbcCategoria = new TableColumn<>("Categoria");
-            tbcCategoria.setPrefWidth(80);
-            tbcCategoria.setCellValueFactory(cd -> cd.getValue().getCategoria().nombre);
-
             tbvCarrito.getColumns().add(tbcEliminar);
             tbvCarrito.getColumns().add(tbcId);
             tbvCarrito.getColumns().add(tbcNombre);
             tbvCarrito.getColumns().add(tbcCantidad);
             tbvCarrito.getColumns().add(tbcPrecioU);
             tbvCarrito.getColumns().add(tbcPrecioT);
-            tbvCarrito.getColumns().add(tbcEmpresa);
-            tbvCarrito.getColumns().add(tbcCategoria);
             tbvCarrito.refresh();
 
             cargarTours();
@@ -200,6 +190,8 @@ public class CarritoViewController extends Controller implements Initializable {
 
         clientes.addAll((List<Cliente>) AppContext.getInstance().get("ClientesLista"));
         cbxCliente.setItems(clientes);
+        
+        cbxCliente.setPromptText("Cliente");
     }
 
     public void indicarRequeridos() {

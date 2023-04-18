@@ -40,7 +40,7 @@ import javafx.scene.layout.VBox;
  *
  * @author ANTHONY
  */
-public class BusquedaViewController extends Controller implements Initializable {
+public class BusquedaViewController extends Controller implements Initializable { // Crea dinamicamente las busquedas
 
     @FXML
     private AnchorPane rootBusqueda;

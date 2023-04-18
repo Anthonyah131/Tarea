@@ -20,7 +20,7 @@ public class ImageSwitcher {
     private ImageView imageView;
     private Timeline timeline;
 
-    public ImageSwitcher(List images, ImageView imageView) {
+    public ImageSwitcher(List images, ImageView imageView) { // Clase para cambiar imagenes con carrucel
         this.images = images;
         this.imageView = imageView;
 

@@ -89,8 +89,6 @@ public class MantToursViewController extends Controller implements Initializable
     @FXML
     private JFXButton jfxBtnEliminar;
     @FXML
-    private JFXButton jfxBtnCancelar;
-    @FXML
     private TabPane tabTour;
     @FXML
     private Tab tbpTour;
@@ -143,7 +141,6 @@ public class MantToursViewController extends Controller implements Initializable
         txtNombre.setTextFormatter(Formato.getInstance().letrasFormat(30));
         txtPrecio.setTextFormatter(Formato.getInstance().integerFormat());
         txtCuposTotales.setTextFormatter(Formato.getInstance().integerFormat());
-        //txtDisponibles.setTextFormatter(Formato.getInstance().integerFormat());
         tour = new Tour();
         itinerario = new Itinerario();
         nuevoItinerario();
@@ -222,10 +219,9 @@ public class MantToursViewController extends Controller implements Initializable
 
         indicarRequeridos();
 
-        imgFotos.setOnDragOver(event -> {
+        imgFotos.setOnDragOver(event -> { // El drag and drop en las imagenes funciona correctamente
             if (event.getGestureSource() != imgFotos && event.getDragboard().hasFiles()) {
                 for (File file : event.getDragboard().getFiles()) {
-                    // Validar que el archivo sea una imagen
                     String extension = getFileExtension(file);
                     if (extension != null && (extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg"))) {
                         event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
@@ -247,7 +243,6 @@ public class MantToursViewController extends Controller implements Initializable
                     if (extension != null && (extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg"))) {
                         Image image = new Image(file.toURI().toString());
                         tour.getFotos().add(image);
-                        System.out.println(file.toURI().toString());
                         success = true;
                     }
                 }
@@ -270,13 +265,11 @@ public class MantToursViewController extends Controller implements Initializable
 
     @FXML
     private void onActionBtnBuscarFotos(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();//Instancia el buscador de archivo
-        fileChooser.setTitle("Buscar Imagen");//Le pone un titulo a la ventala del buscador
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Buscar Imagen");
 
-        //Filtra la busqueda utilizando las extanciones jpg y png
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Images", "*.*"), new FileChooser.ExtensionFilter("JPG", "*.jpg"), new FileChooser.ExtensionFilter("PNG", "*.png"));
 
-        //trae la imagen
         List<File> file;
         file = fileChooser.showOpenMultipleDialog(null);
         if (file != null && !file.isEmpty()) {
@@ -326,7 +319,9 @@ public class MantToursViewController extends Controller implements Initializable
     @FXML
     private void onActionBtnNuevo(ActionEvent event) {
         if (new Mensaje().showConfirmation("Limpiar Tour", getStage(), "¿Esta seguro que desea limpiar el registro?")) {
-            switcher.stop();
+            if (switcher != null) {
+                switcher.stop();
+            }
             imgFotos.setImage(null);
             limpiarCBX();
             nuevoTour();
@@ -427,10 +422,6 @@ public class MantToursViewController extends Controller implements Initializable
             Logger.getLogger(MantCatViewController.class.getName()).log(Level.SEVERE, "Error eliminando la Tour.", ex);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Tour", getStage(), "Ocurrio un error eliminando la Tour.");
         }
-    }
-
-    @FXML
-    private void onActionJfxBtnCancelar(ActionEvent event) {
     }
 
     private String getFileExtension(File file) {

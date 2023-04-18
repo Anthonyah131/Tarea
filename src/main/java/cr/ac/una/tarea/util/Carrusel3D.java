@@ -22,7 +22,7 @@ import javafx.scene.layout.HBox;
  *
  * @author ANTHONY
  */
-public class Carrusel3D {
+public class Carrusel3D { // Clase para cambiar imagenes con carrucel
 
     private AnchorPane apTours;
     private List<Image> fotos;

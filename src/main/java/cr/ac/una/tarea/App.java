@@ -25,6 +25,13 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        // Creadas 15 instancias de tour, la numero 15 tour contiene 5 itinerarios creados para prueba, igual se pueden agruegar más en cualquier tour
+        // Por cuestion de probar todos los tours creados tienen las mismas imagenes, al cambiar las imagenes de uno, se cambian en todos, esto
+        //  no ocurre al crear uno nuevo, ya que no la instancia de la lista de imagenes no comparte la misma posicion de memoria que las instancias
+        //  ya creadas
+        // Ningún tour cuenta con una lista de clientes en su instancia, estos se van agregando cada que hacen una compra 
+        // Las facturas están en cero
+        // En caso de error con el mapjfx se debe instalar la dependencia manualmente, se encuentra en la carpeta libs en este mismo proyecto
         ObservableList<Tour> tours = FXCollections.observableArrayList();
         ObservableList<Empresa> empresas = FXCollections.observableArrayList();
         ObservableList<Categoria> categorias = FXCollections.observableArrayList();

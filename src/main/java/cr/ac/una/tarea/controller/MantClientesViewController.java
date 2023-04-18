@@ -59,8 +59,6 @@ public class MantClientesViewController extends Controller implements Initializa
     private JFXButton jfxBtnGuardar;
     @FXML
     private JFXButton jfxBtnEliminar;
-    @FXML
-    private JFXButton jfxBtnCancelar;
 
     Cliente cliente;
     List<Node> requeridos = new ArrayList<>();
@@ -75,7 +73,6 @@ public class MantClientesViewController extends Controller implements Initializa
         txtApellidos.setTextFormatter(Formato.getInstance().letrasFormat(50));
         txtCedula.setTextFormatter(Formato.getInstance().cedulaFormat(15));
         txtTelefono.setTextFormatter(Formato.getInstance().integerFormat());
-        txtCorreo.setTextFormatter(Formato.getInstance().letrasFormat(50));
         cliente = new Cliente();
         nuevoCliente();
         indicarRequeridos();
@@ -173,10 +170,6 @@ public class MantClientesViewController extends Controller implements Initializa
             Logger.getLogger(MantClientesViewController.class.getName()).log(Level.SEVERE, "Error eliminando el Cliente.", ex);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Eliminar Cliente", getStage(), "Ocurrio un error eliminando el Cliente.");
         }
-    }
-
-    @FXML
-    private void onActionJfxBtnCancelar(ActionEvent event) {
     }
 
     private void bindCliente(Boolean nuevo) {

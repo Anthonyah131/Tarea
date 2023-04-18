@@ -37,17 +37,36 @@ JFXButton {
 /* AdminView */
 
 .botonAdminView {
+    -fx-font-weight: 700;
     -fx-min-width: 100%;
     -fx-max-width: 200px;
-    -fx-font-size: 12px;
+    -fx-font-size: 14px;
 }
 
 .splitPane, VBox {
     -fx-background-color: #8c686b;
 }
 
-.border10 {
-    -fx-background-radius: 10px;
+
+.radioDerechaArriba {
+    -fx-background-radius: 0 25 0 0;
+}
+
+.radio25 {
+    -fx-background-radius: 25;
+}
+
+.hboxTexto {
+    -fx-font-weight: 700;
+    -fx-background-radius: 25;
+    -fx-padding: 5;
+    -fx-background-color: #dbdea6;
+    -fx-text-fill: #8c686b;
+}
+.vboxTexto {
+    -fx-background-radius: 25;
+    -fx-background-color: #dbdea6;
+    -fx-text-fill: #8c686b;
 }
 
 /* MantViews */

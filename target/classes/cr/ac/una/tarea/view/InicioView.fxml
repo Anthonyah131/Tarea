@@ -5,33 +5,41 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Priority?>
 
 <BorderPane fx:id="rootInicio" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="colorFondo" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.InicioViewController">
    <top>
       <HBox fx:id="hboxheader" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <ImageView fx:id="imgLogo" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <HBox.hgrow>
-                  <Priority fx:value="ALWAYS" />
-               </HBox.hgrow>
-            </ImageView>
-            <Pane minHeight="10.0" minWidth="10.0" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin></Pane>
-            <JFXButton fx:id="jfxBtnAdmin" onAction="#onActionJfxBtnAdmin" prefHeight="25.0" prefWidth="150.0" styleClass="boton" text="Admin" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin></JFXButton>
-            <JFXButton fx:id="jfxBtnUser" onAction="#onActionJfxBtnUser" prefHeight="25.0" prefWidth="150.0" styleClass="boton" text="User" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin></JFXButton>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="imgLogo" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <HBox.hgrow>
+                        <Priority fx:value="ALWAYS" />
+                     </HBox.hgrow>
+                  </ImageView>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <JFXButton fx:id="jfxBtnAdmin" onAction="#onActionJfxBtnAdmin" prefHeight="25.0" prefWidth="150.0" styleClass="boton" text="Admin">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="jfxBtnUser" onAction="#onActionJfxBtnUser" prefHeight="25.0" prefWidth="150.0" styleClass="boton" text="User">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </HBox>
          </children>
          <BorderPane.margin>
             <Insets left="5.0" right="5.0" top="5.0" />

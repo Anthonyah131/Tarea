@@ -27,16 +27,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -55,8 +51,6 @@ public class ClienteViewController extends Controller implements Initializable {
     private AnchorPane rootClienteView;
     @FXML
     private ImageView imgLogo;
-    @FXML
-    private JFXButton jfxBtnSalir;
     @FXML
     private AnchorPane apTours;
     @FXML
@@ -86,9 +80,6 @@ public class ClienteViewController extends Controller implements Initializable {
     int tourTotal = 0;
     int tourActual = 0;
     String tipoTour = "Todos";
-    boolean isDragging = false;
-    double startX, startY;
-    Point2D imgTourInitialPos = null;
     boolean isAnimating = false;
     private ObservableList<Tour> tours = FXCollections.observableArrayList();
     private ObservableList<Empresa> empresas = FXCollections.observableArrayList();
@@ -105,25 +96,22 @@ public class ClienteViewController extends Controller implements Initializable {
         imgCarrito.setImage(new Image("cr/ac/una/tarea/resources/Carrito2.png"));
         imgFecha.setImage(new Image("cr/ac/una/tarea/resources/Cercana.png"));
         imgNombre.setImage(new Image("cr/ac/una/tarea/resources/Asce.png"));
+        carrito = new Carrito();
     }
 
     @Override
-    public void initialize() {
+    public void initialize() { //Crea dinamicamente los items de tour que se muestran al cliente, con la animacion y todo
         apTours.getChildren().clear();
 
         tourVista = 0;
         tourTotal = 0;
 
         tours.clear();
-//        for (Tour tou : (List<Tour>) AppContext.getInstance().get("ToursLista")) {
-//            tours.add(new Tour(tou));
-//        }
         tours.addAll((List<Tour>) AppContext.getInstance().get("ToursLista"));
-        carrito = new Carrito();
-
+        
         limpiarCBX();
 
-        for (int i = 0; i < tours.size(); i += 3) {
+        for (int i = 0; i < tours.size(); i += 3) { // Crea un hbo donde mete 3 vbox los cuales son los items de tour
             HBox hboxContenedor = new HBox();
             hboxContenedor.setSpacing(10);
             hboxContenedor.setAlignment(Pos.CENTER);
@@ -155,7 +143,8 @@ public class ClienteViewController extends Controller implements Initializable {
                     hboxLogo.setAlignment(Pos.CENTER_LEFT);
                     lbNombre.setText(tour.getNombre());
                     imgTour.setImage(tour.getFotos().get(0));
-                    imgTour.setPreserveRatio(true);
+                    imgTour.setPreserveRatio(false);
+                    imgTour.setFitWidth(100);
                     imgTour.setFitHeight(150);
                     VBox.setVgrow(imgTour, Priority.ALWAYS);
                     lbFecha.setText(tour.getFechaSalida().toString());
@@ -184,7 +173,7 @@ public class ClienteViewController extends Controller implements Initializable {
                         }
                     });
 
-                    vboxContenedor.setOnMousePressed(event -> {
+                    vboxContenedor.setOnMousePressed(event -> { // El drag and drop es funcional, se puede coger y arrastrar un tour al boton de carrito
                         vboxContenedor.setCursor(Cursor.MOVE);
                     });
 
@@ -195,7 +184,6 @@ public class ClienteViewController extends Controller implements Initializable {
                         vboxContenedor.setCursor(Cursor.DEFAULT);
                         Node node = event.getPickResult().getIntersectedNode();
                         if ("jfxBtnCarrito".equals(node.getId())) {
-                            System.out.println("Correcto");
                             carrito.agregarTour(tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get(), 1);
                             long longValue = 1;
                             tours.stream().filter(t -> Objects.equals(t.getId(), id)).findFirst().get().compraCuposDisponibles(longValue);
@@ -216,7 +204,7 @@ public class ClienteViewController extends Controller implements Initializable {
             AnchorPane.setBottomAnchor(stackPane, 0.0);
             AnchorPane.setLeftAnchor(stackPane, 0.0);
             AnchorPane.setRightAnchor(stackPane, 0.0);
-            apTours.getChildren().add(stackPane);
+            apTours.getChildren().add(stackPane); // Mete el hbox en un stack pane para centrarlo y lo mete en el aptours del scene builder
             tourVista++;
         }
         tourVista--;
@@ -224,7 +212,7 @@ public class ClienteViewController extends Controller implements Initializable {
 
         tourVista = 0;
 
-        if (tourActual <= tourTotal && tourActual > 0) {
+        if (tourActual <= tourTotal && tourActual > 0) { // Mueve las pginas del tour a hacía la derecha excepto la primera o en la que se encuentre el usuario
             for (int i = apTours.getChildren().size() - 1; i > tourActual; i--) {
                 Node node = apTours.getChildren().get(i);
                 if (node instanceof StackPane) {
@@ -247,11 +235,7 @@ public class ClienteViewController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionJfxBtnSalir(ActionEvent event) {
-    }
-
-    @FXML
-    private void onActionJfxBtnAnt(ActionEvent event) {
+    private void onActionJfxBtnAnt(ActionEvent event) { // Botones para pasar a la siguiente o anterior pagina
         if (tourTotal >= 1) {
             if (!isAnimating) {
                 isAnimating = true;
@@ -318,7 +302,7 @@ public class ClienteViewController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionJfxBtnTodos(ActionEvent event) {
+    private void onActionJfxBtnTodos(ActionEvent event) { //Diferentes botones para filtros
         tipoTour = "Todos";
         filtro(tipoTour);
     }
@@ -369,7 +353,7 @@ public class ClienteViewController extends Controller implements Initializable {
         filtro(tipoTour);
     }
 
-    public void translateAnimation(double duration, Node node, double width) {
+    public void translateAnimation(double duration, Node node, double width) { //Metodo de la animacion
         TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(duration), node);
         translateTransition.setOnFinished(event -> {
             isAnimating = false;
@@ -394,14 +378,12 @@ public class ClienteViewController extends Controller implements Initializable {
         jfxcbCategoria.setItems(categorias);
     }
 
-    private void filtro(String tipo) {
+    private void filtro(String tipo) { // Se crean dinamicamente los items de tour pero con el filtro
         apTours.getChildren().clear();
 
         tourVista = 0;
         tourTotal = 0;
 
-//        tours.clear();
-//        tours.addAll((List<Tour>) AppContext.getInstance().get("ToursLista"));
         ObservableList<Tour> toursFiltro = FXCollections.observableArrayList();
 
         switch (tipo) {
@@ -467,9 +449,11 @@ public class ClienteViewController extends Controller implements Initializable {
                     }
                 }
                 break;
-            // y así sucesivamente
             default:
-            // código a ejecutar si la expresion no coincide con ninguno de los valores anteriores
+                toursFiltro.clear();
+                toursFiltro.addAll(tours);
+                jfxcbEmpresa.getSelectionModel().clearSelection();
+                jfxcbCategoria.getSelectionModel().clearSelection();
         }
 
         for (int i = 0; i < toursFiltro.size(); i += 3) {

@@ -9,8 +9,6 @@ import com.jfoenix.controls.JFXTextField;
 import com.sothawo.mapjfx.Configuration;
 import com.sothawo.mapjfx.Coordinate;
 import com.sothawo.mapjfx.CoordinateLine;
-import com.sothawo.mapjfx.Extent;
-import com.sothawo.mapjfx.MapCircle;
 import com.sothawo.mapjfx.MapLabel;
 import com.sothawo.mapjfx.MapView;
 import com.sothawo.mapjfx.MapType;
@@ -85,26 +83,20 @@ public class TourViewController extends Controller implements Initializable {
     @FXML
     private BorderPane borderPaneMap;
 
-    private static final Logger logger = LoggerFactory.getLogger(TourViewController.class);
-
-    private static final Coordinate coordCostaRica = new Coordinate(9.7489, -83.7534);
-
     CoordinateLine coordinateLineIti = null;
     List<Coordinate> coordinates = new ArrayList<>();
     List<Marker> markers = new ArrayList<>();
-
+    
+    private static final Logger logger = LoggerFactory.getLogger(TourViewController.class);
+    private static final Coordinate coordCostaRica = new Coordinate(9.7489, -83.7534);
+    private MapView mapView;
+    public Carrusel3D carrusel;
+    Tour tour;
+    public Boolean compraBandera = false;
+    
     private static final WMSParam wmsParam;
-
     private static final XYZParam xyzParam;
-
     static {
-//        wmsParam = new WMSParam()
-//                .setUrl("http://irs.gis-lab.info/?")
-//                .addParam("layers", "landsat")
-//                .addParam("REQUEST", "GetTile");
-//        wmsParam = new WMSParam()
-//                .setUrl("http://geonode.wfp.org:80/geoserver/ows")
-//                .addParam("layers", "geonode:admin_2_gaul_2015");
         wmsParam = new WMSParam()
                 .setUrl("http://ows.terrestris.de/osm/service")
                 .addParam("layers", "OSM-WMS");
@@ -114,11 +106,6 @@ public class TourViewController extends Controller implements Initializable {
                 .withAttributions("'Tiles &copy; <a href=\"https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer\">ArcGIS</a>'");
     }
 
-    private MapView mapView;
-
-    public Carrusel3D carrusel;
-    Tour tour;
-    public Boolean compraBandera = false;
 
     /**
      * Initializes the controller class.
@@ -126,7 +113,6 @@ public class TourViewController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         imgAgregar.setImage(new Image("cr/ac/una/tarea/resources/Carrito2.png"));
-        // TODO
     }
 
     @Override
@@ -189,8 +175,8 @@ public class TourViewController extends Controller implements Initializable {
         carrusel.startCarrusel();
     }
 
-    private void cargarMapa() {
-        logger.info("starting devtest program...");
+    private void cargarMapa() { // Metodo para cargar el mapa con los puntos del itinerario si el usuario los puso
+        logger.info("starting devtest program..."); // Creditos a https://github.com/sothawo/mapjfx
 
         mapView = new MapView();
         borderPaneMap.getChildren().clear();
@@ -358,9 +344,7 @@ public class TourViewController extends Controller implements Initializable {
 
         // now initialize the mapView
         mapView.setMapType(MapType.OSM);
-//        mapView.initialize();
         mapView.initialize(Configuration.builder()
-                //            .showZoomControls(false)
                 .build());
 
         logger.debug("application started.");
@@ -372,9 +356,6 @@ public class TourViewController extends Controller implements Initializable {
 
     private void initOfflineCache() {
         final OfflineCache offlineCache = OfflineCache.INSTANCE;
-        //offlineCache.setCacheDirectory(new File("tmpdata/cache"));
-        //offlineCache.setCacheDirectory(FileSystems.getDefault().getPath("tmpdata/cache"));
-        //offlineCache.setActive(true);
         offlineCache.setNoCacheFilters(Collections.singletonList(".*\\.sothawo\\.com/.*"));
 
         LinkedList<String> urls = new LinkedList<>();

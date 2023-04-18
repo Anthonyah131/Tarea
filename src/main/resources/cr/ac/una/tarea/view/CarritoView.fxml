@@ -24,8 +24,12 @@
                   <HBox alignment="CENTER_LEFT" maxHeight="50.0" prefHeight="50.0" prefWidth="200.0">
                      <children>
                         <ImageView fx:id="imgLogo" fitHeight="50.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="lbCarrito" text="Carrito" />
-                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label fx:id="lbCarrito" styleClass="label-titulo-Factura" text="Carrito" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                            <children>
                               <JFXComboBox fx:id="cbxCliente" promptText="Cliente" />
                               <JFXButton fx:id="jfxBtnAgregarCliente" onAction="#onActionJfxBtnAgregarCliente" text="Agregar Nuevo" />
@@ -38,7 +42,10 @@
                   </HBox>
                   <HBox alignment="CENTER" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <TableView fx:id="tbvCarrito" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                        <TableView fx:id="tbvCarrito" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin></TableView>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
@@ -46,7 +53,7 @@
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label fx:id="lbTotalCompra" text="Total:" />
+                              <Label fx:id="lbTotalCompra" styleClass="label-tour-Factura" text="Total:" />
                            </children>
                         </HBox>
                      </children>
@@ -59,6 +66,9 @@
                                  <graphic>
                                     <ImageView fx:id="imgAtras" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
                                  </graphic>
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
                               </JFXButton>
                            </children>
                         </HBox>
@@ -68,6 +78,9 @@
                                  <graphic>
                                     <ImageView fx:id="imgComprar" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
                                  </graphic>
+                                 <HBox.margin>
+                                    <Insets right="15.0" />
+                                 </HBox.margin>
                               </JFXButton>
                            </children>
                         </HBox>

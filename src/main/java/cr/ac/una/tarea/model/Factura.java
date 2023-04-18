@@ -40,7 +40,6 @@ public class Factura {
         this.cliente = new Cliente();
     }
 
-    // Métodos getters y setters
     public Long getId() {
         if (id.get() != null && !id.get().isEmpty()) {
             return Long.valueOf(id.get());

@@ -61,6 +61,16 @@ public class Carrito {
             }
         }
     }
+    
+    public int getTour(String nombre) {
+        for (int i = 0; i < tours.size(); i++) {
+            Tour tour = (Tour) tours.get(i)[0];
+            if (nombre.equals(tour.getNombre())) {
+                return (int) tours.get(i)[1];
+            }
+        }
+        return 0;
+    }
 
     public List<Object[]> getTours() {
         return tours;

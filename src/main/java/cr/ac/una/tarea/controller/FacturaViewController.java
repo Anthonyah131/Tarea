@@ -90,7 +90,6 @@ public class FacturaViewController extends Controller implements Initializable {
     Factura factura;
     ObservableList<Tour> tours = FXCollections.observableArrayList();
     ObservableList<Cliente> clientes = FXCollections.observableArrayList();
-    ObservableList<Factura> facturas = FXCollections.observableArrayList();
 
     /**
      * Initializes the controller class.
@@ -105,7 +104,7 @@ public class FacturaViewController extends Controller implements Initializable {
     }
 
     @FXML
-    private void onActionJfxBtnDescargarPdf(ActionEvent event) {
+    private void onActionJfxBtnDescargarPdf(ActionEvent event) { // Metodo para tomar screenshot al la interfaz y crear el pdf
         try {
             Document documento = new Document(PageSize.A4);
             PdfWriter.getInstance(documento, new FileOutputStream("factura" + this.cliente.getNombre() + factura.getId().toString() + ".pdf"));
@@ -146,9 +145,8 @@ public class FacturaViewController extends Controller implements Initializable {
         this.getStage().close();
     }
 
-    void cargarFactura(Carrito carrito, Cliente cliente) {
-        facturas.clear();
-        facturas.addAll((List<Factura>) AppContext.getInstance().get("ToursLista"));
+    void cargarFactura(Carrito carrito, Cliente cliente) { // Crea dinamicamente la interfaz de la factura con lo datos
+        ObservableList<Factura> facturas =  (ObservableList<Factura>) AppContext.getInstance().get("FacturasLista");
 
         factura = new Factura(LocalDate.now(), 0L, carrito, cliente);
 
@@ -156,7 +154,9 @@ public class FacturaViewController extends Controller implements Initializable {
         contador[5]++;
         factura.setId(contador[5]);
         facturas.add(factura);
-
+        
+        System.out.println(facturas.size());
+        
         this.cliente = cliente;
         lbNombreCliente.setText(this.cliente.toString());
         lbCedula.setText(this.cliente.getCedula());
@@ -165,7 +165,6 @@ public class FacturaViewController extends Controller implements Initializable {
         lbFecha.setText(factura.getFecha().toString());
         lbFactura.setText(factura.getId().toString());
 
-        // Recorrer los tours del carrito
         gridFactura.getChildren().clear();
         gridFactura.setAlignment(Pos.CENTER);
 
@@ -236,6 +235,7 @@ public class FacturaViewController extends Controller implements Initializable {
             gridFactura.getChildren().addAll(lbNombre, lbCantidad, lbPrecioU, lbPrecioT);
         }
         lbTotal.setText("Total: " + carrito.getTotal());
+        lbTotal.getStyleClass().add("label-tour-Factura");
         ClienteViewController clienteController = (ClienteViewController) FlowController.getInstance().getController("ClienteView");
         clienteController.carrito = new Carrito();
     }

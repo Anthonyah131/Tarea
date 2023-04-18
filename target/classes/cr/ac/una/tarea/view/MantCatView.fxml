@@ -19,7 +19,6 @@
                   <JFXButton fx:id="btnNuevo" onAction="#onActionBtnNuevo" styleClass="botonMantView" text="Nuevo" />
                   <JFXButton fx:id="jfxBtnGuardar" onAction="#onActionBtnGuardar" styleClass="botonMantView" text="Guardar" />
                   <JFXButton fx:id="jfxBtnEliminar" onAction="#onActionJfxBtnEliminar" styleClass="botonMantView" text="Eliminar" />
-                  <JFXButton fx:id="jfxBtnCancelar" onAction="#onActionJfxBtnCancelar" styleClass="botonMantView" text="Cancelar" />
                </children>
             </HBox>
          </children>
