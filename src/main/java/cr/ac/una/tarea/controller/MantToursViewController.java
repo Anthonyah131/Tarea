@@ -559,7 +559,7 @@ public class MantToursViewController extends Controller implements Initializable
             tbvItinerarios.setItems(itinerarios);
             tbvItinerarios.refresh();
         } else {
-            new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Cliente", getStage(), "Error cargando los Clientes");
+            new Mensaje().showModal(Alert.AlertType.ERROR, "Cargar Itinerarios", getStage(), "Error cargando los Itinerarios");
         }
     }
 

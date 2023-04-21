@@ -22,6 +22,7 @@ import com.sothawo.mapjfx.offline.OfflineCache;
 import cr.ac.una.tarea.model.Itinerario;
 import cr.ac.una.tarea.model.Tour;
 import cr.ac.una.tarea.util.Carrusel3D;
+import cr.ac.una.tarea.util.FlowController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -86,16 +87,17 @@ public class TourViewController extends Controller implements Initializable {
     CoordinateLine coordinateLineIti = null;
     List<Coordinate> coordinates = new ArrayList<>();
     List<Marker> markers = new ArrayList<>();
-    
+
     private static final Logger logger = LoggerFactory.getLogger(TourViewController.class);
     private static final Coordinate coordCostaRica = new Coordinate(9.7489, -83.7534);
     private MapView mapView;
     public Carrusel3D carrusel;
     Tour tour;
     public Boolean compraBandera = false;
-    
+
     private static final WMSParam wmsParam;
     private static final XYZParam xyzParam;
+
     static {
         wmsParam = new WMSParam()
                 .setUrl("http://ows.terrestris.de/osm/service")
@@ -105,7 +107,6 @@ public class TourViewController extends Controller implements Initializable {
                 .withUrl("https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x})")
                 .withAttributions("'Tiles &copy; <a href=\"https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer\">ArcGIS</a>'");
     }
-
 
     /**
      * Initializes the controller class.
@@ -121,6 +122,9 @@ public class TourViewController extends Controller implements Initializable {
 
     @FXML
     private void onActionJfxBtnItinerario(ActionEvent event) {
+        ItinerariosViewController itinerariosViewController = (ItinerariosViewController) FlowController.getInstance().getController("ItinerariosView");
+        itinerariosViewController.setTour(tour);
+        FlowController.getInstance().goViewInWindowModal("ItinerariosView", getStage(), true);
     }
 
     @FXML
@@ -180,7 +184,7 @@ public class TourViewController extends Controller implements Initializable {
 
         mapView = new MapView();
         borderPaneMap.getChildren().clear();
-        
+
         // animate pan and zoom with 500ms
         mapView.setAnimationDuration(500);
         borderPaneMap.setCenter(mapView);

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" fx:id="rootBusqueda" prefHeight="600.0" prefWidth="800.0" styleClass="rootBusqueda" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.BusquedaViewController">
+<AnchorPane id="AnchorPane" fx:id="rootBusqueda" prefHeight="600.0" styleClass="rootBusqueda" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.una.tarea.controller.BusquedaViewController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
@@ -29,12 +29,12 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </VBox>
-            <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="350.0" spacing="5.0" HBox.hgrow="SOMETIMES">
+            <VBox alignment="CENTER_RIGHT" prefHeight="200.0" spacing="5.0" HBox.hgrow="SOMETIMES">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <children>
-                  <TableView fx:id="tbvResultados" onMousePressed="#onMousePressenTbvResultados" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="SOMETIMES" />
+                  <TableView fx:id="tbvResultados" onMousePressed="#onMousePressenTbvResultados" prefHeight="200.0" VBox.vgrow="SOMETIMES" />
                   <JFXButton fx:id="jfxBtnAceptar" onAction="#onActionJfxBtnAceptar" styleClass="botonMantView" text="Aceptar" />
                </children>
             </VBox>

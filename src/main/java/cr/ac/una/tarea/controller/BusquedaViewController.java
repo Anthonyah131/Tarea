@@ -22,15 +22,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -53,7 +50,6 @@ public class BusquedaViewController extends Controller implements Initializable 
     @FXML
     private JFXButton jfxBtnAceptar;
 
-    private EventHandler<KeyEvent> keyEnter;
     private ObservableList<Tour> tours = FXCollections.observableArrayList();
     private ObservableList<Categoria> categorias = FXCollections.observableArrayList();
     private ObservableList<Cliente> clientes = FXCollections.observableArrayList();
@@ -66,11 +62,6 @@ public class BusquedaViewController extends Controller implements Initializable 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        keyEnter = ((KeyEvent event) -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                //btnFiltrar;
-            }
-        });
     }
 
     @Override
@@ -98,7 +89,7 @@ public class BusquedaViewController extends Controller implements Initializable 
         resultado = null;
     }
 
-    private void cargarTours(Long id, String nombre, String empresa, String categoria) {
+    private void cargarTours(Long id, String nombre, String empresa, String categoria, String cliente) {
         tours.clear();
         tours.addAll((List<Tour>) AppContext.getInstance().get("ToursLista"));
         if (tours != null) {
@@ -114,7 +105,10 @@ public class BusquedaViewController extends Controller implements Initializable 
             if (!categoria.isEmpty()) {
                 tours.removeIf(c -> !c.getCategoria().getNombre().toLowerCase().contains(categoria.toLowerCase()));
             }
-            
+            if (!cliente.isEmpty()) {
+                tours.removeIf(tour -> !tour.getClientes().stream().anyMatch(c -> c.getNombre().toLowerCase().contains(cliente.toLowerCase())));
+            }
+
             tbvResultados.setItems(tours);
             tbvResultados.refresh();
         } else {
@@ -178,7 +172,7 @@ public class BusquedaViewController extends Controller implements Initializable 
             if (!cedula.isEmpty()) {
                 empresas.removeIf(c -> !c.getCedulaJuridica().toLowerCase().contains(cedula.toLowerCase()));
             }
-            
+
             tbvResultados.setItems(empresas);
             tbvResultados.refresh();
         } else {
@@ -194,23 +188,22 @@ public class BusquedaViewController extends Controller implements Initializable 
 
             TextField txtNombre = new TextField();
             txtNombre.setPromptText("Nombre");
-            txtNombre.setOnKeyPressed(keyEnter);
-            txtNombre.setTextFormatter(Formato.getInstance().letrasFormat(40));
 
             TextField txtEmpresa = new TextField();
             txtEmpresa.setPromptText("Empresa");
-            txtEmpresa.setTextFormatter(Formato.getInstance().letrasFormat(40));
-            txtEmpresa.setOnKeyPressed(keyEnter);
 
             TextField txtCategoria = new TextField();
             txtCategoria.setPromptText("Categoria");
-            txtCategoria.setTextFormatter(Formato.getInstance().letrasFormat(40));
+
+            TextField txtCliente = new TextField();
+            txtCliente.setPromptText("Cliente");
 
             vbxBusqueda.getChildren().clear();
             vbxBusqueda.getChildren().add(txtId);
             vbxBusqueda.getChildren().add(txtNombre);
             vbxBusqueda.getChildren().add(txtEmpresa);
             vbxBusqueda.getChildren().add(txtCategoria);
+            vbxBusqueda.getChildren().add(txtCliente);
 
             tbvResultados.getColumns().clear();
             tbvResultados.getItems().clear();
@@ -238,14 +231,14 @@ public class BusquedaViewController extends Controller implements Initializable 
             tbvResultados.refresh();
 
             jfxBtnFiltrar.setOnAction((ActionEvent event) -> {
-                if (!txtId.getText().isEmpty() || !txtNombre.getText().isEmpty() || !txtEmpresa.getText().isEmpty() || !txtCategoria.getText().isEmpty()) {
-                    cargarTours((!txtId.getText().isEmpty() ? Long.valueOf(txtId.getText()) : null), txtNombre.getText(), txtEmpresa.getText(), txtCategoria.getText());
+                if (!txtId.getText().isEmpty() || !txtNombre.getText().isEmpty() || !txtEmpresa.getText().isEmpty() || !txtCategoria.getText().isEmpty() || !txtCliente.getText().isEmpty()) {
+                    cargarTours((!txtId.getText().isEmpty() ? Long.valueOf(txtId.getText()) : null), txtNombre.getText(), txtEmpresa.getText(), txtCategoria.getText(), txtCliente.getText());
                 } else {
-                    cargarTours(null, "", "", "");
+                    cargarTours(null, "", "", "", "");
                 }
             });
 
-            cargarTours(null, "", "", "");
+            cargarTours(null, "", "", "", "");
 
         } catch (Exception ex) {
             Logger.getLogger(BusquedaViewController.class.getName()).log(Level.SEVERE, "Error consultando los tours", ex);
@@ -261,8 +254,6 @@ public class BusquedaViewController extends Controller implements Initializable 
 
             TextField txtNombre = new TextField();
             txtNombre.setPromptText("Nombre");
-            txtNombre.setOnKeyPressed(keyEnter);
-            txtNombre.setTextFormatter(Formato.getInstance().letrasFormat(40));
 
             vbxBusqueda.getChildren().clear();
             vbxBusqueda.getChildren().add(txtId);
@@ -307,13 +298,11 @@ public class BusquedaViewController extends Controller implements Initializable 
 
             TextField txtNombre = new TextField();
             txtNombre.setPromptText("Nombre");
-            txtNombre.setOnKeyPressed(keyEnter);
             txtNombre.setTextFormatter(Formato.getInstance().letrasFormat(40));
 
             TextField txtApellidos = new TextField();
             txtApellidos.setPromptText("Apellidos");
             txtApellidos.setTextFormatter(Formato.getInstance().letrasFormat(40));
-            txtApellidos.setOnKeyPressed(keyEnter);
 
             TextField txtCedula = new TextField();
             txtCedula.setPromptText("Cedula");
@@ -374,7 +363,6 @@ public class BusquedaViewController extends Controller implements Initializable 
 
             TextField txtNombre = new TextField();
             txtNombre.setPromptText("Nombre");
-            txtNombre.setOnKeyPressed(keyEnter);
             txtNombre.setTextFormatter(Formato.getInstance().letrasFormat(40));
 
             TextField txtCedula = new TextField();

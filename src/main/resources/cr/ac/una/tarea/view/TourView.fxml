@@ -79,6 +79,5 @@
             </VBox>
          </children>
       </StackPane>
-      <StackPane prefHeight="150.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

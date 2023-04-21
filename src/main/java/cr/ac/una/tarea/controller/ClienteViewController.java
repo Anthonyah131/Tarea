@@ -144,7 +144,7 @@ public class ClienteViewController extends Controller implements Initializable {
                     lbNombre.setText(tour.getNombre());
                     imgTour.setImage(tour.getFotos().get(0));
                     imgTour.setPreserveRatio(false);
-                    imgTour.setFitWidth(100);
+                    imgTour.setFitWidth(150);
                     imgTour.setFitHeight(150);
                     VBox.setVgrow(imgTour, Priority.ALWAYS);
                     lbFecha.setText(tour.getFechaSalida().toString());
